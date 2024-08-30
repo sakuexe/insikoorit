@@ -7,7 +7,8 @@ Except the Maze is now for the Labyrinth task for Tekniska Museet case
 The maze can only be traversed with moving either up or right
 """
 
-from collections.abc import Iterable
+import utils.visualize_maze as visualize
+import argparse
 
 
 class Node():
@@ -17,7 +18,7 @@ class Node():
         self.parent = parent
         # y, x
         self.position = position
-        self.direction = direction
+        # self.direction = direction
 
         self.g = 0
         self.h = 0
@@ -67,7 +68,7 @@ def astar(maze, start, end):
             current = current_node
             while current is not None:
                 path.append(
-                    (current.position[0], current.position[1], current.direction))
+                    (current.position[0], current.position[1]))
                 current = current.parent
             return path[::-1]  # Return reversed path
 
@@ -163,36 +164,6 @@ def is_valid_move(new_position: tuple[int, int],
     return True
 
 
-def print_maze(maze: list[list[int]],
-               path: Iterable[tuple],
-               default_path_char="*") -> None:
-    """Prints the maze with the path visualized"""
-
-    for position in path:
-        direction = position[2]
-        if direction == (0, 1):
-            maze[position[0]][position[1]] = "→"
-        elif direction == (0, -1):
-            maze[position[0]][position[1]] = "←"
-        elif direction == (1, 0):
-            maze[position[0]][position[1]] = "↓"
-        elif direction == (-1, 0):
-            maze[position[0]][position[1]] = "↑"
-        else:
-            maze[position[0]][position[1]] = default_path_char
-
-    # print the labyrinth in a nicer way
-    for row in maze:
-        for col in row:
-            if col == 1:
-                print("#", end=" ")
-            elif col == 0:
-                print(" ", end=" ")
-            else:
-                print(col, end=" ")
-        print("", end="\n")
-
-
 def main():
     # The maze we are actually looking for the solution
     maze1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -226,13 +197,19 @@ def main():
         print("No solution found")
         return
     try:
-        print_maze(test_maze, test_path)
-        print("")
-        print("=" * maze1[0].__len__() * 2)
-        print("")
-        print_maze(maze1, path)
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--animate", type=int, nargs='?', const=10,
+                            help="Animate the maze by passing the fps")
+        args = parser.parse_args()
+        if not args.animate:
+            visualize.print_maze(maze1, path)
+            return
+
+        # get the framerate if provided with the argument
+        visualize.animate_maze(maze1, path, framerate=args.animate)
+
     except Exception as e:
-        print("maze is fucked:", path)
+        print("maze is fucked, lmao:", path)
         print(e)
 
 
