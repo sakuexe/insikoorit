@@ -20,7 +20,7 @@ def print_maze(maze: list[list[int]],
         y, x = position[0], position[1]
         direction = (0, 0)
         if position.__len__() == 3:
-            direction = position
+            direction = position[2]
         maze[y][x] = DIRECTION_CHARS.get(direction, default_path_char)
 
     # print the labyrinth in a nicer way
@@ -51,7 +51,7 @@ def animate_maze(maze: list[list[int]],
         y, x = position[0], position[1]
         direction = (0, 0)
         if position.__len__() == 3:
-            direction = position
+            direction = position[2]
         maze[y][x] = DIRECTION_CHARS.get(direction, default_path_char)
 
         print("=" * (maze[0].__len__() * 2 + 2))
