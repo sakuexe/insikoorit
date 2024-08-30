@@ -11,9 +11,18 @@ DIRECTION_CHARS = {
 }
 
 
+class Style:
+    RED = "\033[31m"
+    GREEN = "\033[32m"
+    BLUE = "\033[34m"
+    GRAY = "\033[37m"
+    RESET = "\033[0m"
+
+
 def print_maze(maze: list[list[int]],
                path: Iterable[tuple],
-               default_path_char="*") -> None:
+               default_path_char="*",
+               nav_color=Style.GREEN) -> None:
     """Prints the maze with the path visualized"""
 
     for position in path:
@@ -26,22 +35,23 @@ def print_maze(maze: list[list[int]],
     # print the labyrinth in a nicer way
     print("=" * (maze[0].__len__() * 2 + 2))
     for row in maze:
-        print("|", end="")
+        print(f"|{Style.GRAY}", end="")
         for col in row:
             if col == 1:
                 print("#", end=" ")
             elif col == 0:
                 print(" ", end=" ")
             else:
-                print(col, end=" ")
-        print("|", end="\n")
+                print(f"{nav_color}{col}{Style.GRAY}", end=" ")
+        print(f"{Style.RESET}|", end="\n")
     print("=" * (maze[0].__len__() * 2 + 2))
 
 
 def animate_maze(maze: list[list[int]],
                  path: Iterable[tuple],
                  framerate=10,
-                 default_path_char="*") -> None:
+                 default_path_char="*",
+                 nav_color=Style.GREEN) -> None:
     """Animates the maze's progress with the path visualized"""
 
     if framerate <= 0:
@@ -56,15 +66,15 @@ def animate_maze(maze: list[list[int]],
 
         print("=" * (maze[0].__len__() * 2 + 2))
         for row in maze:
-            print("|", end="")
+            print(f"|{Style.GRAY}", end="")
             for col in row:
                 if col == 1:
                     print("#", end=" ")
                 elif col == 0:
                     print(" ", end=" ")
                 else:
-                    print(col, end=" ")
-            print("|", end="\n")
+                    print(f"{nav_color}{col}{Style.GRAY}", end=" ")
+            print(f"{Style.RESET}|", end="\n")
         maze[position[0]][position[1]] = " "
         print("=" * (maze[0].__len__() * 2 + 2))
 
