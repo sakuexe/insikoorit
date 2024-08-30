@@ -7,14 +7,17 @@ Except the Maze is now for the Labyrinth task for Tekniska Museet case
 The maze can only be traversed with moving either up or right
 """
 
+from collections.abc import Iterable
+
 
 class Node():
     """A node class for A* Pathfinding"""
 
-    def __init__(self, parent=None, position=None):
+    def __init__(self, parent=None, position=None, direction=None):
         self.parent = parent
         # y, x
         self.position = position
+        self.direction = direction
 
         self.g = 0
         self.h = 0
@@ -63,7 +66,8 @@ def astar(maze, start, end):
             path = []
             current = current_node
             while current is not None:
-                path.append(current.position)
+                path.append(
+                    (current.position[0], current.position[1], current.direction))
                 current = current.parent
             return path[::-1]  # Return reversed path
 
@@ -91,58 +95,19 @@ def astar(maze, start, end):
                 continue
 
             # get the direction of the first move
-            if current_node.parent is None:
-                current_direction = new_position
-            else:
-                current_direction = (current_node.position[0] - current_node.parent.position[0],
-                                     current_node.position[1] - current_node.parent.position[1])
+            current_direction = get_direction(current_node, new_position)
 
-            if current_direction != new_position:
-                # direction: right
-                if current_direction == (0, 1) and new_position != (1, 0):
-                    print(f"1. invalid move to position: \
-                    {current_node.position}, \
-                    from {current_node.parent.position}")
-                    continue
-
-                # direction: left
-                elif current_direction == (0, -1) and new_position != (-1, 0):
-                    print(f"2. invalid move to position: \
-                    {current_node.position}, \
-                    from {current_node.parent.position}")
-                    continue
-
-                # direction: down
-                elif current_direction == (1, 0) and new_position != (0, -1):
-                    print(f"3. invalid move to position: \
-                    {current_node.position}, \
-                    from {current_node.parent.position}")
-                    continue
-
-                # direction: up
-                elif current_direction == (-1, 0) and new_position != (0, 1):
-                    print("4. invalid move to position:",
-                          f"{current_node.position}",
-                          f"from {current_node.parent.position}")
-                    continue
-
-            if current_node.parent is not None:
-                print(f"valid move from: {current_node.parent.position}",
-                      f"to {current_node.position}")
-                print("with direction: ", new_position)
+            if not is_valid_move(new_position, current_direction):
+                continue
 
             # Create new node
-            new_node = Node(current_node, node_position)
+            new_node = Node(current_node, node_position, new_position)
 
             # Append
             children.append(new_node)
 
         # Loop through children
         for child in children:
-
-            # Child is on the visited list (search entire visited list)
-            # if len([closed_child for closed_child in closed_list if closed_child == child]) > 1:
-            # continue
 
             # Create the f, g, and h values
             # g value is the travel cost from the start node to the current node
@@ -161,18 +126,60 @@ def astar(maze, start, end):
             # Add the child to the yet_to_visit list
             open_list.append(child)
 
-        # log to file the current state of the maze
-        maze[current_node.position[0]][current_node.position[1]] = "X"
-        for row in maze:
-            for col in row:
-                print(col, end=" ")
-            print("", end="\n")
-        maze[current_node.position[0]][current_node.position[1]] = 0
+
+def get_direction(node, new_position: tuple[int, int]) -> tuple[int, int]:
+    """Returns the current direction of the node based on it's last position"""
+    if node.parent is None:
+        return new_position
+
+    yDirection = node.position[0] + node.parent.position[0]
+    xDirection = node.position[1] + node.parent.position[1]
+
+    return (yDirection, xDirection)
 
 
-def print_maze(maze, path, path_char="~"):
+def is_valid_move(new_position: tuple[int, int],
+                  direction: tuple[int, int]) -> bool:
+    """Returns True if the position of the new_position parameter
+    is either forward or to the right of the current direction"""
+    # if the new position is keeping in the same direction
+    # aka going forward
+    if direction == new_position:
+        return True
+
+    # direction: right
+    if direction == (0, 1) and new_position == (1, 0):
+        return False
+    # direction: left
+    elif direction == (0, -1) and new_position == (-1, 0):
+        return False
+    # direction: down
+    elif direction == (1, 0) and new_position == (0, -1):
+        return False
+    # direction: up
+    elif direction == (-1, 0) and new_position == (0, 1):
+        return False
+
+    return True
+
+
+def print_maze(maze: list[list[int]],
+               path: Iterable[tuple],
+               default_path_char="*") -> None:
+    """Prints the maze with the path visualized"""
+
     for position in path:
-        maze[position[0]][position[1]] = path_char
+        direction = position[2]
+        if direction == (0, 1):
+            maze[position[0]][position[1]] = "→"
+        elif direction == (0, -1):
+            maze[position[0]][position[1]] = "←"
+        elif direction == (1, 0):
+            maze[position[0]][position[1]] = "↓"
+        elif direction == (-1, 0):
+            maze[position[0]][position[1]] = "↑"
+        else:
+            maze[position[0]][position[1]] = default_path_char
 
     # print the labyrinth in a nicer way
     for row in maze:
@@ -215,9 +222,14 @@ def main():
 
     test_path = astar(test_maze, test_start, test_end)
     path = astar(maze1, start1, end1)
+    if path is None or test_path is None:
+        print("No solution found")
+        return
     try:
         print_maze(test_maze, test_path)
-        print("= " * maze1[0].__len__())
+        print("")
+        print("=" * maze1[0].__len__() * 2)
+        print("")
         print_maze(maze1, path)
     except Exception as e:
         print("maze is fucked:", path)
