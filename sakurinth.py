@@ -18,7 +18,7 @@ class Node():
         self.parent = parent
         # y, x
         self.position = position
-        # self.direction = direction
+        self.direction = direction
 
         self.g = 0
         self.h = 0
@@ -68,7 +68,7 @@ def astar(maze, start, end):
             current = current_node
             while current is not None:
                 path.append(
-                    (current.position[0], current.position[1]))
+                    (current.position[0], current.position[1], current.direction))
                 current = current.parent
             return path[::-1]  # Return reversed path
 
@@ -133,8 +133,8 @@ def get_direction(node, new_position: tuple[int, int]) -> tuple[int, int]:
     if node.parent is None:
         return new_position
 
-    yDirection = node.position[0] + node.parent.position[0]
-    xDirection = node.position[1] + node.parent.position[1]
+    yDirection = node.position[0] - node.parent.position[0]
+    xDirection = node.position[1] - node.parent.position[1]
 
     return (yDirection, xDirection)
 
@@ -149,16 +149,16 @@ def is_valid_move(new_position: tuple[int, int],
         return True
 
     # direction: right
-    if direction == (0, 1) and new_position == (1, 0):
+    if direction == (0, 1) and new_position != (1, 0):
         return False
     # direction: left
-    elif direction == (0, -1) and new_position == (-1, 0):
+    elif direction == (0, -1) and new_position != (-1, 0):
         return False
     # direction: down
-    elif direction == (1, 0) and new_position == (0, -1):
+    elif direction == (1, 0) and new_position != (0, -1):
         return False
     # direction: up
-    elif direction == (-1, 0) and new_position == (0, 1):
+    elif direction == (-1, 0) and new_position != (0, 1):
         return False
 
     return True
