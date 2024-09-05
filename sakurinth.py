@@ -24,17 +24,8 @@ class Node():
         self.h = 0
         self.f = 0
 
-    def compare(self, other):
-        """Returns True if the position and direction of the node is the same
-        as the node that is being compared to. This is made because the __eq__
-        method is not working when this code is used in it.
-        ---
-        In short: do not compare nodes with ==, use node.compare(other_node)
-        instead please. (I honestly have no clue what magic is in the air)"""
-        return self.position == other.position and self.direction == other.direction
-
     def __eq__(self, other):
-        return self.position == other.position
+        return self.position == other.position and self.direction == other.direction
 
 
 def astar(maze, start, end):
@@ -72,7 +63,8 @@ def astar(maze, start, end):
         closed_list.append(current_node)
 
         # Found the goal
-        if current_node == end_node:
+        # comparing only the position, since the direction is not important
+        if current_node.position == end_node.position:
             path = []
             current = current_node
             while current is not None:
@@ -124,7 +116,7 @@ def astar(maze, start, end):
         # Loop through children
         for child in children:
 
-            if len([closed_child for closed_child in closed_list if closed_child.compare(child)]) > 0:
+            if len([closed_child for closed_child in closed_list if closed_child == child]) > 0:
                 continue
 
             # Create the f, g, and h values
@@ -138,7 +130,7 @@ def astar(maze, start, end):
             child.f = child.g + child.h
 
             # Child is already in the yet_to_visit list and f cost is already lower
-            if len([open_node for open_node in open_list if child.compare(open_node) and child.f > open_node.f]) > 0:
+            if len([open_node for open_node in open_list if child == open_node and child.f > open_node.f]) > 0:
                 continue
 
             # Add the child to the yet_to_visit list
