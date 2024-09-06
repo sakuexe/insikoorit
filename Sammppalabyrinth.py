@@ -5,7 +5,8 @@ This code is from https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7
 Except the Maze is now for the Labyrinth task for Tekniska Museet case
 
 """
-from visualize import *
+from utils.samppa_visualize import *
+
 class Node():
     """A node class for A* Pathfinding"""
 
