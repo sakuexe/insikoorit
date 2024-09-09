@@ -13,7 +13,9 @@ for run in $(seq 1 $N);
 done
 
 # get the high score
-cat $TEMP_FILE | awk '{ if($NF > max) { max=$NF; max_line=$0 } } END { print "high score: " max}'
+cat $TEMP_FILE | awk '{ if($NF > max) { max=$NF } } END { print "high score: " max}'
+# get the lowest score
+cat $TEMP_FILE | awk 'NR == 1 { min=$NF } { if($NF < min) { min=$NF } } END { print "lowest score: " min}'
 # get the average score
 cat $TEMP_FILE | awk '{ sum += $NF } END { print "Average: " sum/NR }'
 
