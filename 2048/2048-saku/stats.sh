@@ -9,8 +9,10 @@ fi
 touch $TEMP_FILE
 
 for run in $(seq 1 $N);
-  do python3 2048/2048-saku/puzzle.py >> $TEMP_FILE && tail -n 1 $TEMP_FILE
+  do python3 2048/2048-saku/puzzle.py >> $TEMP_FILE && tail -n 1 $TEMP_FILE &
 done
+
+wait # wait for all the background jobs to be
 
 # get the high score
 cat $TEMP_FILE | awk '{ if($NF > max) { max=$NF } } END { print "high score: " max}'
