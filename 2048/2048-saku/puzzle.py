@@ -1,8 +1,8 @@
-from tkinter import Frame, Label, CENTER
+from tkinter import Frame, Label, CENTER, Tk
 import random
 import logic
 import constants as c
-import sys
+import copy
 import AI_heuristics as AI
 # import AI_minimax as AI
 # import AI_Play_both as AI
@@ -123,11 +123,13 @@ class GameGrid(Frame):
                     self.grid_cells[1][2].configure(
                         text="Lose!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
 
-    def generate_next(self):
+    def generate_next(self) -> list[list[int]]:
         index = (gen(), gen())
-        while self.matrix[index[0]][index[1]] != 0:
+        matrix = copy.deepcopy(self.matrix)
+        while matrix[index[0]][index[1]] != 0:
             index = (gen(), gen())
-        self.matrix[index[0]][index[1]] = 2
+        matrix[index[0]][index[1]] = 2
+        return matrix
 
     def update_view(self):
         if not self.game_over and self.start:
@@ -136,9 +138,7 @@ class GameGrid(Frame):
             self.update()
 
         elif not self.game_over:
-            key = AI.AI_play()
-            # tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT]
-            # key=tmp[random.randint(0,3)]
+            key = AI.AI_play(self.matrix)
             self.commands[key](self.matrix)
 
             self.matrix, done, points = self.commands[key](self.matrix)
@@ -160,7 +160,7 @@ class GameGrid(Frame):
                     self.grid_cells[2][2].configure(
                         text=self.points, bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.game_over = True
-                    # print("You Lost! " + str(self.points))
+                    print(f"You Won! Points: {self.points}")
                 if logic.game_state(self.matrix) == 'lose':
                     self.grid_cells[1][1].configure(
                         text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
@@ -171,7 +171,10 @@ class GameGrid(Frame):
                     self.grid_cells[2][2].configure(
                         text=self.points+10000, bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.game_over = True
-                    # print("You Lost! "  + str(self.points))
+                    print(f"You Lost! Points: {self.points}")
+                    # close the window
+                    self.destroy()
+                    self.quit()
         else:
             pass
 
