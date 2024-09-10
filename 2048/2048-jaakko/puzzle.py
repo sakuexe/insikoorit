@@ -44,7 +44,8 @@ class GameGrid(Frame):
         self.history_matrixs = []
         self.update_grid_cells()
 
-        self.update_view()
+        #self.update_view()
+        self.game_loop()
         self.mainloop()
 
 
@@ -115,7 +116,6 @@ class GameGrid(Frame):
                     self.grid_cells[1][1].configure(text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[1][2].configure(text="Lose!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
 
-    # Lisää 2 satunnaiseen kohtaa lautaa
     def generate_next(self):
         index = (gen(), gen())
         while self.matrix[index[0]][index[1]] != 0:
@@ -155,9 +155,11 @@ class GameGrid(Frame):
                     self.grid_cells[2][2].configure(text=self.points, bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.game_over = True
 
-        if not self.game_over:
+
+    def game_loop(self):
+        while not self.game_over:
             #print("Your point so far : " + str(self.points))
-            self.after(10, self.update_view)        
+            self.after(1, self.update_view)
             self.update_grid_cells()
             self.update()
             #self.update_idletasks()
