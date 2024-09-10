@@ -19,11 +19,11 @@ def AI_play(matrix):
 
     for direction, command in commands.items():
         game, done, points = command(matrix)
+        # Jos siirto on turha, eli pelitilanne ei muutu
         if game == matrix:
             scores[direction] = 0
             continue
         
-        #tempScore = 
         tempScore = 3 * heuristic_empty_tiles(game)
         tempScore += heuristic_biggest_tile_down_right(game)  # Suurimman palikan siirtäminen oikealle alas
 
@@ -42,24 +42,23 @@ def heuristic_biggest_tile_down_right(matrix):
                 biggest_tile = matrix[i][j]
                 biggest_tile_position = (i,j)
 
-    row, col = biggest_tile_position
+    rivi, sarake = biggest_tile_position
     score = 0
 
-    # Palkitaan, jos suurin palikka on oikealla alhaalla
-    if row == c.GRID_LEN - 1 and col == c.GRID_LEN - 1:
-        score += 1000  # Palkitaan voimakkaasti, jos palikka on oikeassa alakulmassa
-    
-    # Palkitaan, jos suurin palikka on oikealla
-    if col == c.GRID_LEN - 1:
-        score += 500
-    
-    # Palkitaan, jos suurin palikka on alhaalla
-    if row == c.GRID_LEN - 1:
-        score += 500
+    # Jos oikeassa alakulmassa
+    if rivi == 3 and sarake == 3:
+        score += 1000
+    # Jos oikealla
+    if sarake == 3:
+        score += 250
+    # Jos alhaalla
+    if rivi == 3:
+        score += 250
 
     # Rankaiseminen, jos suurin palikka on kaukana oikeasta alakulmasta
-    distance_from_bottom_right = abs(row - (c.GRID_LEN - 1)) + abs(col - (c.GRID_LEN - 1))
-    score -= distance_from_bottom_right * 100  # Rankaise etäisyyden mukaan
+    # abs = absoluuttinen arvo
+    matkaOikealtaAlhaalta = abs(rivi - 3) + abs(sarake - 3)
+    score -= matkaOikealtaAlhaalta * 100
 
     return score
 
@@ -69,3 +68,8 @@ def heuristic_empty_tiles(matrix):
         empty_tile += row.count(0)
     
     return empty_tile 
+
+#def heuristic_first_move(GameGrid)
+
+#def heuristic_sum_tiles(matrix)
+
