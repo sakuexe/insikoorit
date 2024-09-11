@@ -44,6 +44,7 @@ def AI_play(matrix):
 def get_potential_score(matrix: list[list[int]], depth: int, score) -> int:
     if depth == 0:
         return score
+
     for command in commands.values():
         game, _, points = command(matrix)
         if game == matrix:
@@ -53,6 +54,7 @@ def get_potential_score(matrix: list[list[int]], depth: int, score) -> int:
         potential_points += 3 * heuristic_most_empty_places(game)
         potential_points += 2 * points
         score += potential_points * (depth * 50)
+
     return get_potential_score(matrix, depth - 1, score)
 
 
