@@ -172,6 +172,7 @@ class GameGrid(Frame):
                         text=self.points+10000, bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.game_over = True
                     print(f"You Lost! Points: {self.points}")
+                    # print(f"Biggest number: {max(max(self.matrix))}")
                     # close the window
                     self.destroy()
                     self.quit()
