@@ -15,7 +15,7 @@ def AI_play(puz, matrix):
         N = 0
         tried = tmp
         GO = False
-        while tried != [0,0,0,0] and N <4000:
+        while tried != [0,0,0,0] and N <8600:
             N = N + 1
             #print(N)
             #ADDED matrix3, self.matrix (matrix3 result of a tryed key Samppa
@@ -39,7 +39,20 @@ def AI_play(puz, matrix):
                 tried[k] = 0
         if matrix == matrix3:
             GO = True
-            
+            for a in range(2):
+                """
+                k=k+1
+                if k > 3:
+                    k = 1
+                """
+                ke = tmp[a+1]
+                if ke == 0:
+                    ke = 'Down'
+                print(a, ke)
+                matrix2, done, points = puz.commands[ke](matrix) 
+                if matrix2 != matrix:
+                    GO = False
+                key = ke
     return key, GO
     """        
             #tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT] 
