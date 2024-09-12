@@ -2,6 +2,7 @@ import argparse
 import os
 import subprocess
 import concurrent.futures
+import statistics
 
 
 def run_python_script(script_path: str):
@@ -10,7 +11,10 @@ def run_python_script(script_path: str):
     if os.name == 'nt':
         command = f'python {script_path}'
 
-    return subprocess.run(command, shell=True, capture_output=True, text=True)
+    output = subprocess.run(command, shell=True,
+                            capture_output=True, text=True)
+    print(output.stdout.split("\n")[0])
+    return output
 
 
 def main():
@@ -42,11 +46,13 @@ def main():
                 "Example: `print(f'Score: {score}')` <- the `:` is important, or else it cannot parse the score.")
             return
         scores.append(score)
-        print(f'Score Game #{i + 1}: {scores[-1]}')
 
     # get the average score
     average = sum([score for score in scores]) / len(scores)
     print(f'Average Score: {average:.2f}')
+    # get the median score
+    mean = statistics.mean(scores)
+    print(f'Mean Score: {mean:.2f}')
     # get the high score
     high_score = max(scores)
     print(f'High Score: {high_score}')
