@@ -2,6 +2,16 @@ import constants as c
 import random
 import logic
 
+# TO DO
+# 
+# heuristiikka: katso mistä suunnasta saa eniten pisteitä !!!
+# Jos ei muita suuntia valittavissa, valitse se ainoa (vaikka pisteet olisi 0) !
+#
+# looppaa peli useasti (100 kertaa?) 
+
+
+
+
 commands = {
     c.KEY_UP: logic.up,
     c.KEY_DOWN: logic.down,
@@ -16,6 +26,11 @@ def AI_play(matrix):
         c.KEY_LEFT: 0,
         c.KEY_RIGHT: 0
     }
+
+
+    # matrix = laudan perustilanne enne siirtoa
+    # game = laudan uusi mahdollinen siirto
+    # done = ei tarpeellinen
 
     for direction, command in commands.items():
         game, done, points = command(matrix)
@@ -47,13 +62,13 @@ def heuristic_biggest_tile_down_right(matrix):
 
     # Jos oikeassa alakulmassa
     if rivi == 3 and sarake == 3:
-        score += 1000
+        score += 100
     # Jos oikealla
     if sarake == 3:
-        score += 250
+        score += 25
     # Jos alhaalla
     if rivi == 3:
-        score += 250
+        score += 25
 
     # Rankaiseminen, jos suurin palikka on kaukana oikeasta alakulmasta
     # abs = absoluuttinen arvo

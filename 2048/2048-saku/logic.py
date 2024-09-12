@@ -18,7 +18,6 @@ import constants as c
 # Matrix elements must be equal but not identical
 # 1 mark for creating the correct matrix
 
-
 def new_game(n):
     matrix = []
     for i in range(n):
@@ -36,7 +35,6 @@ def new_game(n):
 # Must ensure that it is created on a zero entry
 # 1 mark for creating the correct loop
 
-
 def add_two(mat):
     a = random.randint(0, len(mat)-1)
     b = random.randint(0, len(mat)-1)
@@ -44,12 +42,12 @@ def add_two(mat):
         a = random.randint(0, len(mat)-1)
         b = random.randint(0, len(mat)-1)
     tmp = [2, 4]
-    value = random.randint(0, 9)
-    if value == 9:
+    value = random.randint(0,9)
+    if value == 9: 
         num = 4
     else:
         num = 2
-
+    
     mat[a][b] = num
     return mat
 
@@ -64,7 +62,6 @@ def add_two(mat):
 # 1 mark for getting only one condition correct
 # 2 marks for getting two of the three conditions
 # 3 marks for correct checking
-
 
 def game_state(mat):
     # check for win cell
@@ -102,7 +99,6 @@ def game_state(mat):
 # 1 mark for solutions that show general understanding
 # 2 marks for correct solutions that work for all sizes of matrices
 
-
 def reverse(mat):
     new = []
     for i in range(len(mat)):
@@ -120,7 +116,6 @@ def reverse(mat):
 # 0 marks for completely incorrect solutions
 # 1 mark for solutions that show general understanding
 # 2 marks for correct solutions that work for all sizes of matrices
-
 
 def transpose(mat):
     new = []
@@ -143,7 +138,6 @@ def transpose(mat):
 # 2 per up/down/left/right?) But if you get one correct likely to get all correct so...
 # Check the down one. Reverse/transpose if ordered wrongly will give you wrong result.
 
-
 def cover_up(mat):
     new = []
     for j in range(c.GRID_LEN):
@@ -162,7 +156,6 @@ def cover_up(mat):
                 count += 1
     return new, done
 
-
 def merge(mat, done):
     points = 0
     for i in range(c.GRID_LEN):
@@ -175,9 +168,8 @@ def merge(mat, done):
                 points += mat[i][j]
     return mat, done, points
 
-
 def up(game):
-    # print("up")
+    #print("up")
     # return matrix after shifting up
     game = transpose(game)
     game, done = cover_up(game)
@@ -186,9 +178,8 @@ def up(game):
     game = transpose(game)
     return game, done, points
 
-
 def down(game):
-    # print("down")
+    #print("down")
     # return matrix after shifting down
     game = reverse(transpose(game))
     game, done = cover_up(game)
@@ -197,18 +188,16 @@ def down(game):
     game = transpose(reverse(game))
     return game, done, points
 
-
 def left(game):
-    # print("left")
+    #print("left")
     # return matrix after shifting left
     game, done = cover_up(game)
     game, done, points = merge(game, done)
     game = cover_up(game)[0]
     return game, done, points
 
-
 def right(game):
-    # print("right")
+    #print("right")
     # return matrix after shifting right
     game = reverse(game)
     game, done = cover_up(game)

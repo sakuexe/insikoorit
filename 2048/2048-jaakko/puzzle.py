@@ -164,6 +164,10 @@ class GameGrid(Frame):
             self.update()
             #self.update_idletasks()
 
-game_grid = GameGrid()
+        print(f"You lose!: {self.points}")
+        # print(f"Biggest number: {max{max{self.matrix}}}")
+        self.destroy()
+        exit()
 
+game_grid = GameGrid()
 
