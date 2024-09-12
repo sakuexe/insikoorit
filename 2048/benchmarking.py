@@ -1,6 +1,16 @@
 import argparse
 import os
 import subprocess
+import concurrent.futures
+
+
+def run_python_script(script_path: str):
+    # check if windows or linux
+    command = f'python3 {script_path}'
+    if os.name == 'nt':
+        command = f'python {script_path}'
+
+    return subprocess.run(command, shell=True, capture_output=True, text=True)
 
 
 def main():
@@ -15,22 +25,23 @@ def main():
         print('Input file is required with --input [puzzle.py]')
         return
 
-    # check if windows or linux
-    command = f'python3 {args.input}'
-    if os.name == 'nt':
-        command = f'python {args.input}'
-
     results = []
 
     # get the stdout of the command
-    for i in range(args.n or 10):
-        results.append(subprocess.run(command, shell=True,
-                       capture_output=True, text=True))
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = list(executor.map(run_python_script,
+                       [args.input] * (args.n or 10)))
 
     scores = []
     # print the results
     for i, result in enumerate(results):
-        scores.append(int(result.stdout.split(':')[-1].strip()))
+        score = int(result.stdout.split(':')[-1].strip())
+        if not score:
+            print("Error: No score found, please make sure that the puzzle.py prints out the score at the end of the game.")
+            print(
+                "Example: `print(f'Score: {score}')` <- the `:` is important, or else it cannot parse the score.")
+            return
+        scores.append(score)
         print(f'Score Game #{i + 1}: {scores[-1]}')
 
     # get the average score
