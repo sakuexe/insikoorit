@@ -1,8 +1,8 @@
-from tkinter import Frame, Label, CENTER, Tk
+from tkinter import Frame, Label, CENTER
 import random
 import logic
 import constants as c
-import copy
+import sys
 import AI_heuristics as AI
 # import AI_minimax as AI
 # import AI_Play_both as AI
@@ -46,7 +46,8 @@ class GameGrid(Frame):
         self.history_matrixs = []
         self.update_grid_cells()
 
-        self.update_view()
+        # self.update_view()
+        self.game_loop()
         self.mainloop()
 
     def init_grid(self):
@@ -123,13 +124,11 @@ class GameGrid(Frame):
                     self.grid_cells[1][2].configure(
                         text="Lose!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
 
-    def generate_next(self) -> list[list[int]]:
+    def generate_next(self):
         index = (gen(), gen())
-        matrix = copy.deepcopy(self.matrix)
-        while matrix[index[0]][index[1]] != 0:
+        while self.matrix[index[0]][index[1]] != 0:
             index = (gen(), gen())
-        matrix[index[0]][index[1]] = 2
-        return matrix
+        self.matrix[index[0]][index[1]] = 2
 
     def update_view(self):
         if not self.game_over and self.start:
@@ -160,7 +159,7 @@ class GameGrid(Frame):
                     self.grid_cells[2][2].configure(
                         text=self.points, bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.game_over = True
-                    print(f"You Won! Points: {self.points}")
+
                 if logic.game_state(self.matrix) == 'lose':
                     self.grid_cells[1][1].configure(
                         text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
@@ -169,22 +168,21 @@ class GameGrid(Frame):
                     self.grid_cells[2][1].configure(
                         text="Points:", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[2][2].configure(
-                        text=self.points+10000, bg=c.BACKGROUND_COLOR_CELL_EMPTY)
+                        text=self.points, bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.game_over = True
-                    print(f"You Lost! Points: {self.points}")
-                    # print(f"Biggest number: {max(max(self.matrix))}")
-                    # close the window
-                    self.destroy()
-                    self.quit()
-        else:
-            pass
 
-        if not self.game_over:
+    def game_loop(self):
+        while not self.game_over:
             # print("Your point so far : " + str(self.points))
             self.after(1, self.update_view)
             self.update_grid_cells()
             self.update()
             # self.update_idletasks()
+
+        print(f"You lose! Points: {self.points}")
+        # print(f"Biggest number: {max(max(self.matrix))}")
+        self.destroy()
+        exit()
 
 
 game_grid = GameGrid()
