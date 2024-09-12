@@ -47,6 +47,7 @@ def main():
             return
         scores.append(score)
 
+    print(f'Number of iterations: {args.n or 10}')
     # get the average score
     average = sum([score for score in scores]) / len(scores)
     print(f'Average Score: {average:.2f}')

@@ -1,7 +1,6 @@
 import constants as c
-import random
 import logic
-import time
+# import time
 
 commands = {
     c.KEY_UP: logic.up,
@@ -42,6 +41,17 @@ def AI_play(matrix):
 
 
 def get_potential_score(matrix: list[list[int]], depth: int, score) -> int:
+    """Use recursion to make sure that you find the move
+    with the highest potential for scoring points.
+
+    @param matrix: The current game matrix
+    @param depth: The max depth of the recursion (how many moves ahead)
+    @param score: For keeping track of the potential score for the direction
+
+    @return: The total potential score for the direction
+    """
+
+    # the base case for the recursion
     if depth == 0:
         return score
 
@@ -50,10 +60,12 @@ def get_potential_score(matrix: list[list[int]], depth: int, score) -> int:
 
     for command in commands.values():
         game, _, points = command(matrix)
+        # do not compute if the move did nothing to the game board
         if game == matrix:
             continue
+
         potential_points = 0
-        potential_points += 10 * heuristic_stacking(game)
+        potential_points += 0.25 * heuristic_stacking(game)
         potential_points += 3 * heuristic_most_empty_places(game)
         potential_points += 2 * points
         # dont lose, stupid
@@ -69,6 +81,12 @@ def get_potential_score(matrix: list[list[int]], depth: int, score) -> int:
 
 # return the biggest number and its cordinates
 def get_numbers_in_order(matrix: list[list[int]]) -> list[GameSquare]:
+    """Get all the numbers on the board, ordered from biggest to smallest.
+    Including the cordinates of the number.
+
+    @param matrix: The game matrix
+    @return: A list of GameSquare objects (number, cordinates)
+    """
     all_numbers = []
     for col in matrix:
         for square in col:
@@ -82,6 +100,8 @@ def get_numbers_in_order(matrix: list[list[int]]) -> list[GameSquare]:
 
 
 def heuristic_biggest_number_top_left(matrix: list[list[int]]) -> int:
+    """The heuristic for the AI to move the biggest number to the
+    top left corner."""
     biggest_number_cordinates = get_numbers_in_order(matrix)[0].cordinates
 
     # count the difference between the biggest number cords
@@ -91,15 +111,10 @@ def heuristic_biggest_number_top_left(matrix: list[list[int]]) -> int:
     return (diff_x + diff_y)
 
 
-def heuristic_most_points(matrix: list[list[int]]) -> int:
-    points = 0
-    for col in matrix:
-        for square in col:
-            points += square
-    return points
-
-
 def heuristic_most_empty_places(matrix: list[list[int]]) -> int:
+    """The heuristic for the AI to move the squares in a way that
+    it creates the most empty places on the board.
+    """
     empty_places = 0
     for col in matrix:
         for square in col:
@@ -108,7 +123,10 @@ def heuristic_most_empty_places(matrix: list[list[int]]) -> int:
     return empty_places
 
 
-def heuristic_stacking(matrix: list[list[int]]) -> int:
+def heuristic_stacking(matrix: list[list[int]]) -> float:
+    """The heuristic for the AI to stack the numbers in a way that
+    the biggest numbers are on top and ordered from left to right.
+    """
     score = 0
     biggest_squares = get_numbers_in_order(matrix)
     wanted_cords = [
@@ -135,4 +153,5 @@ def heuristic_stacking(matrix: list[list[int]]) -> int:
 
         if current_square.cordinates != cord:
             break
-    return score
+
+    return score * 0.1
