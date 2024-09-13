@@ -179,8 +179,8 @@ class GameGrid(Frame):
             self.update()
             # self.update_idletasks()
 
-        print(f"You lose! Points: {self.points}")
-        # print(f"Biggest number: {max(max(self.matrix))}")
+        # print(f"You lose! Points: {self.points}")  # <- benchmark points
+        print(f"Biggest number: {max(max(self.matrix))}")  # <- benchmark the biggest number
         self.destroy()
         exit()
 

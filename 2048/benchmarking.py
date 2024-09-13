@@ -47,6 +47,7 @@ def main():
             return
         scores.append(score)
 
+    print(f'Number of iterations: {args.n or 10}')
     # get the average score
     average = sum([score for score in scores]) / len(scores)
     print(f'Average Score: {average:.2f}')
@@ -55,10 +56,12 @@ def main():
     print(f'Mean Score: {mean:.2f}')
     # get the high score
     high_score = max(scores)
-    print(f'High Score: {high_score}')
+    n_high_scores = scores.count(high_score)
+    print(f'High Score: {high_score} ({n_high_scores} times)')
     # get the low score
     low_score = min(scores)
-    print(f'Lowest Score: {low_score}')
+    n_low_scores = scores.count(low_score)
+    print(f'Lowest Score: {low_score} ({n_low_scores} times)')
 
 
 if __name__ == '__main__':

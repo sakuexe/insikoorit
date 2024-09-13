@@ -16,6 +16,7 @@ class GameGrid(Frame):
         self.game_over = False
         self.start = True
         self.points = 0
+        self.move_count = 0  # Laskuri siirroille
 
         self.grid()
         self.master.title('2048')
