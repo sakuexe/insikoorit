@@ -8,6 +8,7 @@ commands = {c.KEY_UP: logic.up,
             c.KEY_RIGHT: logic.right}
 
 def AI_play(matrix):
+    
     #Samppa
     tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT]
     #Samppa         
@@ -33,27 +34,24 @@ def AI_play(matrix):
             maxp = po
             #print("*", po, key)
                 #tried[k] = 0
-        """
-        else:
-            for i in range (4):
-                if tried[i] != 0:
-                    key = tried[i]
-        """
-        """debug
-        print (tried)
-        print(key, maxp)
-        """
+       
         #print("!", self.matrix, matrix3)
         #if matrix == matrix3:
         #    tried[k] = 0
         #key = heuristic_random()
         
         key2, po_empty = heuristic_empty_tile(matrix)
-      
-        if (po_empty*maxp /5)>maxp:
+        #20000
+        if (po_empty*300000)>maxp:
+            print("!", po_empty*300000, key2)
+            maxp = po_empty * 300000
             key = key2
-            #Samppa 
-    print(po_empty*maxp /5, key, maxp)
+            #Samppa
+        if (key != key2):
+            print("*")
+    print(po)
+    print(key, maxp) 
+    print(key)
     return key
    
 def AI_play2(matror, matr, k1, key1):
@@ -66,15 +64,13 @@ def AI_play2(matror, matr, k1, key1):
     #multiplyer 20 if up left corner has something
     pointsM = pointsM + 200 * up_left_max(matr)
     #multiplyer 10 if down right corner has something  
-    pointsM = pointsM + 100 * down_right_max(matr)  
-    #multiplyer 5 if down left corner has something
     pointsM = pointsM + 50 * down_left_max(matr)
     #multiplyer 3 if up right corner has something  
     pointsM = pointsM + 30 * up_right_max(matr) 
     #sum of differences
-    pointsM = pointsM + 30 * summa (matr)
+    pointsM = pointsM + 300 * summa (matr)
     #if full points are 0
-    pointsM = pointsM + 1000 * full(matr)
+    pointsM = pointsM + 10 * zero(matr)
     #print key in loop and its value 
     #print("*", k, pointsM)
     return pointsM
@@ -91,21 +87,19 @@ def up_right_max(mat):
     return mat[3][0]
 def summa (m2):
     s = 0
-    for x in range(3):
-        for y in range(3):
+    for x in range(4):
+        for y in range(4):
             s = s + m2[x][y]*50
     #print ("sum", s)
     return s
-def full(mf):
-    flag = False
-    for x in range(3):
-        for y in range(3):
-            if mf[x][y] != 0:
-                flag = True
-    if flag:
-        return 1
-    else:
-        return 0
+def zero(mf):
+    f = 0
+    for x in range(4):
+        for y in range(4):
+            if mf[x][y] == 0:
+                f=f+1
+   # print("ZERO", f)
+    return f
    
 
 
