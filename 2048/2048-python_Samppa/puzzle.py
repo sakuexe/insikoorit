@@ -141,7 +141,6 @@ class GameGrid(Frame):
                 done = True
                 #print("GO")
             #original
-            
             if done:
                 self.done = True
                 self.matrix = logic.add_two(self.matrix)
@@ -149,7 +148,6 @@ class GameGrid(Frame):
                 self.history_matrixs.append(self.matrix)
                 self.update_grid_cells()
                 self.update()
-                #Samppa added or
                 if logic.game_state(self.matrix) == 'win':
                     self.grid_cells[1][1].configure(text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[1][2].configure(text="Win!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
@@ -158,7 +156,6 @@ class GameGrid(Frame):
                     self.game_over = True
                     #Samppa
                     print(f'Score: {self.points}')
-                #SAMPPA Added and
                 if logic.game_state(self.matrix) == 'lose':
                     self.grid_cells[1][1].configure(text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[1][2].configure(text="Lose!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
@@ -170,7 +167,7 @@ class GameGrid(Frame):
 
     def game_loop(self):
         while not self.game_over:
-            print("Your point so far : " + str(self.points))
+            #print("Your point so far : " + str(self.points))
             self.after(1, self.update_view)
             self.update_grid_cells()
             self.update()

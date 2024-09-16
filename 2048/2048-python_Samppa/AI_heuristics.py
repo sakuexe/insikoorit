@@ -61,24 +61,26 @@ def AI_play(matrix):
    
 def AI_play2(matror, matr, k1, keyII):
     tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT] 
-    #key=tmp[random.randint(0,3)]
-    #ready given heuristic empty_tile
-    pointsM = 100000 * heuristic_empty_tile(matr)
+    #key=tmp[random.randint(0,3)
     #And points plus 1 as a base Samppa 
     pointsM = 1
+    #ready given heuristic empty_tile
+    ke, me = heuristic_empty_tile(matr)
+    pointsM = 100000 * me
+    
     k = tmp[k1]
     nk = keyII
-    #multiplyer 200 if up left corner has something
+    #multiplyer 60000 if up left corner has something
     pointsM = pointsM + 60000 * up_left_max(matr)
-    #multiplyer 100 if down right corner has something  
+    #multiplyer 10000 if down right corner has something  
     pointsM = pointsM + 10000 * down_right_max(matr)
-     #multiplyer 50 if down left corner has something  
+     #multiplyer 5000 if down left corner has something  
     pointsM = pointsM + 5000 * down_left_max(matr)
-    #multiplyer 30 if up right corner has something  
+    #multiplyer 3000 if up right corner has something  
     pointsM = pointsM + 3000 * up_right_max(matr) 
     #sum of differences
     pointsM = pointsM + 300 * summa (matr)
-    #if full points are 0
+    #if tile is zero, a point
     pointsM = pointsM + 10 * zero(matr)
     #if same then +1000000
     po_next, nk = next_tile(matror, matr, keyII)
