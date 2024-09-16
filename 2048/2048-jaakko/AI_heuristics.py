@@ -44,20 +44,18 @@ def AI_play(matrix, move_count):
             scores[direction] = 0
             continue
         
-        tempScore = 3 * heuristic_empty_tiles(game)
-        tempScore += heuristic_check_best_direction_for_points(matrix)
-        if best_direction is not None:
-            return best_direction
-        else:
-            # Jos ei löydy parasta suuntaa, käytetään toista heuristiikkaa
-            return heuristic_random()  # Tai jokin muu valinta
-        tempScore += 5 * heuristic_biggest_tile_down_right(game)
+        tempScore = 10 * heuristic_empty_tiles(game)
+        tempScore += heuristic_biggest_tile_down_right(game)  # Suurimman palikan siirtäminen oikealle alas
 
         scores[direction] = tempScore
 
 
     
-    key = max(scores, key=scores.get)  # Valitaan paras suunta
+     # Jos ei yhtään validia siirtoa, valitse suunta, jossa on eniten pisteitä
+    #if all(score == 0 for score in scores.values()):
+    #    key = random.choice(list(commands.keys()))
+    #else: 
+        key = max(scores, key=scores.get)  # Valitaan paras suunta
     return key
 
 def heuristic_check_best_direction_for_points(matrix):
@@ -96,18 +94,18 @@ def heuristic_biggest_tile_down_right(matrix):
 
     # Jos oikeassa alakulmassa
     if rivi == 3 and sarake == 3:
-        score += 100
+        score += 25
     # Jos oikealla
     if sarake == 3:
-        score += 25
+        score += 5
     # Jos alhaalla
     if rivi == 3:
-        score += 25
+        score += 5
 
     # Rankaiseminen, jos suurin palikka on kaukana oikeasta alakulmasta
     # abs = absoluuttinen arvo
     matkaOikealtaAlhaalta = abs(rivi - 3) + abs(sarake - 3)
-    score -= matkaOikealtaAlhaalta * 100
+    score -= matkaOikealtaAlhaalta * 10
 
     return score
 
