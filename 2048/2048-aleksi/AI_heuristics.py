@@ -39,5 +39,64 @@ def heuristic_empty_tile(matrix):
 
     return return_key
 
+# Aseta isoin kulmaan
+# täytä rivi
+# vältä alas liikettä
+# yhdistä isot
+
+
+def corner():
+    pass
+
+
+def biggest_tiles_locations(matrix):
+    tilesdict = {}
+
+    matrix_columns = len(matrix)
+    matrix_rows = len(matrix[0])
+
+    for x in range(matrix_columns):
+        for y in range(matrix_rows):
+            tilesdict[x, y] = matrix[x][y]
+
+
+    max_value = max(tilesdict.values())
+    
+    
+    max_dict = {key: value for key, value in tilesdict.items() if value == max_value}
+        
+    return max_dict
+
+    
+def biggest_tile(matrix):
+    biggest = -1
+
+    for x in matrix:
+        if max(x) > biggest:
+            biggest = max(x)
+
+def biggest_in_corner(matrix, biggest_tile: int):
+    if matrix[0][0] == biggest_tile or matrix[0][3] == biggest_tile:
+        return True
+    return False
+
+
+def first_row_full(matrix):
+    if 0 in matrix[0]:
+        return False
+    return True
+
+def safe_moves(setup1: bool, setup2: bool, setup3: bool):
+    # Ylärivi täyden mukaan anna sopivat liikkeet
+    if setup == True:
+        return [c.KEY_UP, c.KEY_RIGHT, c.KEY_LEFT] 
+
+    return [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT] 
+
+    
+
+
+
+
 def n_empty_tiles(matrix):       
     return sum(sum(np.array(matrix)==0))
