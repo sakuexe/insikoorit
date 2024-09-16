@@ -139,7 +139,7 @@ class GameGrid(Frame):
             #Samppa
             if self.matrix == matrix2:
                 done = True
-                print("GO")
+                #print("GO")
             #original
             
             if done:
@@ -149,8 +149,8 @@ class GameGrid(Frame):
                 self.history_matrixs.append(self.matrix)
                 self.update_grid_cells()
                 self.update()
-                #Samppa added and
-                if logic.game_state(self.matrix) == 'win' or self.points>=2048:
+                #Samppa added or
+                if logic.game_state(self.matrix) == 'win':
                     self.grid_cells[1][1].configure(text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[1][2].configure(text="Win!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[2][1].configure(text="Points:", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
@@ -159,7 +159,7 @@ class GameGrid(Frame):
                     #Samppa
                     print(f'Score: {self.points}')
                 #SAMPPA Added and
-                if logic.game_state(self.matrix) == 'lose' and self.points <2048:
+                if logic.game_state(self.matrix) == 'lose':
                     self.grid_cells[1][1].configure(text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[1][2].configure(text="Lose!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[2][1].configure(text="Points:", bg=c.BACKGROUND_COLOR_CELL_EMPTY)

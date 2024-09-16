@@ -53,7 +53,7 @@ def AI_play(matrix):
             #print("*")
        """
     #print(po)
-    print(key, nkey) 
+    #print(key, nkey) 
     #print(key)
     #!!!
    
@@ -62,7 +62,7 @@ def AI_play(matrix):
 def AI_play2(matror, matr, k1, keyII):
     tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT] 
     #key=tmp[random.randint(0,3)]
-    #Samppa
+    #ready given heuristic empty_tile
     pointsM = 100000 * heuristic_empty_tile(matr)
     #And points plus 1 as a base Samppa 
     pointsM = 1
@@ -83,7 +83,7 @@ def AI_play2(matror, matr, k1, keyII):
     #if same then +1000000
     po_next, nk = next_tile(matror, matr, keyII)
     pointsM = pointsM + po_next
-    print(pointsM)
+    #print(pointsM)
     return pointsM, nk
 
 def up_left_max(mat):
@@ -127,11 +127,11 @@ def next_tile(m, m3, key_new):
             if a == 4:
                 a = 0
             if tmp2[kkk] == key_new:
-                print("!!!", key_new, tmp2[a])
+                #print("!!!", key_new, tmp2[a])
                 if  key_new != tmp2[a]:
                     newkey = tmp2[a]
                     poin = 10000000
-        print(newkey)
+        #print(newkey)
     return poin, newkey
 """
 def heuristic_random():
