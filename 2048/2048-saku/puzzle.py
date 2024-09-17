@@ -5,6 +5,7 @@ import logic
 import constants as c
 import helpers as h
 import sys
+from benchmark import run_benchmark
 
 # import AI_expectimax as AI
 import AI_heuristics as AI
@@ -148,24 +149,10 @@ class GameGrid(Frame):
 
 def main():
 
-    draw = True
-    # draw = False
-    sims = 3
-    max_depth = -1
-
-    sim_results = pd.DataFrame(columns=['Game Parameters', 'Score'])
-
-    for heuristic in ["empty_tile_heuristics"]:
-
-        for i in range(0, sims):
-            game_grid = GameGrid(draw, max_depth=max_depth)
-            tmp = {"Game Parameters": heuristic,
-                   "Score": game_grid.points}
-            df_tmp = pd.DataFrame(tmp, index=[i])
-            sim_results = pd.concat([sim_results, df_tmp])
+    sim_results = run_benchmark(iterations=3, max_depth=-1, draw=True)
 
     print(sim_results)
-    print(sim_results["Score"].mean())
+    print(round(sim_results["Score"].mean(), 2))
 
 
 if __name__ == "__main__":
