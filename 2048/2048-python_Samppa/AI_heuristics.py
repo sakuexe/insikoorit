@@ -1,6 +1,7 @@
 import constants as c
 import random
 import logic
+import AI_minimax
 
 commands = {c.KEY_UP: logic.up,
             c.KEY_DOWN: logic.down,
@@ -8,18 +9,20 @@ commands = {c.KEY_UP: logic.up,
             c.KEY_RIGHT: logic.right}
 
 def AI_play(matrix):
-    
-    #Samppa
+   
     tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT]
     #Samppa         
     key = c.KEY_LEFT
-    
+    ind = 0
     maxp = 0
+    #Samppa
     
     #matrix3, done, points = self.commands[key](self.matrix)
     #N = max number of tries Samppa
     
     for k in range(4):
+               
+
             #N = 0
             #tried = tmp
             
@@ -35,23 +38,8 @@ def AI_play(matrix):
             maxp = po
             #print(nkey)
             key = nkey
-            #print("*", po, key)
-                #tried[k] = 0
        
-        #print("!", self.matrix, matrix3)
-        #if matrix == matrix3:
-        #    tried[k] = 0
-        #key = heuristic_random()
-        #!!
-        """
-        key2, po_empty = heuristic_empty_tile(matrix)
-        #20000
-        if (po_empty*1000000)>maxp:
-            #print("!", po_empty*1000000, key2)
-            #maxp = po_empty * 300000
-            key = key2
-            #print("*")
-       """
+        
     #print(po)
     #print(key, nkey) 
     #print(key)

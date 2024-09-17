@@ -3,9 +3,9 @@ import random
 import logic
 import constants as c
 import sys
-import AI_heuristics as AI
+#import AI_heuristics as AI
 #import AI_minimax as AI
-#import AI_Play_both as AI
+import AI_both as AI
 
 def gen():
     return random.randint(0, c.GRID_LEN - 1)
@@ -167,7 +167,7 @@ class GameGrid(Frame):
 
     def game_loop(self):
         while not self.game_over:
-            #print("Your point so far : " + str(self.points))
+            print("Your point so far : " + str(self.points))
             self.after(1, self.update_view)
             self.update_grid_cells()
             self.update()
