@@ -2,14 +2,15 @@ import constants as c
 import random
 import logic
 import AI_heuristics as AI
-
+import AI_both
 
 commands = {c.KEY_UP: logic.up,
             c.KEY_DOWN: logic.down,
             c.KEY_LEFT: logic.left,
             c.KEY_RIGHT: logic.right}
-global ind
-ind = 0
+global indx
+indx = 0
+
 key = c.KEY_LEFT
 def AI_play(matri):
     key = mima(matri)
@@ -37,21 +38,26 @@ def play3(matri):
                     maks = points
                     ccc.append(keymm)
                     #print("*****")
+    
     return ccc, matrixd1
 def mima(m):
-    global ind
-    indx = ind
-    print(indx)
+    #indx = AI_both.inde1
+    
     cccc=c.KEY_LEFT
     keyser, m = play3(m)
     if len(keyser)>0:
+        global indx
+        if indx >= len(keyser):
+                indx = 0
         cccc = keyser[indx] 
-        print("*", keyser)
+        
+        #rint(indx)
+        #print("*", keyser)
         if indx < len(keyser):
             cccc = keyser[indx]
-            
+            #print(cccc)
             indx = indx + 1
-            if indx >= len(keyser) - 1 :
-                indx = 0
-            ind = indx
+            
+            
+       
     return cccc
