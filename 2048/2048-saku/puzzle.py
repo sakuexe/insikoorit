@@ -172,12 +172,37 @@ def main():
     print("=" * 43)
     print(sim_results)
     print("=" * 43)
+
+    # stats
     mean = round(sim_results["Score"].mean(), 2)
     print(f"Mean score: {mean}")
     median = sim_results["Score"].median()
     print(f"Median score: {median}")
+    high_score = sim_results["Score"].max()
+    print(f"Highest score: {high_score}")
+    low_score = sim_results["Score"].min()
+    print(f"Lowest score: {low_score}")
     overall_time = sim_results["Time (s)"].sum()
     print(f"Overall time: {overall_time:.2f}s")
+
+    print("=" * 43)
+
+    biggest_tile = sim_results["Biggest Tile"].max()
+    biggest_tile_reached = sim_results["Biggest Tile"].value_counts()[
+        biggest_tile]
+    print(f"Biggest tile: {biggest_tile} ({biggest_tile_reached} times)")
+
+    smallest_tile = sim_results["Biggest Tile"].min()
+    smallest_tile_reached = sim_results["Biggest Tile"].value_counts()[
+        smallest_tile]
+    print(f"Smallest tile: {smallest_tile} ({smallest_tile_reached} times)")
+
+    mean_tile = sim_results["Biggest Tile"].mean()
+    print(f"Mean of the biggest tiles: {mean_tile:.2f}")
+    median_tile = sim_results["Biggest Tile"].median()
+    print(f"Median of the biggest tiles: {median_tile:.2f}")
+
+    print("=" * 43)
 
 
 if __name__ == "__main__":
