@@ -19,7 +19,7 @@ class GameSquare:
         return f"Number: {self.number}, Cordinates: {self.cordinates}"
 
 
-def AI_play(matrix):
+def AI_play(matrix, depth: int) -> int:
     scores = {
         c.KEY_UP: 0,
         c.KEY_DOWN: 0,
