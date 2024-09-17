@@ -139,7 +139,7 @@ class GameGrid(Frame):
                     if self.draw:
                         self.after(200, self.update())
                         self.destroy()
-                        # self.close_game()
+                        self.close_game()
 
                 if self.draw:
                     self.update()
@@ -160,14 +160,24 @@ def main():
                         type=int, help='Max depth for the minmax algorithm')
     parser.add_argument('--no-draw', action='store_true',
                         help='Disable the GUI')
+    parser.add_argument('--parallel', action='store_true',
+                        help='Run the benchmark in parallel (working process)')
     args = parser.parse_args()
 
     sim_results = run_benchmark(iterations=args.n,
                                 max_depth=args.max_depth,
-                                draw=not args.no_draw)
+                                draw=not args.no_draw,
+                                parallel=args.parallel)
 
+    print("=" * 43)
     print(sim_results)
-    print(round(sim_results["Score"].mean(), 2))
+    print("=" * 43)
+    mean = round(sim_results["Score"].mean(), 2)
+    print(f"Mean score: {mean}")
+    median = sim_results["Score"].median()
+    print(f"Median score: {median}")
+    overall_time = sim_results["Time (s)"].sum()
+    print(f"Overall time: {overall_time:.2f}s")
 
 
 if __name__ == "__main__":
