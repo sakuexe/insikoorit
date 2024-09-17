@@ -18,12 +18,14 @@ def AI_play(m):
     #key=tmp[random.randint(0,3)]
     global maps
     maps = m
-    #if stucked:
+    
     key, mv = look(m)
     #mv, done, points = AI_heuristics.commands[key](m) 
     
-    
+    #if stucked
     maximi = 0
+    pp =0
+    pp3=0
     for k4 in AI_minimax.commands:
         pp, key2 = AI_heuristics.next_tile(maps, mv, k4)
         if pp >maximi:
@@ -34,7 +36,10 @@ def AI_play(m):
             if pp3>0:
                 key = key3
     #end stuck
-    print("¤", key)
+    if pp>0 or pp3>0:
+        global keys
+        keys = make_keys(maps)
+        print("¤", keys)
     return key
 def look(m):
     global over
@@ -42,6 +47,8 @@ def look(m):
     if over == False:
         global keys1
         keys1 = make_keys(m)
+        global inde2
+        inde2 = 0
     key, m = read_keys(keys1,m)
     
     return key, m
@@ -57,14 +64,35 @@ def make_keys(m):
     keys=[k]
     #print(keys)
     #key=tmp[random.randint(0,3)]
-    for a in range(2):
-        kmm = (AI_minimax.mima(m))
-        k = AI_heuristics.AI_play(m)
-        if k == kmm:
-            key = k
-        else:
-            key = kmm
-        keys.append(key)    
+    
+        #kmm = (AI_minimax.mima(m))
+        #k = AI_heuristics.AI_play(m)
+
+    sumheura=0
+    m1 = m
+    m2 = m
+    keysa = []
+    for u in range(8):
+        m1, done, pointsa = AI_minimax.commands[AI_heuristics.AI_play(m1)](m1)
+        k = AI_heuristics.AI_play(m1)
+        keysa.append(k)
+        sumheura=sumheura+pointsa
+
+    summ=0
+    keysb =[]
+    for v in range(8):
+        m2, done, pointsb = AI_minimax.commands[AI_minimax.AI_play(m2)](m2)
+        kmm = (AI_minimax.mima(m2))
+        keysb.append(kmm)
+        summ=summ+pointsb
+    
+    #heuristcs 3 times more weight
+    if sumheura*3 > summ:
+        keys = keysa
+        print("heu")
+    else:
+        keys = keysb
+        print("minimax")  
     print("*", keys)
     global over
     over = True
@@ -74,10 +102,10 @@ def read_keys(kes, mr):
     
     global inde2
     print(inde2)
-    if inde2<=2:
+    if inde2<8:
         key = kes[inde2]
         inde2 = inde2 +1
-    if inde2 > 2:
+    if inde2 >= 8:
             inde2 = 0
             global over
             over = False
