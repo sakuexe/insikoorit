@@ -1,10 +1,10 @@
-import pandas as pd
-from tkinter import Frame, Label, CENTER
+from tkinter import Frame, Label, CENTER, Tk
 import random
 import logic
 import constants as c
 import helpers as h
 import sys
+import argparse
 from benchmark import run_benchmark
 
 # import AI_expectimax as AI
@@ -31,13 +31,16 @@ class GameGrid(Frame):
     def __init__(self, draw=True, max_depth=2):
         self.max_depth = max_depth
         self.draw = draw
-        Frame.__init__(self)
+
+        self.root = Tk()  # <--- this fixes the error with multiple windows
+        Frame.__init__(self, self.root)  # <--- and this
+
         self.game_over = False      # Is the game over
         self.start = True           # Has the game started
         self.points = 0             # Keep track of the points
 
         self.grid()                 # Initialize the grid
-        self.master.title('2048')   # Set the title for the game window
+        self.root.title('2048')   # Set the title for the game window
 
         self.done = False           # Flag to check if move is done
 
@@ -134,8 +137,9 @@ class GameGrid(Frame):
                     self.game_over = True
 
                     if self.draw:
-                        self.after(1000, self.update())
+                        self.after(200, self.update())
                         self.destroy()
+                        # self.close_game()
 
                 if self.draw:
                     self.update()
@@ -148,8 +152,19 @@ class GameGrid(Frame):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description='Benchmarking the 2048 assignment.')
+    parser.add_argument('-n', nargs="?", default=10,
+                        type=int, help='Number of iterations')
+    parser.add_argument('--max_depth', nargs="?", default=-1,
+                        type=int, help='Max depth for the minmax algorithm')
+    parser.add_argument('--no-draw', action='store_true',
+                        help='Disable the GUI')
+    args = parser.parse_args()
 
-    sim_results = run_benchmark(iterations=3, max_depth=-1, draw=True)
+    sim_results = run_benchmark(iterations=args.n,
+                                max_depth=args.max_depth,
+                                draw=not args.no_draw)
 
     print(sim_results)
     print(round(sim_results["Score"].mean(), 2))
