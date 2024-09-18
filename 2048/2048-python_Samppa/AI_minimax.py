@@ -57,7 +57,7 @@ def mima(m):
             cccc = keyser[indx]
             #print(cccc)
             indx = indx + 1
-            
-            
        
     return cccc
+def GameOv():
+    return False
