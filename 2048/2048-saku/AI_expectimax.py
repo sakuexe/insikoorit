@@ -65,7 +65,9 @@ def score_toplevel_move(key, board, max_depth):
 def calculate_chance(board, curr_depth, max_depth):
     if curr_depth >= max_depth:
         # heuristic
-        return h.heuristic_most_empty_places(board)
+        score = h.heuristic_most_empty_places(board)
+        score += h.heuristic_biggest_number_top_left(board)
+        return score
 
     possible_boards_2 = []
     possible_boards_4 = []
@@ -82,15 +84,25 @@ def calculate_chance(board, curr_depth, max_depth):
                 possible_boards_4.append(new_board)
 
     # Add your code here!!!
+    e_min = 0
+    e_max = 0
+
+    for board in possible_boards_2:
+        e_min += calculate_max(board, curr_depth + 1, max_depth) * 0.9
+
+    for board in possible_boards_4:
+        e_max += calculate_max(board, curr_depth + 1, max_depth) * 0.1
 
     # And modify the return value accordingly!!
-    return 1
+    return e_min + e_max
 
 
 def calculate_max(board, curr_depth, max_depth):
     if curr_depth >= max_depth:
         # heuristic
-        return h.heuristic_most_empty_places(board)
+        score = h.heuristic_most_empty_places(board)
+        score += h.heuristic_biggest_number_top_left(board)
+        return score
 
     best_score = 0
 
