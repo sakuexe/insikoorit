@@ -87,10 +87,10 @@ def calculate_chance(board, curr_depth, max_depth):
     e_max = 0
 
     for board in possible_boards_2:
-        e_min += calculate_max(board, curr_depth + 1, max_depth) * 0.9
+        e_min += calculate_max(board, curr_depth, max_depth) * 0.9
 
     for board in possible_boards_4:
-        e_max += calculate_max(board, curr_depth + 1, max_depth) * 0.1
+        e_max += calculate_max(board, curr_depth, max_depth) * 0.1
 
     # And modify the return value accordingly!!
     return e_min + e_max
