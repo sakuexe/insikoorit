@@ -66,7 +66,6 @@ def calculate_chance(board, curr_depth, max_depth):
     if curr_depth >= max_depth:
         # heuristic
         score = h.heuristic_most_empty_places(board)
-        score += h.heuristic_biggest_number_top_left(board)
         return score
 
     possible_boards_2 = []
@@ -101,7 +100,6 @@ def calculate_max(board, curr_depth, max_depth):
     if curr_depth >= max_depth:
         # heuristic
         score = h.heuristic_most_empty_places(board)
-        score += h.heuristic_biggest_number_top_left(board)
         return score
 
     best_score = 0
