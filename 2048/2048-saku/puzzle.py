@@ -156,7 +156,7 @@ def main():
         description='Benchmarking the 2048 assignment.')
     parser.add_argument('-n', nargs="?", default=10,
                         type=int, help='Number of iterations')
-    parser.add_argument('--max_depth', nargs="?", default=-1,
+    parser.add_argument('--max-depth', nargs="?", default=-1,
                         type=int, help='Max depth for the minmax algorithm')
     parser.add_argument('--no-draw', action='store_true',
                         help='Disable the GUI')
