@@ -66,6 +66,7 @@ def calculate_chance(board, curr_depth, max_depth):
     if curr_depth >= max_depth:
         # heuristic
         score = h.heuristic_most_empty_places(board)
+        score += h.heuristic_stacking(board)
         return score
 
     possible_boards_2 = []
@@ -83,23 +84,29 @@ def calculate_chance(board, curr_depth, max_depth):
                 possible_boards_4.append(new_board)
 
     # Add your code here!!!
-    e_min = 0
-    e_max = 0
+    e_min: float = 0.0
+    e_max: float = 0.0
 
+    # E_min(boards_2) = sum(Score(board_2) * Propability)
+    # E_max(boards_4) = sum(Score(board_4) * Propability)
     for board in possible_boards_2:
-        e_min += calculate_max(board, curr_depth, max_depth) * 0.9
+        propability = 0.9 / len(possible_boards_2)
+        e_min += calculate_max(board, curr_depth, max_depth) * propability
 
     for board in possible_boards_4:
-        e_max += calculate_max(board, curr_depth, max_depth) * 0.1
+        propability = 0.1 / len(possible_boards_4)
+        e_max += calculate_max(board, curr_depth, max_depth) * propability
 
     # And modify the return value accordingly!!
+    # E(x) = E_min(boards_2) + E_max(boards_4)
     return e_min + e_max
 
 
-def calculate_max(board, curr_depth, max_depth):
+def calculate_max(board, curr_depth, max_depth) -> int | float:
     if curr_depth >= max_depth:
         # heuristic
         score = h.heuristic_most_empty_places(board)
+        score += h.heuristic_stacking(board)
         return score
 
     best_score = 0
