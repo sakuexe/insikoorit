@@ -19,11 +19,11 @@ commands = {
     c.KEY_RIGHT: logic.right
 }
 
-def AI_play(matrix, move_count):
-    if move_count == 0:
-        return c.KEY_RIGHT  # Pakotetaan ensimmäinen siirto oikealle
-    elif move_count == 1:
-        return c.KEY_DOWN  # Pakotetaan toinen siirto alas
+def AI_play(matrix):
+#    if move_count == 0:
+#        return c.KEY_RIGHT  # Pakotetaan ensimmäinen siirto oikealle
+#    elif move_count == 1:
+#        return c.KEY_DOWN  # Pakotetaan toinen siirto alas
 
     scores = {
         c.KEY_UP: 0,
@@ -32,30 +32,41 @@ def AI_play(matrix, move_count):
         c.KEY_RIGHT: 0
     }
 
+    valid_moves = []  # Lista kelvollisista siirroista
 
     # matrix = laudan perustilanne enne siirtoa
     # game = laudan uusi mahdollinen siirto
-    # done = ei tarpeellinen
+    # done = ei tarpeellinen?
 
     for direction, command in commands.items():
         game, done, points = command(matrix)
+
+        # Debug-tulostus, näyttää mitä tapahtuu jokaisessa siirrossa
+        print(f"Direction: {direction}, Done: {done}, Points: {points}, New matrix: {game}")
+
+
         # Jos siirto on turha, eli pelitilanne ei muutu
         if game == matrix:
-            scores[direction] = 0
             continue
-        
+        valid_moves.append(direction)  # Lisää kelvollinen siirto listalle
+
+        tempScore = 0
+
         tempScore = 10 * heuristic_empty_tiles(game)
-        tempScore += heuristic_biggest_tile_down_right(game)  # Suurimman palikan siirtäminen oikealle alas
+        tempScore += 4 * heuristic_biggest_tile_down_right(game)  # Suurimman palikan siirtäminen oikealle alas
+        #tempScore += heuristic_check_best_direction_for_points(game)
 
         scores[direction] = tempScore
 
 
     
-     # Jos ei yhtään validia siirtoa, valitse suunta, jossa on eniten pisteitä
-    #if all(score == 0 for score in scores.values()):
-    #    key = random.choice(list(commands.keys()))
-    #else: 
-        key = max(scores, key=scores.get)  # Valitaan paras suunta
+    # Jos kaikki siirrot ovat kelvottomia, valitaan satunnainen suunta
+    if not valid_moves:
+        # Jos yhtään validia siirtoa ei ole jäljellä, valitse satunnainen suunta
+        return random.choice(list(commands.keys()))
+    
+    # Valitse paras suunta, jolla on korkein pistemäärä
+    key = max(valid_moves, key=lambda d: scores[d])
     return key
 
 def heuristic_check_best_direction_for_points(matrix):
@@ -115,6 +126,9 @@ def heuristic_empty_tiles(matrix):
         empty_tile += row.count(0)
     
     return empty_tile 
+
+def heuristic_random():
+    return random.choice([c.KEY_UP, c.KEY_DOWN, c.KEY_LEFT, c.KEY_RIGHT])
 
 #def heuristic_first_move(GameGrid)
 

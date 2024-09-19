@@ -3,6 +3,7 @@ import copy
 import constants as c
 import logic
 import AI_heuristics as h
+from concurrent.futures import ThreadPoolExecutor
 
 transposition_table = {}
 
@@ -58,16 +59,13 @@ def score_toplevel_move(key, board, max_depth):
         else:
             max_depth = 2
 
-    score = calculate_chance(newboard, 0, max_depth)
-    return score
+    return calculate_chance(newboard, 0, max_depth)
 
 
 def calculate_chance(board, curr_depth, max_depth):
     if curr_depth >= max_depth:
         # heuristic
-        score = h.heuristic_most_empty_places(board)
-        score += h.heuristic_stacking(board)
-        return score
+        return h.heuristic_most_empty_places(board)
 
     possible_boards_2 = []
     possible_boards_4 = []
@@ -84,30 +82,27 @@ def calculate_chance(board, curr_depth, max_depth):
                 possible_boards_4.append(new_board)
 
     # Add your code here!!!
-    e_min: float = 0.0
-    e_max: float = 0.0
+    # E(x) = sum(score(x) * propability)
+    min_propability = 0.9 / len(possible_boards_2)
+    e_min = sum([
+        calculate_max(board, curr_depth, max_depth) * min_propability
+        for board in possible_boards_2
+    ])
 
-    # E_min(boards_2) = sum(Score(board_2) * Propability)
-    # E_max(boards_4) = sum(Score(board_4) * Propability)
-    for board in possible_boards_2:
-        propability = 0.9 / len(possible_boards_2)
-        e_min += calculate_max(board, curr_depth, max_depth) * propability
-
-    for board in possible_boards_4:
-        propability = 0.1 / len(possible_boards_4)
-        e_max += calculate_max(board, curr_depth, max_depth) * propability
+    max_propability = 0.1 / len(possible_boards_4)
+    e_max = sum([
+        calculate_max(board, curr_depth, max_depth) * max_propability
+        for board in possible_boards_4
+    ])
 
     # And modify the return value accordingly!!
-    # E(x) = E_min(boards_2) + E_max(boards_4)
     return e_min + e_max
 
 
 def calculate_max(board, curr_depth, max_depth) -> int | float:
     if curr_depth >= max_depth:
         # heuristic
-        score = h.heuristic_most_empty_places(board)
-        score += h.heuristic_stacking(board)
-        return score
+        return h.heuristic_most_empty_places(board)
 
     best_score = 0
 
