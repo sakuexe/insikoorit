@@ -7,10 +7,8 @@ import sys
 import argparse
 from benchmark import run_benchmark
 
-# import AI_expectimax as AI
-import AI_heuristics as AI
-# import AI_expectimax_SOLUTION as AI
-# import AI_Play_both as AI
+import AI_expectimax as AI
+# import AI_heuristics as AI
 
 sys.setrecursionlimit(10**6)
 

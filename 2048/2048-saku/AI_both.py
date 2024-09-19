@@ -27,8 +27,9 @@ def AI_play(matrix, max_depth):
 
 
 def score_heuristics(board):
-    score = h.heuristic_most_empty_places(board)
-    score += h.heuristic_stacking(board)
+    score = 3 * h.heuristic_most_empty_places(board)
+    score += 0.25 * h.heuristic_stacking(board)
+    score += 2 * h.heuristic_biggest_number_top_left(board)
     return score
 
 

@@ -1,3 +1,4 @@
+import numpy as np
 import constants as c
 import logic
 # import time
@@ -115,12 +116,23 @@ def heuristic_most_empty_places(matrix: list[list[int]]) -> int:
     """The heuristic for the AI to move the squares in a way that
     it creates the most empty places on the board.
     """
-    empty_places = 0
-    for col in matrix:
-        for square in col:
-            if square == 0:
-                empty_places += 1
-    return empty_places
+    return sum(sum(np.array(matrix)==0))
+
+
+def heuristic_snakeing(matrix: list[list[int]]) -> int | float:
+    biggest_squares = get_numbers_in_order(matrix)
+    direction = 1  # 1: right, -1: left
+    score = 0
+    for row_index, row in enumerate(matrix):
+        for col_index in range(len(row), 1 * direction, direction):
+            if row[col_index] == biggest_squares[col_index + row_index]:
+                score += 100
+            else:
+                break
+
+    print(f"score of snaking: {score}")
+    return score
+
 
 
 def heuristic_stacking(matrix: list[list[int]]) -> float:
