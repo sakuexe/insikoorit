@@ -137,12 +137,19 @@ class GameGrid(Frame):
             self.matrix, done, points = self.commands[key](self.matrix)
             self.points += points
             #Samppa
-            self.GO = False
-            if (self.matrix == matrix2 or AI.GameOv()==True) and logic.game_state(self.matrix) != 'not over':
-                self.GO = True
+            GO = False
+            if self.matrix == matrix2:             
                 done = True
-                #self.game_over = True
                 print("GO")
+              
+                if AI.GameOv()==True: 
+                    GO = True
+                    self.game_over = True
+                if logic.game_state(self.matrix) == 'not over':
+                    self.game_over = False
+                    GO = False
+                    done = False
+                    
                 print(logic.game_state(self.matrix))
             #original
             if done:
@@ -161,7 +168,7 @@ class GameGrid(Frame):
                     #Samppa
                     print(f'Score: {self.points}')
                 # or go added Samppa
-                if logic.game_state(self.matrix) == 'lose' or self.GO == True:
+                if logic.game_state(self.matrix) == 'lose' or GO == True:
                     self.grid_cells[1][1].configure(text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[1][2].configure(text="Lose!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[2][1].configure(text="Points:", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
