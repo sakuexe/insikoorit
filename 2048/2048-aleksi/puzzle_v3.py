@@ -4,11 +4,12 @@ import logic
 import constants as c
 import helpers as h
 import sys
+import time
 
 sys.setrecursionlimit(10**6)
 
-#import AI_heuristics as AI
-import AI_expectimax_SOLUTION as AI
+import AI_heuristics as AI
+#import AI_expectimax_SOLUTION as AI
 #import AI_Play_both as AI
 
 """Function that generates a random position withing the grid"""
@@ -34,6 +35,9 @@ class GameGrid(Frame):
         self.master.title('2048')   # Set the title for the game window
         
         self.done = False           # Flag to check if move is done
+
+        self.move_number = 0
+        self.last_move = ""
 
         """Map the key presses to the movement function from the constants file"""
         self.commands = {
@@ -89,8 +93,12 @@ class GameGrid(Frame):
             if self.draw:
                  self.update()
 
-        elif not self.game_over:            # If the game isn't over
-            key = AI.AI_play(self.matrix, self.max_depth)    # Get the next move from the AI
+        elif not self.game_over: 
+            # If the game isn't over
+            key = AI.own_heuristic(self.matrix, self.move_number, self.last_move)    # Get the next move from the AI
+            time.sleep(2)
+            self.move_number += 1  
+            self.last_move = key
 
             self.matrix, done, points = self.commands[key](self.matrix) # Execute the move and get the result
             self.points += points   # Add points from the move
