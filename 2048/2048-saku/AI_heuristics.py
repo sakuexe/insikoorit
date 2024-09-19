@@ -116,23 +116,7 @@ def heuristic_most_empty_places(matrix: list[list[int]]) -> int:
     """The heuristic for the AI to move the squares in a way that
     it creates the most empty places on the board.
     """
-    return sum(sum(np.array(matrix)==0))
-
-
-def heuristic_snakeing(matrix: list[list[int]]) -> int | float:
-    biggest_squares = get_numbers_in_order(matrix)
-    direction = 1  # 1: right, -1: left
-    score = 0
-    for row_index, row in enumerate(matrix):
-        for col_index in range(len(row), 1 * direction, direction):
-            if row[col_index] == biggest_squares[col_index + row_index]:
-                score += 100
-            else:
-                break
-
-    print(f"score of snaking: {score}")
-    return score
-
+    return sum(sum(np.array(matrix) == 0))
 
 
 def heuristic_stacking(matrix: list[list[int]]) -> float:
@@ -146,11 +130,18 @@ def heuristic_stacking(matrix: list[list[int]]) -> float:
         (0, 1),
         (0, 2),
         (0, 3),
+        (1, 3),
+        (1, 2),
+        (1, 1),
+        (1, 0),
     ]
 
     for index, cord in enumerate(wanted_cords):
         current_square = biggest_squares[index]
         if current_square.number == 0:
+            continue
+
+        if current_square.number < 8:
             continue
 
         if current_square.cordinates == cord:
@@ -167,3 +158,33 @@ def heuristic_stacking(matrix: list[list[int]]) -> float:
             break
 
     return score * 0.1
+
+
+def heuristic_snakeing(matrix: list[list[int]]) -> int | float:
+    biggest_squares = get_numbers_in_order(matrix)
+    score = 0
+    for row_index, row in enumerate(matrix):
+
+        if row_index % 2 == 0:
+            for col_index in range(len(row)):
+                numbers_cords = biggest_squares[col_index +
+                                                row_index].cordinates
+                if (row_index, col_index) == numbers_cords:
+                    score += 100
+                else:
+                    score += abs(numbers_cords[0] - row_index)
+                    score += abs(numbers_cords[1] - col_index)
+                    break
+            continue
+
+        for col_index in range(len(row) - 1, 0, -1):
+            numbers_cords = biggest_squares[col_index + row_index].cordinates
+            if (row_index, col_index) == numbers_cords:
+                score += 100
+            else:
+                score += abs(numbers_cords[0] - row_index)
+                score += abs(numbers_cords[1] - col_index)
+                break
+
+    print("score of snakeing:", score)
+    return score

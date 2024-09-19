@@ -7,8 +7,9 @@ import sys
 import argparse
 from benchmark import run_benchmark
 
-import AI_expectimax as AI
+# import AI_expectimax as AI
 # import AI_heuristics as AI
+import AI_both as AI
 
 sys.setrecursionlimit(10**6)
 
@@ -110,7 +111,6 @@ class GameGrid(Frame):
         elif not self.game_over:            # If the game isn't over
             # Get the next move from the AI
             key = AI.AI_play(self.matrix, self.max_depth)
-
             self.matrix, done, points = self.commands[key](
                 self.matrix)  # Execute the move and get the result
             self.points += points   # Add points from the move
@@ -121,13 +121,13 @@ class GameGrid(Frame):
                 self.history_matrixs.append(
                     self.matrix)    # Record the last move
                 self.update_grid_cells()                    # Update the grid cells
-                if logic.game_state(self.matrix) == 'win':
-                    h.print_results_board(
-                        self.grid_cells, self.points, win=True)
-                    self.game_over = True
-                    if self.draw:
-                        self.after(1000, self.update())
-                        self.destroy()
+                # if logic.game_state(self.matrix) == 'win':
+                #     h.print_results_board(
+                #         self.grid_cells, self.points, win=True)
+                #     self.game_over = True
+                #     if self.draw:
+                #         self.after(1000, self.update())
+                #         self.destroy()
 
                 if logic.game_state(self.matrix) == 'lose':
                     h.print_results_board(

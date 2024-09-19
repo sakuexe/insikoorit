@@ -15,7 +15,7 @@ commands = {c.KEY_UP: logic.up,
 def AI_play(matrix, max_depth):
 
     bestscore = -1000000
-    best_key = None
+    best_key = c.KEY_UP
 
     for key in commands.keys():
         tmp_score = score_toplevel_move(key, matrix, max_depth)
@@ -72,7 +72,7 @@ def score_toplevel_move(key, board, max_depth):
 def calculate_chance(board, curr_depth, max_depth):
     if curr_depth >= max_depth:
         # heuristic
-        return h.heuristic_most_empty_places(board)
+        return score_heuristics(board)
 
     possible_boards_2 = []
     possible_boards_4 = []
