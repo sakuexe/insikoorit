@@ -16,8 +16,7 @@ maps =[]
 keys = []
 global keys1
 keys1 =[]
-global GameOver
-GameOver = False
+
 tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT]
 def AI_play(m):
     #key=tmp[random.randint(0,3)]
@@ -59,10 +58,8 @@ def AI_play(m):
             else:
                 empty = True
     #print("Z", zer)
-    #print("¤", key)     
-    if empty == False:
-        global GameOver
-        GameOver = True  
+    #zprint("¤", key)     
+    
     return key
 def look(m):
     #print(over)
@@ -79,8 +76,7 @@ def look(m):
     #    GameOver =  True 
     return key, m
 
-def GameOv():
-    return GameOver
+
 def make_keys(m):
     keysor = keys1
     keys =[]
@@ -235,7 +231,7 @@ def make_keys(m):
             fkeys2 = fkeys2 + row
     keysB = fkeys2
     
-    print (kA, kB, poicom1, poicom2, poicom12, poicom22)
+   #print (kA, kB, poicom1, poicom2, poicom12, poicom22)
     if versum>=versum2*1 and poicom1 >= poicom2 and poicom12>=poicom22:
         keys = keysA
         #print("AAAAA")
@@ -245,7 +241,7 @@ def make_keys(m):
         #print("BBBBB")
         m = mcom2
 
-    print("*", keys)
+    #print("*", keys)
     global over
     over = True
     if keys == keysor:
@@ -253,12 +249,12 @@ def make_keys(m):
             keys = keysB
         else:
             keys = keysA
-        print("Switch", keys)
+        #print("Switch", keys)
         
     #if same keys serie and map ->random
     if keys == keysor and mold == m:
         keys = rand_keys()
-        print("random", keys)
+        #print("random", keys)
     return keys
 def rand_keys():
     keys =[]
@@ -285,23 +281,3 @@ def read_keys(kes, mr):
     #print("*", key, inde1, len(keys))
     keyser5, mv3 = AI_minimax.play3(mr)
     return key, mv3
-"""
-def mima(m):
-    global inde2
-    indx = inde2
-    print(indx)
-    cccc=c.KEY_LEFT
-    keyser, m = AI_minimax.play3(m)
-    if len(keyser)>0:
-        #cccc = keyser[indx] 
-        print("*", keyser)
-        if indx < len(keyser):
-            cccc = keyser[indx]
-            print(cccc)
-            indx = indx + 1
-            if indx >= len(keyser) :
-                indx = 0
-        inde2 = indx
-       
-    return cccc
-"""
