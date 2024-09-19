@@ -121,13 +121,13 @@ class GameGrid(Frame):
                 self.history_matrixs.append(
                     self.matrix)    # Record the last move
                 self.update_grid_cells()                    # Update the grid cells
-                # if logic.game_state(self.matrix) == 'win':
-                #     h.print_results_board(
-                #         self.grid_cells, self.points, win=True)
-                #     self.game_over = True
-                #     if self.draw:
-                #         self.after(1000, self.update())
-                #         self.destroy()
+                if logic.game_state(self.matrix) == 'win':
+                    h.print_results_board(
+                        self.grid_cells, self.points, win=True)
+                    self.game_over = True
+                    if self.draw:
+                        self.after(1000, self.update())
+                        self.destroy()
 
                 if logic.game_state(self.matrix) == 'lose':
                     h.print_results_board(
