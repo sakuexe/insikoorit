@@ -8,9 +8,8 @@ import argparse
 from benchmark import run_benchmark
 
 # import AI_expectimax as AI
-import AI_heuristics as AI
-# import AI_expectimax_SOLUTION as AI
-# import AI_Play_both as AI
+# import AI_heuristics as AI
+import AI_both as AI
 
 sys.setrecursionlimit(10**6)
 
@@ -112,7 +111,6 @@ class GameGrid(Frame):
         elif not self.game_over:            # If the game isn't over
             # Get the next move from the AI
             key = AI.AI_play(self.matrix, self.max_depth)
-
             self.matrix, done, points = self.commands[key](
                 self.matrix)  # Execute the move and get the result
             self.points += points   # Add points from the move
@@ -156,7 +154,7 @@ def main():
         description='Benchmarking the 2048 assignment.')
     parser.add_argument('-n', nargs="?", default=10,
                         type=int, help='Number of iterations')
-    parser.add_argument('--max_depth', nargs="?", default=-1,
+    parser.add_argument('--max-depth', nargs="?", default=-1,
                         type=int, help='Max depth for the minmax algorithm')
     parser.add_argument('--no-draw', action='store_true',
                         help='Disable the GUI')

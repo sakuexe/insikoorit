@@ -3,6 +3,7 @@ import copy
 import constants as c
 import logic
 import AI_heuristics as h
+from concurrent.futures import ThreadPoolExecutor
 
 transposition_table = {}
 
@@ -58,8 +59,7 @@ def score_toplevel_move(key, board, max_depth):
         else:
             max_depth = 2
 
-    score = calculate_chance(newboard, 0, max_depth)
-    return score
+    return calculate_chance(newboard, 0, max_depth)
 
 
 def calculate_chance(board, curr_depth, max_depth):
@@ -82,12 +82,24 @@ def calculate_chance(board, curr_depth, max_depth):
                 possible_boards_4.append(new_board)
 
     # Add your code here!!!
+    # E(x) = sum(score(x) * propability)
+    min_propability = 0.9 / len(possible_boards_2)
+    e_min = sum([
+        calculate_max(board, curr_depth, max_depth) * min_propability
+        for board in possible_boards_2
+    ])
+
+    max_propability = 0.1 / len(possible_boards_4)
+    e_max = sum([
+        calculate_max(board, curr_depth, max_depth) * max_propability
+        for board in possible_boards_4
+    ])
 
     # And modify the return value accordingly!!
-    return 1
+    return e_min + e_max
 
 
-def calculate_max(board, curr_depth, max_depth):
+def calculate_max(board, curr_depth, max_depth) -> int | float:
     if curr_depth >= max_depth:
         # heuristic
         return h.heuristic_most_empty_places(board)

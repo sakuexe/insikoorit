@@ -53,3 +53,21 @@ def run_benchmark(iterations: int,
 
     # use this way of returning to avoid a FutureWarning
     return sim_results
+
+
+if __name__ == "__main__":
+    print("""
+    This is not a script, this is a module.
+    Please use this module in your puzzle.py file.
+    ---
+    Example:
+    from benchmark import run_benchmark
+    # somewhere in main
+    results = run_benchmark(10, -1, draw=False, parallel=False)
+    print(results)
+    ---
+    Just copy this file into the same folder as your puzzle.py.
+    If the module cannot be found, try to add an empty
+    __init__.py file as well.
+    e.g. `touch __init__.py`
+    """)

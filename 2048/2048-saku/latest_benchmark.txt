@@ -1,0 +1,19 @@
+===========================================
+   Score  Biggest Tile  Max Depth  Time (s)
+0  16292          1024          2  148.7343
+1  18084          1024          2  164.2448
+2  16112          1024          2  168.8937
+3  25228          2048          2  206.3399
+4  30336          2048          2  221.7189
+===========================================
+Mean score: 21210.4
+Median score: 18084.0
+Highest score: 30336
+Lowest score: 16112
+Overall time: 909.93s
+===========================================
+Biggest tile: 2048 (2 times)
+Smallest tile: 1024 (3 times)
+Mean of the biggest tiles: 1433.60
+Median of the biggest tiles: 1024.00
+===========================================

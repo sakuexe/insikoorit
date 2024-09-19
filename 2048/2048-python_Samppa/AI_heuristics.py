@@ -56,7 +56,7 @@ def AI_play2(matror, matr, k1, keyII):
     ke, me = heuristic_empty_tile(matr)
     pointsM = 100000 * me
     
-    k = tmp[k1]
+    #k = tmp[k1]
     nk = keyII
     #multiplyer 60000 if up left corner has something
     pointsM = pointsM + 60000 * up_left_max(matr)
@@ -156,4 +156,5 @@ def heuristic_empty_tile(matrix):
     #print(return_key)    
 
     return return_key, n_empty
-
+def GameOv():
+    return False
