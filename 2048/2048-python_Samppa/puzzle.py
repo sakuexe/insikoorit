@@ -51,9 +51,8 @@ class GameGrid(Frame):
         except:
             print("ERROR")
             print(f'Score: {self.points}')
-        
         self.mainloop()
-
+       
 
     def init_grid(self):
         background = Frame(self, bg=c.BACKGROUND_COLOR_GAME,width=c.SIZE, height=c.SIZE)
@@ -136,13 +135,8 @@ class GameGrid(Frame):
 
         elif not self.game_over:
             #Samppa 
-            matrix2 = self.matrix
-            try:
-                key= AI.AI_play(self.matrix)
-            except:
-                print("ERROR2")
-                print(f'Score: {self.points}')
-            #original
+            matrix2 = self.matrix    
+            key= AI.AI_play(self.matrix)
             self.commands[key](self.matrix)
             self.matrix, done, points = self.commands[key](self.matrix)
             self.points += points
@@ -160,15 +154,8 @@ class GameGrid(Frame):
                 self.matrix = logic.add_two(self.matrix)
                 # record last move
                 self.history_matrixs.append(self.matrix)
-                #Samppa
-                try:
-                    #ORG
-                    self.update_grid_cells()
-                    self.update()
-                except:
-                    print("ERROR3")
-                    print(f'Score: {self.points}')
-                #original
+                self.update_grid_cells()
+                self.update()
                 if logic.game_state(self.matrix) == 'win':
                     self.grid_cells[1][1].configure(text="You", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
                     self.grid_cells[1][2].configure(text="Win!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
