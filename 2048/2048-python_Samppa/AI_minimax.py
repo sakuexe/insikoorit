@@ -11,9 +11,12 @@ commands = {c.KEY_UP: logic.up,
 global indx
 indx = 0
 
+
 key = c.KEY_LEFT
 def AI_play(matri):
+    
     key = mima(matri)
+ 
     return key
 def play3(matri):
     tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT] 
@@ -38,11 +41,9 @@ def play3(matri):
                     maks = points
                     ccc.append(keymm)
                     #print("*****")
-    
     return ccc, matrixd1
 def mima(m):
     #indx = AI_both.inde1
-    
     cccc=c.KEY_LEFT
     keyser, m = play3(m)
     if len(keyser)>0:
@@ -57,7 +58,7 @@ def mima(m):
             cccc = keyser[indx]
             #print(cccc)
             indx = indx + 1
-       
+   
     return cccc
 def GameOv():
     return False

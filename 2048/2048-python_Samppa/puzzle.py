@@ -3,9 +3,9 @@ import random
 import logic
 import constants as c
 import sys
-#import AI_heuristics as AI
+import AI_heuristics as AI
 #import AI_minimax as AI
-import AI_both as AI
+#import AI_both as AI
 
 def gen():
     return random.randint(0, c.GRID_LEN - 1)
@@ -135,20 +135,18 @@ class GameGrid(Frame):
 
         elif not self.game_over:
             #Samppa 
-            matrix2 = self.matrix    
-            key= AI.AI_play(self.matrix)
+            matrix2 = self.matrix 
+            key = AI.AI_play(self.matrix)
             self.commands[key](self.matrix)
             self.matrix, done, points = self.commands[key](self.matrix)
             self.points += points
             #Samppa
-            if self.matrix == matrix2:             
-                done = True              
-                if logic.game_state(self.matrix) == 'not over':
+            if self.matrix == matrix2:            
+                done = True                  
+                print(AI.__name__)
+                if logic.game_state(self.matrix) == 'not over' and AI.__name__=="AI_both":
                     done = False
-                    
-                #print(logic.game_state(self.matrix))
             #original
-            
             if done:
                 self.done = True
                 self.matrix = logic.add_two(self.matrix)

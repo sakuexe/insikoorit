@@ -5,6 +5,7 @@ import AI_heuristics
 import logic
 import numpy as np
 
+
 global over
 over = False
 global inde1
@@ -18,7 +19,11 @@ global keys1
 keys1 =[]
 
 tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT]
+
+
 def AI_play(m):
+
+
     #key=tmp[random.randint(0,3)]
     global maps
     maps = m
@@ -89,7 +94,7 @@ def make_keys(m):
     key = tmp[0]
     #k =tmp[random.randint(0,3)]
     k = tmp[1]
-    kmc = tmp[2]
+    kmc = c.KEY_RIGHT
     map = m
     poicom1=0
     poicom2 = 0
@@ -127,14 +132,15 @@ def make_keys(m):
     first = True
     N = 0
     a = 0
-    for l in range (5):
+    for l in range (3):
        
-        for z in range(2):
+        for z in range(3):
                 maks = 0
                 for a in range(4):
                     keymm = tmp[a]
                     ck = keymm
                     mo = m1
+                
                     kh = AI_heuristics.AI_play(m3)
                     m1, done, pointsa = AI_heuristics.commands[kh](m3)
                     poi, nk = AI_heuristics.AI_play2(mo, m1, keymm, ck) 
@@ -163,10 +169,10 @@ def make_keys(m):
                     
         summ=0
         keysb =[]
-        for v in range(2):
-            km = AI_heuristics.AI_play(m2)
+        for v in range(3):
+            km= AI_heuristics.AI_play(m2)
             m2, done, pointsb = AI_heuristics.commands[km](m2)
-            kmm = (AI_heuristics.AI_play(m2))
+            kmm = AI_heuristics.AI_play(m2)
                #!!!! strategies have different first step
             #print("1", k, kmm, N)
             #Strategy C purely minimax
@@ -236,18 +242,20 @@ def make_keys(m):
         kB = kBl[-1]
         kCl = keysw[-1]
         kC = kCl[-1]
+        
         mcom1, done, pcom1 = AI_heuristics.commands[kA](m1)
         mcom2, done, pcom2 = AI_heuristics.commands[kB](m2)
         mcom3, done, pcom3 = AI_heuristics.commands[kC](m4)
         mcom12, done, pcom12 = AI_minimax.commands[kA](m1)
         mcom22, done, pcom22 = AI_minimax.commands[kB](m2)
-        mcom22, done, pcom32 = AI_minimax.commands[kC](m4)
+        mcom23, done, pcom32 = AI_minimax.commands[kC](m4)
         poicom1 = poicom1 +pcom1
         poicom2 = poicom2 +pcom2
         poicom3 = poicom3  + pcom3
         poicom12 = poicom12 +pcom12
         poicom22 = poicom22 +pcom22
         poicom32 = poicom32 + pcom32
+        
         #print("PX", kA, pcom1, pcom12)
         keysy =[]
         keysz = []
@@ -274,24 +282,26 @@ def make_keys(m):
     #weigth for the best strategy A
     versum = versum*3
     #weight for the solely heuristic B Strategy 
-    versum2=versum2*10
+    versum2=versum2*15
     #weight for the solely minimax C Strategy
-    versum3=versum3*8
+    versum3=versum3*4
     #print(versum, versum2, versum3)
     #print ("@", versum, versum2, versum3)
    #print (kA, kB, poicom1, poicom2, poicom12, poicom22)
-    if versum>versum2 and versum>versum3 and poicom1 >= poicom2 and poicom12>=poicom22:
+    if versum>versum2 and versum>versum3: 
+        #and poicom1 >= poicom2 and poicom12>=poicom22:
         keys = keysA
         #print("AAAAA")
         m = mcom1
-    elif versum2>=versum3 and poicom2 >= poicom3 and poicom22>=poicom32:
+    elif versum2>=versum3 :
+        #and poicom2 >= poicom3 and poicom22>=poicom32:
         keys = keysB
         #print("BBBBB")
         m = mcom2
     else:
         keys = keysC
         #print("CCCCC")
-        m = mcom3
+        m = mcom23
     #while True:
     #    pass
     #print("*", keys)
@@ -328,7 +338,7 @@ def make_keys(m):
     return keys
 def rand_keys():
     keys =[]
-    for r in range(10):
+    for r in range(9):
         keys.append(tmp[random.randint(0,3)])
     global over
     over = False
@@ -338,10 +348,10 @@ def read_keys(kes, mr):
     
     global inde2
     #print(inde2)
-    if inde2 < 10:
+    if inde2 < 9:
         key = kes[inde2]
         inde2 = inde2 +1
-    if inde2 >= 10:
+    if inde2 >= 9:
             indez = 0
             global over
             over = False

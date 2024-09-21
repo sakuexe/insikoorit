@@ -10,6 +10,7 @@ commands = {c.KEY_UP: logic.up,
 
 def AI_play(matrix):
    
+   
     tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT]
     #Samppa         
     key = c.KEY_LEFT
@@ -44,7 +45,7 @@ def AI_play(matrix):
     #print(key, nkey) 
     #print(key)
     #!!!
-   
+       
     return key
    
 def AI_play2(matror, matr, k1, keyII):
