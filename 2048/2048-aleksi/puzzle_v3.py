@@ -96,9 +96,9 @@ class GameGrid(Frame):
         elif not self.game_over: 
             # If the game isn't over
             key = AI.own_heuristic(self.matrix, self.move_number, self.last_move)    # Get the next move from the AI
-            time.sleep(2)
-            self.move_number += 1  
+           # time.sleep(2)
             self.last_move = key
+            self.move_number += 1
 
             self.matrix, done, points = self.commands[key](self.matrix) # Execute the move and get the result
             self.points += points   # Add points from the move

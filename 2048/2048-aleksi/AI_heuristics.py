@@ -21,11 +21,11 @@ def heuristic_random():
     key=tmp[random.randint(0,3)]
     return key
 
-def heuristic_empty_tile(matrix):
+def heuristic_empty_tile(matrix, safe_moves):
      best_score = -1
      return_key = None
 
-     for key in commands.keys():
+     for key in safe_moves.keys():
          game, done, points = commands[key](matrix)
 
          if not done:
@@ -43,7 +43,7 @@ def heuristic_empty_tile(matrix):
 
 def own_heuristic(matrix, move_number: int, last_move: str):
 
-
+    print(move_number, last_move)
     return_key = None
 
     #----------------------------
@@ -55,7 +55,6 @@ def own_heuristic(matrix, move_number: int, last_move: str):
     if move_number == 1:
         return_key = c.KEY_RIGHT
         return return_key
-
     #----------------------------------
 
     # unfortunate situation cases
@@ -77,26 +76,23 @@ def own_heuristic(matrix, move_number: int, last_move: str):
 
     # actual heuristics
 
-
     if move_number > 1:
-        print("ok huutista")
-        tmp = [c.KEY_UP, c.KEY_DOWN, c.KEY_RIGHT, c.KEY_LEFT] 
-        return_key=tmp[random.randint(0,3)]
+
+        biggest = biggest_tile(matrix)
+
+        big_loc = biggest_in_right_corner(matrix, biggest)
+        first_full = first_row_full(matrix)
+        right_move = first_row_right(matrix)
+
+        safe = safe_moves(first_full)
+
+        print("jouu")
+        return_key = heuristic_empty_tile(matrix, safe)
+        if return_key == None:
+            return_key = heuristic_random()
+        
         return return_key
-
-
     
-
-
-    pass
-
-
-# täytä rivi
-# Aseta isoin kulmaan
-# vältä alas liikettä
-# yhdistä isot
-
-
 
 def biggest_tiles_locations(matrix):
     tilesdict = {}
@@ -134,6 +130,11 @@ def first_row_full(matrix):
         return False
     return True
 
+def biggest_comb(matrix, biggest_tile: int):
+    if matrix[0][2] == matrix[0][3]:
+        return True
+    return False
+
 
 # palauttaa false jos ylärivissä yhdistyksiä
 # true jos ei oo
@@ -155,27 +156,19 @@ def first_row_right(matrix):
     return False
 
 
-#def n_empty_tiles(matrix):       
-#    return sum(sum(np.array(matrix)==0))
+def n_empty_tiles(matrix):       
+    return sum(sum(np.array(matrix)==0))
 
-def safe_moves(first_row: bool, biggest_in_corner: bool, first_row_right: bool):
+def safe_moves(first_row: bool):
 
-    if first_row == True and biggest_in_corner == True and first_row_right == False:
+    if first_row == True:
         return {c.KEY_UP: logic.up,
             c.KEY_RIGHT: logic.right,
             c.KEY_LEFT: logic.left}
 
-    if first_row == True and biggest_in_corner == True and first_row_right == True:
+    if first_row != True:
         return {c.KEY_UP: logic.up,
             c.KEY_RIGHT: logic.right}
 
-    if first_row == False and biggest_in_corner == True and first_row_right == False:
-                return {c.KEY_UP: logic.up,
-            c.KEY_RIGHT: logic.right}
-
-    return {c.KEY_UP: logic.up,
-            c.KEY_DOWN: logic.down,
-            c.KEY_LEFT: logic.left,
-            c.KEY_RIGHT: logic.right}
 
 
