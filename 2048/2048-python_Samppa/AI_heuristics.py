@@ -59,18 +59,18 @@ def AI_play2(matror, matr, k1, keyII):
     
     #k = tmp[k1]
     nk = keyII
-    #multiplyer 60000 if up left corner has something
-    pointsM = pointsM + 60000 * up_left_max(matr)
-    #multiplyer 10000 if down right corner has something  
-    pointsM = pointsM + 10000 * down_right_max(matr)
-     #multiplyer 5000 if down left corner has something  
-    pointsM = pointsM + 5000 * down_left_max(matr)
-    #multiplyer 3000 if up right corner has something  
-    pointsM = pointsM + 3000 * up_right_max(matr) 
+    #multiplyer 10000 if up left corner has something
+    pointsM = pointsM + 100000 * up_left_max(matr)
+    #multiplyer 1000 if down right corner has something  
+    pointsM = pointsM + 1000 * down_right_max(matr)
+     #multiplyer 3000 if down left corner has something  
+    pointsM = pointsM + 3000 * down_left_max(matr)
+    #multiplyer 2000 if up right corner has something  
+    pointsM = pointsM + 2000 * up_right_max(matr) 
     #sum of differences
     pointsM = pointsM + 300 * summa (matr)
     #if tile is zero, a point
-    pointsM = pointsM + 10 * zero(matr)
+    pointsM = pointsM + 10000 * zero(matr)
     #if same then +1000000
     po_next, nk = next_tile(matror, matr, keyII)
     pointsM = pointsM + po_next

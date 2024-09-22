@@ -3,9 +3,9 @@ import random
 import logic
 import constants as c
 import sys
-import AI_heuristics as AI
+#import AI_heuristics as AI
 #import AI_minimax as AI
-#import AI_both as AI
+import AI_both as AI
 
 def gen():
     return random.randint(0, c.GRID_LEN - 1)
