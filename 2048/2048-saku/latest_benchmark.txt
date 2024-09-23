@@ -1,19 +1,34 @@
+Game 0 has finished
+Game 1 has finished
+Game 2 has finished
+Game 3 has finished
+Game 4 has finished
+Game 5 has finished
+Game 6 has finished
+Game 7 has finished
+Game 8 has finished
+Game 9 has finished
 ===========================================
-   Score  Biggest Tile  Max Depth  Time (s)
-0  16292          1024          2  148.7343
-1  18084          1024          2  164.2448
-2  16112          1024          2  168.8937
-3  25228          2048          2  206.3399
-4  30336          2048          2  221.7189
+   Score  Biggest Tile  Max Depth    Time (s)
+0  35564          2048          2  290.772480
+1   6700           256          2   89.357046
+2   7568           512          2   90.968401
+3  35480          2048          2  281.527206
+4  36192          2048          2  299.181889
+5  17080          1024          2  201.016112
+6   9768           512          2  136.045089
+7  19172          1024          2  193.303826
+8  37052          2048          2  319.040006
+9  47692          4096          2  332.367337
 ===========================================
-Mean score: 21210.4
-Median score: 18084.0
-Highest score: 30336
-Lowest score: 16112
-Overall time: 909.93s
+Mean score: 25226.8
+Median score: 27326.0
+Highest score: 47692
+Lowest score: 6700
+Overall time: 2233.58s
 ===========================================
-Biggest tile: 2048 (2 times)
-Smallest tile: 1024 (3 times)
-Mean of the biggest tiles: 1433.60
-Median of the biggest tiles: 1024.00
+Biggest tile: 4096 (1 times)
+Smallest tile: 256 (1 times)
+Mean of the biggest tiles: 1561.60
+Median of the biggest tiles: 1536.00
 ===========================================
