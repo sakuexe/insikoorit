@@ -22,14 +22,7 @@ def AI_play(matrix):
     #N = max number of tries Samppa
     
     for k in range(4):
-               
-
-            #N = 0
-            #tried = tmp
             
-            #while tried != [0,0,0,0] and N <8600:
-            #    N = N + 1
-                #print(N)
                 #ADDED matrix3, self.matrix (matrix3 result of a tryed key Samppa
         matrix3, done, points = commands[key](matrix) 
         #if tried[k]!=0:           
@@ -41,10 +34,7 @@ def AI_play(matrix):
             key = nkey
        
         
-    #print(po)
-    #print(key, nkey) 
-    #print(key)
-    #!!!
+   
        
     return key
    
