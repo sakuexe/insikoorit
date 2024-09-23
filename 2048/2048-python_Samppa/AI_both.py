@@ -30,7 +30,7 @@ def AI_play(m):
     
     key, mv = look(m)
     
-    #mv, done, points = AI_heuristics.commands[key](m) 
+    mv, done, points = AI_heuristics.commands[key](m) 
     
     #if stucked
     
@@ -144,14 +144,14 @@ def make_keys(m):
                     mo = m1
                 
                     kh = AI_heuristics.AI_play(m3)
-                    m1, done, pointsa = AI_heuristics.commands[kh](m3)
+                    m1, done, pointsh = AI_heuristics.commands[kh](m3)
                     poi, nk = AI_heuristics.AI_play2(mo, m1, keymm, ck) 
                     
                     #print("a", pointsa)    
                 #print(points)
                     pka = 0
-                    if pointsa>=maks:
-                        maks = pointsa
+                    if pointsh>=maks:
+                        maks = pointsh
                         k = keymm
                         if ck!=nk:
                             k =nk
@@ -186,9 +186,9 @@ def make_keys(m):
             km= AI_heuristics.AI_play(m2)
             m2, done, pointsb = AI_heuristics.commands[km](m2)
             versum2 = versum2+pointsb
-            k= AI_minimax.AI_play(m)
-            m, done, pointsa2 = AI_heuristics.commands[k](m)
-            keysa2.append(k)
+            kap= AI_minimax.AI_play(m)
+            m, done, pointsa2 = AI_heuristics.commands[kap](m)
+            keysa2.append(kap)
 
             #AI_heuristics.AI_play(m2)
                #!!!! strategies have different first step
@@ -207,6 +207,7 @@ def make_keys(m):
             versum3 = versum3 + pointsc
             #print("S", summ)
         #heuristcs 2 times more weight
+        #print(sumheura, summ)
         if sumheura> summ:
             keysy.append(keysa)
             mold = m1 
@@ -214,7 +215,7 @@ def make_keys(m):
             versum = versum + sumheura
             #versum2 = versum2 + sumheura
             #versum3 = versum3 +sumheura
-            #print(keysy)
+            #print("a", keysa)
         else:
             keysy.append(keysa2)
             mold =m1
@@ -222,6 +223,9 @@ def make_keys(m):
             versum = versum + summ
             #versum2 = versum2 + sumheura
             #versum3 = versum3 + summ
+            #print("b", keysa2)
+        keysa2 = []
+        keysa = []
         keysz.append(keysb)
         keysw.append(keysc)
         #print("Y", keysy)
@@ -287,27 +291,27 @@ def make_keys(m):
             fkeys3 = fkeys3 + row
     keysC = fkeys3
     #weigth for the best strategy A
-    versum = versum*2
-    #weight for the solely heuristic B Strategy 
-    versum2=versum2*4
-    #weight for the solely minimax C Strategy
-    versum3=versum3*4
+    versum = versum*4
+    #weight for the solely heuristic B Strategy (5)
+    versum2=versum2*1
+    #weight for the solely minimax C Strategy (5)
+    versum3=versum3*2
     #print(versum, versum2, versum3)
-    print ("@", versum, versum2, versum3)
+    #print ("@", versum, versum2, versum3)
    #print (kA, kB, poicom1, poicom2, poicom12, poicom22)
     if versum>versum2 and versum>versum3: 
         #and poicom1 >= poicom2 and poicom12>=poicom22:
         keys = keysA
-        print("AAAAA")
+        #print("AAAAA")
         m = mcom1
     elif versum2>=versum3 :
         #and poicom2 >= poicom3 and poicom22>=poicom32:
         keys = keysB
-        print("BBBBB")
+        #print("BBBBB")
         m = mcom2
     else:
         keys = keysC
-        print("CCCCC")
+        #print("CCCCC")
         m = mcom23
     #while True:
     #    pass
@@ -352,9 +356,10 @@ def make_keys(m):
         over = False
         global inde2
         inde2 = 0
-        print("*", keysor)
-        print("Switch", keys)
-        
+    
+        #print("*", keysor)
+        #print("Switch", keys)
+    #print("a#", keysA)    
     #if same keys serie and map ->random
     if keys == keysor and mold == m:
         keys = rand_keys()
