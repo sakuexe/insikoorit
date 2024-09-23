@@ -63,13 +63,11 @@ def own_heuristic(matrix, move_number: int, last_move: str):
     #left case DD
     if last_move == logic.left:
         return_key = commands[c.KEY_RIGHT]
-        last_move = return_key
         return return_key
 
     #up case DD
     if last_move == logic.down:
         return_key = commands[c.KEY_DOWN]
-        last_move = return_key
         return return_key
     
     #------------------------------------------------
@@ -85,11 +83,23 @@ def own_heuristic(matrix, move_number: int, last_move: str):
         right_move = first_row_right(matrix)
 
         safe = safe_moves(first_full)
-
-        print("jouu")
         return_key = heuristic_empty_tile(matrix, safe)
+
+        
         if return_key == None:
-            return_key = heuristic_random()
+
+            all_ze_moves = commands = {c.KEY_UP: logic.up,
+            c.KEY_DOWN: logic.down,
+            c.KEY_LEFT: logic.left,
+            c.KEY_RIGHT: logic.right}
+
+            for key in safe.keys():
+                try:
+                    del all_ze_moves[key]
+                except KeyError:
+                    continue
+            
+            return_key = heuristic_empty_tile(matrix, all_ze_moves)
         
         return return_key
     

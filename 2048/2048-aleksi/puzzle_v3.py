@@ -5,10 +5,13 @@ import constants as c
 import helpers as h
 import sys
 import time
+import argparse
+from benchmark import run_benchmark
+
 
 sys.setrecursionlimit(10**6)
 
-import AI_heuristics as AI
+import AI_expectimax as AI
 #import AI_expectimax_SOLUTION as AI
 #import AI_Play_both as AI
 
@@ -95,7 +98,8 @@ class GameGrid(Frame):
 
         elif not self.game_over: 
             # If the game isn't over
-            key = AI.own_heuristic(self.matrix, self.move_number, self.last_move)    # Get the next move from the AI
+            key = AI.AI_play(self.matrix, 3)
+            #key = AI.own_heuristic(self.matrix, self.move_number, self.last_move)    # Get the next move from the AI
            # time.sleep(2)
             self.last_move = key
             self.move_number += 1
@@ -136,8 +140,8 @@ def main():
 
     draw = True
     #draw = False
-    sims = 5
-    max_depth = -1
+    sims = 10
+    max_depth = 3
 
     print("Max Depth = ", max_depth)
 
@@ -158,4 +162,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
