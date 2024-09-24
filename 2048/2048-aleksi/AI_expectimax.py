@@ -101,10 +101,10 @@ def calculate_chance(board, curr_depth, max_depth):
         total_score += calculate_max(new_board, curr_depth + 1, max_depth) * 0.1
 
     # Get average score & avoid division by zero errors
+    avg_score = 0
+    
     if num_boards > 0:
         avg_score = total_score / num_boards
-    else:
-        avg_score = 0
 
     return avg_score
 
