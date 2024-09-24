@@ -1,0 +1,4 @@
+rowan: pihlaja
+pine: mänty
+maple: vaahtera
+birch: koivu
