@@ -50,11 +50,13 @@ def AI_play(matrix):
             continue
         valid_moves.append(direction)  # Lisää kelvollinen siirto listalle
 
+
+
         tempScore = 0
 
         tempScore = 10 * heuristic_empty_tiles(game)
-        tempScore += 4 * heuristic_biggest_tile_down_right(game)  # Suurimman palikan siirtäminen oikealle alas
-        #tempScore += heuristic_check_best_direction_for_points(game)
+        tempScore += 4 * heuristic_biggest_tile_down_right(game)
+        tempScore += heuristic_check_best_direction_for_points(game)
 
         scores[direction] = tempScore
 
@@ -68,6 +70,8 @@ def AI_play(matrix):
     # Valitse paras suunta, jolla on korkein pistemäärä
     key = max(valid_moves, key=lambda d: scores[d])
     return key
+
+
 
 def heuristic_check_best_direction_for_points(matrix):
     # Alustetaan muuttuja parhaalle pistemäärälle ja parhaalle suunnalle
@@ -87,8 +91,6 @@ def heuristic_check_best_direction_for_points(matrix):
 
     # Palautetaan suunta, joka tuotti parhaat pisteet
     return best_direction
-
-
 
 def heuristic_biggest_tile_down_right(matrix):
     biggest_tile = 0
@@ -116,7 +118,7 @@ def heuristic_biggest_tile_down_right(matrix):
     # Rankaiseminen, jos suurin palikka on kaukana oikeasta alakulmasta
     # abs = absoluuttinen arvo
     matkaOikealtaAlhaalta = abs(rivi - 3) + abs(sarake - 3)
-    score -= matkaOikealtaAlhaalta * 10
+    score -= matkaOikealtaAlhaalta * 5
 
     return score
 

@@ -1,4 +1,18 @@
+     .\^/.
+   . |`|/| .
+   |\|\|'|/|
+.--'-\`|/-''--.
+ \`-._\|./.-'/
+  >`-._|/.-'<
+ '~|/~~|~~\|~'
+       |
+
 rowan: pihlaja
 pine: mänty
 maple: vaahtera
 birch: koivu
+spruce: kuusi
+juniper: kataja
+alder: leppä
+oak: tammi
+linden: lehmus
