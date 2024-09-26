@@ -89,25 +89,28 @@ def calculate_chance(board, curr_depth, max_depth):
     # Add your code here!!!
 
     total_score = 0
-    num_boards = len(possible_boards_2) + len(possible_boards_4)
+    boards_amount = len(possible_boards_2) + len(possible_boards_4)
 
     # Sum the board scores
-    # Recursively calculate
+    #-------------------------------
+    # Calculate with calculate_max
     # multiply with the possibility
-    for new_board in possible_boards_2:
-        total_score += calculate_max(new_board, curr_depth + 1, max_depth) * 0.9
+    for board in possible_boards_2:
+        total_score += calculate_max(board, curr_depth + 1, max_depth) * 0.9
 
-    for new_board in possible_boards_4:
-        total_score += calculate_max(new_board, curr_depth + 1, max_depth) * 0.1
+    for board in possible_boards_4:
+        total_score += calculate_max(board, curr_depth + 1, max_depth) * 0.1
 
-    # Get average score & avoid division by zero errors
+    # Get average score 
     avg_score = 0
     
-    if num_boards > 0:
-        avg_score = total_score / num_boards
+    # avoid division by zero
+    if boards_amount > 0:
+        avg_score = total_score / boards_amount
 
+    # proper return
     return avg_score
-
+    #------------------------------------------
 
 
 def calculate_max(board, curr_depth, max_depth):
