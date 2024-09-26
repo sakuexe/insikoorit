@@ -1,0 +1,66 @@
+
+My best score was: 79384
+
+#####
+
+insikoorit/2048/2048Wais/puzzle.py
+Game 0 has finished
+...
+Game 9 has finished
+===========================================
+   Score  Biggest Tile  Max Depth    Time (s)
+0  36492           256         -1  419.375749
+1   6796           256         -1   82.634891
+2  30872           128         -1  348.588867
+3  29468           512         -1  342.766567
+4  16632           128         -1  240.248061
+5  36868           256         -1  423.910354
+6  34596          2048         -1  397.038303
+7  60736          4096         -1  610.959213
+8  76612           128         -1  692.460739
+9  76096          4096         -1  649.057144
+===========================================
+Mean score: 40516.8
+Median score: 35544.0
+Highest score: 76612
+Lowest score: 6796
+Overall time: 4207.04s
+===========================================
+Biggest tile: 4096 (2 times)
+Smallest tile: 128 (3 times)
+Mean of the biggest tiles: 1190.40
+Median of the biggest tiles: 256.00
+===========================================
+(SolutionsInPR) PS C:\Users\atifiwa\koulu\insikoorit> 
+
+##################3
+
+lu/insikoorit/2048/2048Wais/puzzle.py
+Game 0 has finished
+...
+Game 9 has finished
+===========================================
+   Score  Biggest Tile  Max Depth    Time (s)
+0  36548          2048         -1  367.942195
+1  35880           256         -1  349.728502
+2  36360           256         -1  373.445525
+3  37224           128         -1  369.486982
+4  59088           512         -1  554.448014
+5  61164          4096         -1  695.212312
+6  32596           128         -1  382.225023
+7  79384            64         -1  770.620073
+8  37128          2048         -1  416.379306
+9  32528           256         -1  359.936256
+===========================================
+Mean score: 44790.0
+Median score: 36838.0
+Highest score: 79384
+Lowest score: 32528
+Overall time: 4639.42s
+===========================================
+Biggest tile: 4096 (1 times)
+Smallest tile: 64 (1 times)
+Mean of the biggest tiles: 979.20
+Median of the biggest tiles: 256.00
+===========================================
+(SolutionsInPR) PS C:\Users\atifiwa\koulu\insikoorit> 

@@ -98,7 +98,7 @@ class GameGrid(Frame):
 
         elif not self.game_over: 
             # If the game isn't over
-            key = AI.AI_play(self.matrix, 3)
+            key = AI.AI_play(self.matrix, 4)
             #key = AI.own_heuristic(self.matrix, self.move_number, self.last_move)    # Get the next move from the AI
            # time.sleep(2)
             self.last_move = key
@@ -140,8 +140,8 @@ def main():
 
     draw = True
     #draw = False
-    sims = 10
-    max_depth = 3
+    sims = 20
+    max_depth = 4
 
     print("Max Depth = ", max_depth)
 
