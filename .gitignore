@@ -1,4 +1,14 @@
-__pycache__/
-venv/
+# environment files
+.env
+.env.*
 
-my_token.txt
+# local cache
+__pycache__/
+
+# IDE generated files
+.idea/
+.vscode/
+
+# virtual envs
+venv/
+# add yours here, if you use another name for it

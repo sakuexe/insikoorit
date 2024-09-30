@@ -7,18 +7,21 @@ Follow these steps or check it out from `./assignment/Exercise_01.ipynb`.
 
 ```bash
 # linux
-python3 -m venv venv
+python3 -m venv my_venv
 # windows 
-python -m venv venv
+python -m venv my_venv
 ```
+
+NOTE: if you use a custom folder name for your virtual env, remember
+to add it to the `.gitignore` file in either the root or this folder.
 
 2. Activate virtual environment
 
 ```bash
 # linux
-source venv/bin/activate
+source my_venv/bin/activate
 # windows
-.\venv\bin\activate.exe # or something, you can figure it out if you use windows
+.\my_venv\bin\activate.exe # or something, you can figure it out if you use windows
 ```
 
 3. Install requirements
