@@ -1,6 +1,11 @@
 import gradio as gr
 from transformers import pipeline
 import sys
+import warnings
+import textwrap
+
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 def greet(name: str):
@@ -13,9 +18,10 @@ def gpt2(prompt: str) -> None:
     result = generator(prompt, max_length=50, num_return_sequences=1,
                        clean_up_tokenization_spaces=True, truncation=True)
     response: str = result[0]["generated_text"]
-    print("=" * 32)
-    print(response)
-    print("=" * 32)
+
+    print(f"{'=' * 16} GPT2 {'=' * 16}")
+    print(textwrap.fill(response, 38))
+    print('=' * 38)
 
 
 if sys.argv[1] is not None and sys.argv[1] == "gpt":
