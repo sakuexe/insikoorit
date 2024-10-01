@@ -47,3 +47,28 @@ python3 example.py
 # gpt2 version
 python3 example.py gpt 'my prompt is'
 ```
+
+# Codellama example
+
+You can use the codellama example as well if you would like. It uses the 7B parameter version,
+so make sure that your machine can run it, or use the 3B version instead.
+
+You also need to add an .env file for logging into huggingface.
+
+```bash
+echo "HF_TOKEN=hf_abcdefg..." > .env
+```
+
+### Example prompt
+
+Codellama needs a surrounding code context for it to work, so you need to add a FILL_ME mark.
+
+```go
+func GreetUser(user string) {
+    <FILL_ME>
+}
+
+func main() {
+    GreetUser("Raino")
+}
+```
