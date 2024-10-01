@@ -34,20 +34,31 @@ def generate_text(prompt, max_length=50, temperature=1.0):
 
 # Create the Gradio interface
 def generate_interface(prompt, max_length, temperature):
-    return generate_text(prompt, max_length=max_length, temperature=temperature)
+    return generate_text(prompt,
+                         max_length=max_length,
+                         temperature=temperature)
 
 
 interface = gr.Interface(
     fn=generate_interface,
     inputs=[
-        gr.Textbox(lines=2, placeholder="Enter your prompt here",
+        gr.Textbox(lines=2, placeholder="Enter your code here",
                    label="Prompt"),
-        gr.Slider(10, 512, value=128, label="Max Length"),
+        gr.Slider(10, 256, value=128, label="Max Length"),
         gr.Slider(0.7, 1.3, value=1.0, label="Temperature")
     ],
     outputs="text",
-    title="Text Generation with Codellama",
-    description="Enter a prompt and experiment with different parameters to generate text."
+    title="Code Generation with Codellama",
+    description="""Enter a code snippet with the text <FILL_ME>,
+    and let codellama generate the rest of the code.\n
+    For example:\n
+    ```
+    func GreetUser(username string) {
+        <FILL_ME>
+    }
+    func main() {
+        GreetUser("Raino")
+    }"""
 )
 
 interface.launch()
