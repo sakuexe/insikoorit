@@ -6,13 +6,14 @@
   >`-._|/.-'<
  '~|/~~|~~\|~'
        |
-
-rowan: pihlaja
-pine: mänty
-maple: vaahtera
-birch: koivu
-spruce: kuusi
-juniper: kataja
-alder: leppä
-oak: tammi
-linden: lehmus
+alder: leppä (0)
+birch: koivu (34)
+juniper: kataja (29)
+linden: lehmus (34)
+maple: vaahtera (25)
+oak: tammi (22)
+pine: mänty (26)
+rowan: pihlaja (35)
+spruce: kuusi (25)
+------overall------
+230

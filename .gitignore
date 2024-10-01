@@ -1,2 +1,14 @@
+# environment files
+.env
+.env.*
+
+# local cache
 __pycache__/
+
+# IDE generated files
+.idea/
+.vscode/
+
+# virtual envs
 venv/
+# add yours here, if you use another name for it
