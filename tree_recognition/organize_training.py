@@ -20,8 +20,8 @@ def move_files(filenames, from_dir, to_dir):
         only_filename, file_extension = os.path.splitext(filename)
         new_filename = f"{class_name}_{index:03d}{file_extension.lower()}"
 
-        shutil.move(os.path.join(from_dir, filename),
-                    os.path.join(new_dir, new_filename))
+        destination = os.path.join(new_dir, new_filename)
+        shutil.move(os.path.join(from_dir, filename), destination)
 
 
 for dirpath, dirnames, filenames in os.walk(ROOT_DIR):
