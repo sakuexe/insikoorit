@@ -1,18 +1,19 @@
 from PIL import Image
+from PIL import ImageFilter, ImageEnhance
 import os
 import pathlib
 import random
-from PIL import ImageFilter, ImageEnhance
+from concurrent.futures import ThreadPoolExecutor
 
-TRAINING_ROOT = "trees_training"
+TRAINING_ROOT = "trees_training/originals"
 IMAGE_SIZE = (1080, 1080)
+SAVE_DIR = "trees_training/edited"
 
 
-
-def crop_images(image_path: str) -> None:
-    image = Image.open(image_path)
+def crop_images(image: Image.Image) -> None:
+    """Crops and resizes the passed image.
+    The cropping will be done to a square aspect ratio."""
     width, height = image.size
-
     left, right, top, bottom = [0] * 4
 
     if width > height:
@@ -27,65 +28,63 @@ def crop_images(image_path: str) -> None:
         top = (height - width) / 2
         bottom = (height + width) / 2
 
+    # crop the image
     image = image.crop((left, top, right, bottom))
-
+    # resize the image
     image.thumbnail(IMAGE_SIZE)
-    return image
 
-def rotate_images(image) -> None:
-    #random rotation
-    a = [0,90,180,270]
-    random.shuffle(a)
-    ang = a[0]
-    image = image.rotate(ang)
-    print(ang)
-    return image
-def filter_images(image) -> None:
-    #filter random
-    r = random.randint(0,3)
-    match r:
-        case 0:
-            image = image.filter(ImageFilter.BLUR)
-        case 1:
-            image = image.filter(ImageFilter.SHARPEN)
-        case 2:
-            image = image.filter(ImageFilter.SMOOTH)
-        case 3:
-            pass
-    print(r)
-    return image
-def contrast_images(image) -> None:
-    #random color
-    #contrast
-    c = 1.0
-    if random.random()*1>0.5:
-        c = random.random()*1 + 0.5
-        image = ImageEnhance.Contrast(image).enhance(c)
-    print(c)
-    return image
-   
-def save_images(image, image_path: str) -> None:
-    save_path = f"edited_{image_path}"
+
+def rotate_images(image: Image.Image) -> None:
+    """Applies a random rotation to the image.
+    The possible rotations are in 90 degree intervals."""
+    rotate_by_angle = [0, 90, 180, 270]
+    image = image.rotate(random.choice(rotate_by_angle))
+
+
+def filter_images(image: Image.Image) -> None:
+    """Applies a random image filter to the passed image.
+    This filter is either blur, sharpen or smooth."""
+    filters = (ImageFilter.BLUR, ImageFilter.SHARPEN, ImageFilter.SMOOTH)
+    image = image.filter(random.choice(filters))
+
+
+def contrast_images(image: Image.Image) -> None:
+    """Applies a random amount of image contrast to the passed image.
+    This value can be between 0.5 and 1.5."""
+    contrast = random.random() + 0.5
+    image = ImageEnhance.Contrast(image).enhance(contrast)
+
+
+def preprocess(filename: str, dirpath) -> None:
+    """Applies all the preprocessing to a given image file
+    inside the given directory path."""
+    filepath: str = os.path.join(dirpath, filename)
+    image: Image.Image = Image.open(filepath)
+
+    # apply filters -
+    # the image variable can just be passed as a reference here
+    crop_images(image)
+    rotate_images(image)
+    filter_images(image)
+    contrast_images(image)
+
+    # save the images at the end
+    class_name: str = pathlib.PurePath(dirpath).name
+    save_path: str = f"{SAVE_DIR}/{class_name}/{filename}"
     if not os.path.exists(pathlib.Path(save_path).parent):
         os.makedirs(pathlib.Path(save_path).parent)
-    print(save_path)
     image.save(save_path)
     image.close()
 
 
-def preprocess(filepath: str) -> None:
-    """Applies all the preprocessing to a given file."""
-    image = crop_images(filepath)
-    # TODO: add more preprocessing, like random rotation or color 
-    print("Cropped")
-    image = rotate_images(image)
-    image = filter_images(image)
-    image = contrast_images(image)
-    save_images(image, filepath)
-    
-for dirpath, dirnames, filenames in os.walk(TRAINING_ROOT):
-    if not filenames:
-        continue
+def main():
+    for dirpath, _, filenames in os.walk(TRAINING_ROOT):
+        if not filenames:
+            continue
+        # multithreading - I am speed
+        with ThreadPoolExecutor() as executor:
+            executor.map(preprocess, filenames, [dirpath] * len(dirpath))
 
-    for filename in filenames:
-        preprocess(os.path.join(dirpath, filename))
+
+if __name__ == "__main__":
+    main()
