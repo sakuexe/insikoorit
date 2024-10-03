@@ -33,6 +33,10 @@ The english names, finnish names and the amount of pictures taken.
 
 1. Set up the virtual environment
 
+> [!NOTE]
+> If you make a venv directory with a custom name,
+> remember to add it into the .gitignore file!
+
 ```bash
 # linux / wsl
 python3 -m venv venv
@@ -41,10 +45,6 @@ source venv/bin/activate
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 ```
-
-**NOTE**: if you make a custom named venv, remember to add it into
-the .gitignore file!
-
 
 2. Install the required packages
 
