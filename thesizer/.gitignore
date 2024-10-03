@@ -1,0 +1,3 @@
+# don't include any trained data
+# mostly because it exceeds github's max filesize limit
+exercises/*/*/*fine-tuned*/
