@@ -15,19 +15,44 @@
 
 The english names, finnish names and the amount of pictures taken.
 
-- **alder**: leppä (0)
-- **birch**: koivu (34)
-- **juniper**: kataja (29)
-- **linden**: lehmus (34)
-- **maple**: vaahtera (25)
-- **oak**: tammi (22)
-- **pine**: mänty (26)
-- **rowan**: pihlaja (35)
-- **spruce**: kuusi (25)
+- **Alder**: leppä (0)
+- **Birch**: koivu (34)
+- **Juniper**: kataja (29)
+- **Linden**: lehmus (34)
+- **Maple**: vaahtera (25)
+- **Oak**: tammi (22)
+- **Pine**: mänty (26)
+- **Rowan**: pihlaja (35)
+- **Spruce**: kuusi (25)
 
 <hr>
 
-**overall**: 230 images
+**Overall**: 230 images
+
+## Running The Project
+
+1. Set up the virtual environment
+
+```bash
+# linux / wsl
+python3 -m venv venv
+source venv/bin/activate
+# windows (powershell)
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
+**NOTE**: if you make a custom named venv, remember to add it into
+the .gitignore file!
+
+
+2. Install the required packages
+
+```bash
+pip install -r requirements.txt
+```
+
+3. To be continued...
 
 ## Helpful commands
 
