@@ -15,17 +15,19 @@
 
 The english names, finnish names and the amount of pictures taken.
 
-**alder**: leppä (0)
-**birch**: koivu (34)
-**juniper**: kataja (29)
-**linden**: lehmus (34)
-**maple**: vaahtera (25)
-**oak**: tammi (22)
-**pine**: mänty (26)
-**rowan**: pihlaja (35)
-**spruce**: kuusi (25)
+- **alder**: leppä (0)
+- **birch**: koivu (34)
+- **juniper**: kataja (29)
+- **linden**: lehmus (34)
+- **maple**: vaahtera (25)
+- **oak**: tammi (22)
+- **pine**: mänty (26)
+- **rowan**: pihlaja (35)
+- **spruce**: kuusi (25)
+
 <hr>
-overall: 230 images
+
+**overall**: 230 images
 
 ## Helpful commands
 
