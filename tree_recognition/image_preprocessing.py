@@ -46,8 +46,10 @@ def rotate_image(image: Image.Image) -> Image.Image:
 def filter_image(image: Image.Image) -> Image.Image:
     """Applies a random image filter to the passed image.
     This filter is either blur, sharpen or smooth."""
-    filters = (ImageFilter.BLUR, ImageFilter.SHARPEN, ImageFilter.SMOOTH)
-    image = image.filter(random.choice(filters))
+    filters = (ImageFilter.BLUR, ImageFilter.SHARPEN, ImageFilter.SMOOTH, None)
+    random_filter = random.choice(filters)
+    if random_filter is not None:
+        image = image.filter(random_filter)
     return image
 
 
