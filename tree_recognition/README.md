@@ -1,6 +1,44 @@
-# Helpful commands
+# Tree Recognition Project
 
-Find the number of files in total:
+```
+     .\^/.
+   . |`|/| .
+   |\|\|'|/|
+.--'-\`|/-''--.
+ \`-._\|./.-'/
+  >`-._|/.-'<
+ '~|/~~|~~\|~'
+       |
+```
+
+## Tree name translations
+
+The english names, finnish names and the amount of pictures taken.
+
+**alder**: leppä (0)
+**birch**: koivu (34)
+**juniper**: kataja (29)
+**linden**: lehmus (34)
+**maple**: vaahtera (25)
+**oak**: tammi (22)
+**pine**: mänty (26)
+**rowan**: pihlaja (35)
+**spruce**: kuusi (25)
+<hr>
+overall: 230 images
+
+## Helpful commands
+
+Re-preprocess the training images:
+
+```bash
+# linux
+python3 image_preprocessing.py
+# windows
+python image_preprocessing.py
+```
+
+Find the number of images in total:
 
 ```bash
 # linux
