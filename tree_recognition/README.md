@@ -64,18 +64,25 @@ fastapi dev app/main.py
 
 ## Learning about FastAPI
 
-Getting started with FastAPI basics:
+**Getting started with FastAPI basics:**
 
 - [Tutorial - User Guide](https://fastapi.tiangolo.com/tutorial/)
 
-Using Templates with FastAPI (The frontend code):
+**Using Templates with FastAPI (The frontend code):**
 
-- [https://fastapi.tiangolo.com/advanced/templates/](https://fastapi.tiangolo.com/advanced/templates/)
+- [Learn - Templates](https://fastapi.tiangolo.com/advanced/templates/)
+- [Eric Roby - FastAPI with Jinja2 in UNDER 6 minutes](https://www.youtube.com/watch?v=92iCfXAK0Gc)
 
 > [!NOTE]
 > All of the packages that are needed by these tutorials are already inside
 > `requirements.txt`. Install them using `pip install -r requirements`!
 > Therefore, you don't need to follow the installation steps in the tutorials.
+
+**More in depth tutorial about using FastAPI (very optional, if interested)**
+
+I chose this one because I thought that it was Petri in the thumbnail at first.
+
+- [Travis Media - Why You NEED To Learn FastAPI | Hands On Project](https://www.youtube.com/watch?v=cbASjoZZGIw)
 
 
 ## Helpful commands
