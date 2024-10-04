@@ -52,7 +52,9 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-3. To be continued...
+3. Install pytorch to your virutal environment based on your specs
+
+[Pytorch - Get Started Locally](https://pytorch.org/get-started/locally/)
 
 ## Helpful commands
 
