@@ -13,8 +13,8 @@ Some sources for the learning material regarding thesis writing and HAMK's guide
 
 - [HAMK Lähdeviiteopas Osa 1: Perusteet](https://www.hamk.fi/wp-content/uploads/2023/11/Lahdeviiteopas-osa-1-perusteet-1.pdf)
 - [HAMK Lähdeviiteopas Osa 2: Esimerkit](https://www.hamk.fi/wp-content/uploads/2023/11/Lahdeviiteopas-osa-2-esimerkit-1.pdf)
-- [Taulukot, kuviot ja kuvat tekstissä](https://hameenamk-my.sharepoint.com/:p:/g/personal/lmustonen_hamk_fi/EbjU1CG6SMBGvx--NVo2t4UBVFtPvRa3UDoZBxO-UkEsWQ?e=Pr7HmY)
-- [Ohjeita ja esimerkkejä kuvien merkintään](https://hameenamk-my.sharepoint.com/:w:/g/personal/lmustonen_hamk_fi/EZq3oBSYzDVAhUirgcGK6bMBKKGTGCUiqwToPdheUx79hw?e=0e7XmH)
+- [Taulukot, kuviot ja kuvat tekstissä](https://hameenamk-my.sharepoint.com/:p:/g/personal/lmustonen_hamk_fi/EbjU1CG6SMBGvx--NVo2t4UBVFtPvRa3UDoZBxO-UkEsWQ?e=Pr7HmY) *
+- [Ohjeita ja esimerkkejä kuvien merkintään](https://hameenamk-my.sharepoint.com/:w:/g/personal/lmustonen_hamk_fi/EZq3oBSYzDVAhUirgcGK6bMBKKGTGCUiqwToPdheUx79hw?e=0e7XmH) *
 
 ## Thesis process
 
@@ -24,7 +24,7 @@ Some sources for the learning material regarding thesis writing and HAMK's guide
 
 ## General Thesis Guides
 
-- [Tieteellinen teksti](https://hameenamk-my.sharepoint.com/:p:/g/personal/lmustonen_hamk_fi/Ed9tXZIP_FZMlbcOg5LiYkMBqSNIRDB6kwPf1qhGARW0SA?e=jvPdan)
+- [Tieteellinen teksti](https://hameenamk-my.sharepoint.com/:p:/g/personal/lmustonen_hamk_fi/Ed9tXZIP_FZMlbcOg5LiYkMBqSNIRDB6kwPf1qhGARW0SA?e=jvPdan) *
 - [JAMKin ohjeita opinnäytetyöhön, kirjoittamisesta, tiedonhankinnasta, yms. hyödyllistä](https://help.jamk.fi/raportointiohje/fi/)
 - [APA style referencing guidelines](https://apastyle.apa.org/style-grammar-guidelines/references)
 
@@ -32,3 +32,5 @@ Some sources for the learning material regarding thesis writing and HAMK's guide
 
 - [Thesis template](https://www.hamk.fi/wp-content/uploads/2024/01/Thesis-Template.dotx)
 - [Thesis appendix template](https://www.hamk.fi/wp-content/uploads/2024/10/HAMK-thesis-appendix-template-2024-1.dotx)
+
+Links marked with "*" cannot be downloaded, since we lack permissions. Go and ask for the PDF copies of those files.
