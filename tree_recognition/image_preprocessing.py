@@ -102,7 +102,7 @@ def main():
             continue
         # multithreading - I am speed
         with ThreadPoolExecutor() as executor:
-            executor.map(preprocess, filenames, [dirpath] * len(dirpath))
+            executor.map(preprocess, filenames, [dirpath] * len(filenames))
 
 
 if __name__ == "__main__":
