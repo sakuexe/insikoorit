@@ -1,5 +1,7 @@
 # 2048 - Heuristics and expectimax
 
+![Screenshot of the game and some code](./assets/2048_banner.jpg)
+
 ## Assignment
 
 #### Topic
