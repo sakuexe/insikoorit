@@ -56,6 +56,22 @@ pip install -r requirements.txt
 
 [Pytorch - Get Started Locally](https://pytorch.org/get-started/locally/)
 
+## Learning about FastAPI
+
+Getting started with FastAPI basics:
+
+- [Tutorial - User Guide](https://fastapi.tiangolo.com/tutorial/)
+
+Using Templates with FastAPI (The frontend code):
+
+- [https://fastapi.tiangolo.com/advanced/templates/](https://fastapi.tiangolo.com/advanced/templates/)
+
+> [!NOTE]
+> All of the packages that are needed by these tutorials are already inside
+> `requirements.txt`. Install them using `pip install -r requirements`!
+> Therefore, you don't need to follow the installation steps in the tutorials.
+
+
 ## Helpful commands
 
 Re-preprocess the training images:
