@@ -53,4 +53,15 @@ https://hameenamk-my.sharepoint.com/:p:/g/personal/lmustonen_hamk_fi/Ee1wmt9G26N
 https://help.jamk.fi/raportointiohje/fi/
 
 # APA style referencing guidelines
+
 https://apastyle.apa.org/style-grammar-guidelines/references
+
+# Templates
+
+## Thesis template
+
+https://www.hamk.fi/wp-content/uploads/2024/01/Thesis-Template.dotx
+
+## Thesis appendix template
+
+https://www.hamk.fi/wp-content/uploads/2024/10/HAMK-thesis-appendix-template-2024-1.dotx

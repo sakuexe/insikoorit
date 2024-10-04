@@ -70,3 +70,5 @@ completing your work. Once your thesis has been evaluated, you will receive an
 email with a link to the feedback survey via Wihi.
 
 _Last modified: Friday, 9 February 2024, 2:56 PM_
+
+[link to the original moodle page](https://learn.hamk.fi/mod/page/view.php?id=430392)
