@@ -52,3 +52,5 @@ https://hameenamk-my.sharepoint.com/:p:/g/personal/lmustonen_hamk_fi/Ee1wmt9G26N
 
 https://help.jamk.fi/raportointiohje/fi/
 
+# APA style referencing guidelines
+https://apastyle.apa.org/style-grammar-guidelines/references
