@@ -56,6 +56,12 @@ pip install -r requirements.txt
 
 [Pytorch - Get Started Locally](https://pytorch.org/get-started/locally/)
 
+4. Run the Web App
+
+```bash
+fastapi dev app/main.py
+```
+
 ## Learning about FastAPI
 
 Getting started with FastAPI basics:
