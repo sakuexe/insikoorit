@@ -1,34 +1,57 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 import os
-from PIL import Image
 
 app = FastAPI()
-    
-   
-@app.post("/several_items/")
-async def several_images(path: str="\\tree_recognition\\koe\\", whichTree: str = "maple"):
-    os.chdir("..")
-    directory = os.path.dirname(os.getcwd())+ "\\tree_recognition\\trees_training\\edited\\"+whichTree+"\\"
-    lst = os.listdir(directory)
-    number_files = len(lst)
-    for id in range(number_files):
-        if id <=9:
-            N = "_00"
-        else:
-            N = "_0"
-        names = os.path.dirname(os.getcwd()) + path + whichTree + str(id)+".jpg"
-        fileName = whichTree+N+str(id)+".jpg"
-        fileName2 = whichTree+N+str(id)+".jpeg"
-        file = os.path.dirname(os.getcwd()) + "\\tree_recognition\\trees_training\\edited\\"+whichTree+"\\"+ fileName
-        file2 = os.path.dirname(os.getcwd()) + "\\tree_recognition\\trees_training\\edited\\"+whichTree+"\\" + fileName2
-        if os.path.isfile(file):
-            image = Image.open(file)
-        elif os.path.isfile(file2):
-            image = Image.open(file2)
-        else:
-            id = id + 1
-            continue
-        image.show()
-        image.save(names)
-        image.close()
-    return file
+
+# Directory where uploaded images will be stored
+UPLOAD_FOLDER = 'static/uploads/'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+# Mount the static files directory
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Home route to render the HTML upload form
+@app.get("/", response_class=HTMLResponse)
+async def upload_form():
+    return """
+    <html>
+        <head>
+            <title>Upload Image</title>
+        </head>
+        <body>
+            <h1>Upload an Image</h1>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*">
+                <input type="submit" value="Upload">
+            </form>
+        </body>
+    </html>
+    """
+
+# Route to handle the image upload
+@app.post("/upload")
+async def upload_image(file: UploadFile = File(...)):
+    if file:
+        file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+        with open(file_path, "wb") as buffer:
+            buffer.write(await file.read())
+        return RedirectResponse(url=f"/uploads/{file.filename}", status_code=303)
+    return {"message": "No file uploaded."}
+
+# Route to display the uploaded image
+@app.get("/uploads/{filename}", response_class=HTMLResponse)
+async def uploaded_file(filename: str):
+    return f"""
+    <html>
+        <head>
+            <title>Uploaded Image</title>
+        </head>
+        <body>
+            <h1>Image successfully uploaded!</h1>
+            <img src="/static/uploads/{filename}" alt="{filename}" style="width:200px; margin:10px;">
+        </body>
+    </html>
+    """
