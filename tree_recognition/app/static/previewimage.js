@@ -1,5 +1,5 @@
 /** @type {HTMLInputElement | null | undefined} */
-const fileInput = evaluationForm?.querySelector('input[name="file"]');
+const fileInput = document?.querySelector('form input[name="file"]');
 if (!fileInput) throw new Error("no fileinput field was found");
 
 fileInput?.addEventListener("change", () => {
