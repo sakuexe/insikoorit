@@ -6,7 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tree Recognition - Team Insiköörit</title>
   <link href="/static/style.css" rel="stylesheet">
-  <script src="/static/evaluate.js" defer></script>
+  <!--<script src="/static/evaluate.js" defer></script>-->
+  <script src="/static/previewimage.js" defer></script>
+  <script src="https://unpkg.com/htmx.org@2.0.3"
+    integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -32,7 +36,7 @@
         </svg>
       </div>
 
-      <form action="/evaluate" method="post" enctype="multipart/form-data">
+      <form hx-post="/evaluate" enctype="multipart/form-data" hx-target="#result" hx-swap="innerHTML">
         <h2>Upload a tree</h2>
         <input type="file" name="file" accept="image/*">
         <button type="submit">
@@ -41,14 +45,6 @@
       </form>
 
       <output id="result">
-          <div id="type">
-            <p class="key">Type:</p>
-            <p class="value"></p>
-          </div>
-          <div id="score">
-            <p class="key">Score:</p>
-            <p class="value"></p>
-          </div>
       </output>
     </div>
   </main>

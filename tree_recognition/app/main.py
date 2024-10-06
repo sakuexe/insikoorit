@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+import random
 import os
 from routing import evaluation
 
@@ -21,6 +22,8 @@ templates = Jinja2Templates(directory="templates")
 # Home route to render the HTML upload form
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
+    print("hit!!")
     return templates.TemplateResponse(
-        request=request, name="index.html"
+        request=request,
+        name="index.html",
     )
