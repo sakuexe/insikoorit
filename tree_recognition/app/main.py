@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-import random
 import os
 from routing import evaluation
 
@@ -10,7 +9,7 @@ app = FastAPI()
 app.include_router(evaluation.router)
 
 # Directory where uploaded images will be stored
-UPLOAD_FOLDER = 'static/uploads/'
+UPLOAD_FOLDER = os.path.join("static", "uploads")
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.mount("/static", StaticFiles(directory="static"), name="static")
