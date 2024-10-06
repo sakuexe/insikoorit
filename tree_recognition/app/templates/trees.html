@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Testing</title>
+   
+	<script>
+        function show() {
+			var imgsrc = document.getElementById("treeFIle").value;
+			var img = new Image();
+			var path = (window.URL || window.webkitURL).createObjectURL(imgsrc));
+			//var img = document.createElement(img);
+			img.src = imgsrc;
+			document.getElementById('kuva').appendChild(img);
+        }
+    
+	</script>
+	 
+  </head>
+  
+  <body>
+    <h1>Tree evaluationg</h1>
+    <p>Here you load the images and test them</p>
+    <h2>
+    <button name="button" onclick="show()" id="btnID"></button>
+    </h2>
+    <p>
+      <textarea id="path" name="path" rows="1" cols="50"></textarea>
+    </p>
+    <p>
+      <textarea id="whichTree" name="whichTree" rows="1" cols="50"></textarea>
+    </p>
+	<p>
+	<input type="file" id="treeFIle" accept="image/png, image/jpeg" />
+	</p>
+	<p id = "kuva"></p>
+  </body>
+</html>

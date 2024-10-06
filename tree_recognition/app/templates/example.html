@@ -6,9 +6,20 @@
     <title>Testing</title>
   </head>
   <body>
-    <h1>Hey! you got the templating to work.</h1>
-    <p>Good job! You are halfway there with the application.</p>
-    <h2>{{ data }} &lt;---- Put some dynamic data here please.</h2>
+    <h1>Tree evaluationg</h1>
+    <p>Here you load the images and test them</p>
+    <h2>
+    <button>
+      <?PHP
+      echo shell_exec("python Main.py path, whichTree");
+      ?>
+    </button></h2>
+    <p>
+      <textarea id="path" name="path" rows="1" cols="50"></textarea>
+    </p>
+    <p>
+      <textarea id="whichTree" name="whichTree" rows="1" cols="50"></textarea>
+    </p>
     <p>I believe in you</p>
   </body>
 </html>
