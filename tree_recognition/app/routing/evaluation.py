@@ -1,6 +1,7 @@
 from fastapi import UploadFile, File, HTTPException, Request
 from fastapi import APIRouter
 from fastapi.templating import Jinja2Templates
+from glob import glob
 import random
 import os
 
@@ -24,8 +25,13 @@ async def evaluate_tree(request: Request, file: UploadFile = File(...)):
     with open(file_path, "wb") as buffer:
         buffer.write(await file.read())
 
+    # choose a random training class name
+    # this is just for mocking purposes
+    folders = glob("../trees_training/originals/*/")
+    random_class = os.path.basename(os.path.normpath(random.choice(folders)))
+
     return templates.TemplateResponse(
         request=request,
         name="result.html",
-        context={"type": "birch", "score": random.random()}
+        context={"type": random_class, "score": random.random()}
     )
