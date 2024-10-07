@@ -111,7 +111,7 @@ form {
   grid-column: 1 / -1;
 }
 
-#result > div > p:first-child 
+#result > div > p:first-child {
   font-size: 1.5em;
   font-weight: 700;
 }
