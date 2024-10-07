@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tree Recognition - Team Insiköörit</title>
-  <link href="/static/style.css" rel="stylesheet">
+  <link href="static/style.css" rel="stylesheet">
   <!--<script src="/static/evaluate.js" defer></script>-->
   <script src="/static/previewimage.js" defer></script>
   <script src="https://unpkg.com/htmx.org@2.0.3"
@@ -14,13 +14,18 @@
 </head>
 
 <body>
+ 
   <main>
-    <h1>Tree recognition</h1>
-    <div id="image-upload">
+   <div id= "elementti">
 
+    <h1>Tree recognition</h1>
+	
+    <div id="image-upload">
+	  <div id = "cent">
       <div id="image-preview">
         <img src="" alt="">
         <svg class="placeholder" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+		
           <path class="st0"
             d="M257.447,404.678c-0.426-0.667-0.925-1.425-1.444-2.194c-0.518,0.769-1.019,1.519-1.445,2.185 c-5.926,9.037-16.981,25.879-39.499,25.879c-3.518,0-6.666-0.519-9.629-1.251V512h101.127v-82.692 c-2.982,0.722-6.111,1.241-9.611,1.241C274.428,430.549,263.392,413.716,257.447,404.678z">
           </path>
@@ -32,22 +37,32 @@
           </path>
           <path class="st0"
             d="M180.19,128.232c12.629,0,12.629-17.518,25.258-17.518c12.63,0,12.63,17.518,25.278,17.518 c12.666,0,12.666-17.518,25.277-17.518c12.648,0,12.648,17.518,25.295,17.518c12.611,0,12.611-17.518,25.278-17.518 c12.629,0,12.629,17.518,25.258,17.518c19.87,0,26.74-12.083,15.277-26.824l-70.276-90.34c-11.425-14.758-30.221-14.758-41.702,0 l-70.239,90.34C153.414,116.149,160.284,128.232,180.19,128.232z">
-          </path>
+          </path>		  
         </svg>
-      </div>
+	
+	</div>
+	</div>
+	  
 
       <form hx-post="/evaluate" enctype="multipart/form-data" hx-target="#result" hx-swap="innerHTML">
-        <h2>Upload a tree</h2>
+        <h2>Upload a tree</h2>'
+		<p id = "bu">
         <input type="file" name="file" accept="image/*">
+		</p>
+		<p id = "bu2">
         <button type="submit">
           Upload & Evaluate
         </button>
+		</p>
+		
       </form>
 
       <output id="result">
       </output>
-    </div>
+    
+  </div>
   </main>
+  </div>
 </body>
 
 </html>
