@@ -1,6 +1,9 @@
-/** @type {HTMLInputElement | null | undefined} */
-const fileInput = document?.querySelector('form input[name="file"]');
+/** @type {HTMLInputElement | null} */
+const fileInput = document.querySelector('form input[name="file"]');
 if (!fileInput) throw new Error("no fileinput field was found");
+/** @type {HTMLFormElement | null} */
+const imageForm = document.querySelector('form');
+if (!imageForm) throw new Error("no form was found");
 
 fileInput?.addEventListener("change", () => {
 /** @type {HTMLImageElement | null} */
@@ -28,3 +31,13 @@ function hideResults() {
 
   results.innerHTML = "";
 }
+
+// clear the image review when the reset button is clicked
+imageForm?.addEventListener("reset", (_) => {
+  /** @type {HTMLImageElement | null} */
+  const imagePreview = document.querySelector("#image-preview > img");
+  if (!imagePreview) throw new Error("No image preview was found")
+
+  imagePreview.src = "";
+  hideResults();
+});

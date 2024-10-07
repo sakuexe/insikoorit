@@ -1,0 +1,82 @@
+form {
+  border-width: var(--border-width);
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  padding: 1em;
+  color: var(--color-primary);
+}
+
+form h2, form p {
+  margin: 0
+}
+
+#image-preview {
+  --foreground: #50668f;
+  position: relative;
+  overflow: clip;
+  display: grid;
+  place-items: center;
+  background-color: var(--foreground);
+  /*aspect-ratio: 1/1;*/
+  /*width: 100%;*/
+  /*height: 100%;*/
+  border-style: inset;
+  border-width: var(--border-width);
+}
+
+#image-preview > .placeholder {
+  padding: 4em;
+}
+
+#image-preview > img:first-child {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+form label, form button {
+  background-color: var(--color-secondary);
+  border-width: calc(var(--border-width) / 1.5);
+  border-style: outset;
+  border-color: white;
+  padding: 0.5em 1em;
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+form label > div {
+  display: flex;
+  gap: 1em;
+}
+
+form .buttons {
+  display: flex;
+}
+
+form .buttons button:first-of-type {
+  flex-grow: 1;
+}
+
+form label:hover, form button:hover {
+  filter: brightness(0.95);
+  border-style: inset;
+}
+
+form label > div > div > p:first-child {
+  font-weight: bold;
+  font-size: 1.125em;
+}
+
+form button > p {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}

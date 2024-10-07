@@ -1,119 +1,106 @@
+:root {
+  --color-primary: #181115;
+  --color-secondary: #dedede;
+  --border-width: 5px;
+}
+
 html {
-  color: black;
-  background-color: #F5F7F5;
+  background-color: var(--color-primary);
   font-family: sans-serif;
-  }
-#elementti{
-  padding: 2em 5em 4em 5em;
-  background: rgb(34,195,153);
-  background: linear-gradient(120deg, rgba(34,195,153,1) 0%, rgba(253,244,45,0.6783963585434174) 46%);
-}
-h1{
-	text-align: center;
-	background-color: white;
-	color: gray;
-	padding: 2px;
-	border: 2px red;
-	border-style: outset;
-	font-family: arial;
-}
-h2{
-	text-align: center;
-	font-family: arial;
-}
-main{
-	/* min-width, goal-width, max-width*/
-  width: clamp(256px, 80%, 100%);
-  margin-inline: auto;
-  }
-button{
-	padding: 1em;
-	font-family: arial;
-	font-size: 1.5em;
-	
-}
-form {
-	padding: 0em 1em 0em 1em;
-	border: 1em;
-	background: rgb(55,246,224);
-	background: linear-gradient(90deg, rgba(55,246,224,1) 0%, rgba(55,246,208,0.364670868347339) 35%, rgba(0,212,255,1) 100%);
-	border-style: outset;
+  font-size: 0.8em;
+  color: var(--color-secondary);
 }
 
-
-#bu{
-	border: 0.5em;
-	border-color: gray;
-	border-style: outset;
-	width: 50%;
-	background-color:white;
-	margin-left: auto; 
-	margin-right: auto;
-}
-#bu2{
-	margin-left: auto; 
-	margin-right: auto;
-	margin-top: 25%;
-
-	border: 0.5em;
-	border-color: gray;
-	border-style: outset;
-	width: 30%;
-	
-}
-#cent{
-	border: 1em;
-	border-color: gray;
-	border-style: outset;
-}
-	
-#image-upload {
-  display: grid;
-  
-  /* two equal sized columns*/
-  grid-template-columns: 1fr 1fr;
-  padding: 0em 1em 0em 1em;
-}
-
-
-#image-preview {
-  position: relative;
-  overflow: clip;
-  display: grid;
-  place-items: center;
-  background-color: #222;
-  aspect-ratio: 1/1;
-  
-  
-}
-
-#image-preview > svg.placeholder {
-	
-  fill: #dedede;
-  opacity: 50%;
-  width: clamp(2em, 100%, 10em);
-  padding: 4em;
-}
-
-#image-preview > img {
-  width: 10%;
-  height: 10%;
-  object-fit: contain;
-  object-position: center;
+/* background patterns */
+main::before {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  width: 100%;
+  height: 100%;
+  z-index: -10;
+  background-image: url("/static/images/background_pattern.webp");
+  background-size: 512px;
+  mix-blend-mode: multiply;
 }
 
-#result {
-  text-align: center;
+body {
+  display: grid;
+  place-items: center;
+  height: 100svh;
+  margin: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  /*gap: 1.25em;*/
+  border: var(--border-width) solid var(--color-secondary);
+  width: clamp(356px, 90%, 100%);
+  margin-inline: auto;
+  overflow: auto;
+  resize: both;
+  @media (min-width: 576px) {
+    width: clamp(356px, 80%, 1080px);
+  }
+}
+
+main > *:first-child {
+  flex-grow: 1;
+}
+
+main > section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  height: 100%;
+}
+
+header {
+  --background: color-mix(in srgb, var(--color-primary) 40%, var(--color-secondary));
+  display: flex;
+  gap: 0.2em;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--background);
+  color: var(--color-primary);
   grid-column: 1 / -1;
+  margin: 0;
+  padding: 0.1em 0.5em;
 }
 
-#result > div > p:first-child {
-  font-size: 1.5em;
-  font-weight: 700;
+header > div {
+  display: flex;
+  gap: 0.2em;
+  align-items: center;
+  height: 100%;
 }
 
-	
+header > div > h1 {
+  font-size: 1.25em;
+  margin: 0;
+  color: var(--color-secondary);
+  opacity: 75%;
+}
+
+header > div:last-child > button {
+  background-color: var(--color-secondary);
+  margin: 0;
+  font-weight: bold;
+  aspect-ratio: 1/1;
+  width: 2em;
+  user-select: none;
+}
+
+hr {
+  border-style: inset;
+  border-width: calc(var(--border-width) / 4);
+  border-color: var(--color-secondary);
+  margin-block: 1.5em;
+}
+
+output#result {
+  text-align: center;
+  display: block;
+  min-height: 15em;
+}
