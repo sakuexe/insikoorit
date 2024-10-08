@@ -93,6 +93,10 @@ header > div:last-child > button {
   user-select: none;
 }
 
+img {
+  image-rendering: pixelated;
+}
+
 hr {
   border-style: inset;
   border-width: calc(var(--border-width) / 4);
