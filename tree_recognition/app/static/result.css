@@ -5,6 +5,7 @@ output#result {
 
 #response {
   min-height: 12em;
+  flex-grow: 1;
 }
 
 output#result > div {

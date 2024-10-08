@@ -4,6 +4,8 @@ form {
   border-color: var(--color-secondary);
   padding: 1em;
   color: var(--color-primary);
+  display: flex;
+  flex-direction: column;
 }
 
 form h2, form p {
