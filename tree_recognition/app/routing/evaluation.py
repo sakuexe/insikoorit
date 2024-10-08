@@ -1,8 +1,8 @@
-from typing import Optional
 from fastapi import UploadFile, Request
 from fastapi import APIRouter
 from fastapi.templating import Jinja2Templates
 from glob import glob
+from time import sleep
 import random
 import os
 
@@ -34,6 +34,9 @@ async def evaluate_tree(request: Request, file: UploadFile | None = None):
             context={"code": 500,
                      "message": "The file could not be saved to the disk"}
         )
+
+    # fake delay
+    sleep(0.5)
 
     # choose a random training class name
     # this is just for mocking purposes

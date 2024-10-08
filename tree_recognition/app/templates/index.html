@@ -37,7 +37,8 @@
           class="placeholder">
       </div>
 
-      <form hx-post="/evaluate" enctype="multipart/form-data" hx-target="#result" hx-swap="innerHTML">
+      <form hx-post="/evaluate" enctype="multipart/form-data" hx-target="#result" hx-swap="innerHTML"
+        hx-indicator="#loader">
         <div>
           <h2>Upload a tree</h2>
           <p>
@@ -60,7 +61,7 @@
         </label>
 
         <div class="buttons">
-          <button type="submit">
+            <button type="submit" hx-on:click='document.querySelectorAll("#result > *")?.forEach((elem) => {elem.remove()});'>
             <p>
               <img src="/static/images/eval-icon.png" alt="evaluate icon" width="32" height="32">
               Upload & Evaluate
@@ -76,7 +77,13 @@
 
         <hr>
 
-        <output id="result"></output>
+        <div id="response">
+          <div id="loader">
+            <img src="/static/images/loading-disc.gif" alt="" width="32" height="32">
+            <p>Computing</p>
+          </div>
+          <output id="result"></output>
+        </div>
 
         <div id="credits">
           <p>&copy; Team Insiköörit - 1995</p>

@@ -1,6 +1,9 @@
 output#result {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+#response {
   min-height: 12em;
 }
 

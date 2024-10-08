@@ -84,3 +84,47 @@ form button > p {
   align-items: center;
   gap: 1em;
 }
+
+/* loading animation */
+
+#loader {
+  display: none;
+  gap: 0.5em;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125em;
+}
+
+#loader p {
+  display: flex;
+  gap: 0.25em;
+}
+
+#loader p::after {
+  content: "...";
+  display: block;
+  top: 0;
+  right: -70%;
+  width: 3em;
+  text-align: start;
+  animation: loading 1s forwards infinite;
+}
+
+#loader.htmx-request {
+  display: flex;
+}
+
+@keyframes loading {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+}
