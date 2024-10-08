@@ -1,4 +1,5 @@
-from fastapi import UploadFile, File, HTTPException, Request
+from typing import Optional
+from fastapi import UploadFile, Request
 from fastapi import APIRouter
 from fastapi.templating import Jinja2Templates
 from glob import glob
@@ -11,19 +12,28 @@ router = APIRouter()
 
 
 @router.post("/evaluate")
-async def evaluate_tree(request: Request, file: UploadFile = File(...)):
+async def evaluate_tree(request: Request, file: UploadFile | None = None):
     from main import UPLOAD_FOLDER
 
     if not file:
-        raise HTTPException(status_code=401, detail="No file was passed")
-    if not file.filename:
-        raise HTTPException(
-            status_code=401, detail="given image had no filename")
+        return templates.TemplateResponse(
+            request=request,
+            name="error.html",
+            context={"code": 400, "message": "The given file has no filename"}
+        )
 
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename or "noname.jpeg")
 
-    with open(file_path, "wb") as buffer:
-        buffer.write(await file.read())
+    try:
+        with open(file_path, "wb") as buffer:
+            buffer.write(await file.read())
+    except OSError:
+        return templates.TemplateResponse(
+            request=request,
+            name="error.html",
+            context={"code": 500,
+                     "message": "The file could not be saved to the disk"}
+        )
 
     # choose a random training class name
     # this is just for mocking purposes
