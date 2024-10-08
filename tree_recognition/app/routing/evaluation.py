@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from fastapi.templating import Jinja2Templates
 from glob import glob
 from time import sleep
+import asyncio
 import random
 import os
 
@@ -36,15 +37,35 @@ async def evaluate_tree(request: Request, file: UploadFile | None = None):
         )
 
     # fake delay
-    sleep(0.5)
+    await asyncio.sleep(0.5)
 
     # choose a random training class name
     # this is just for mocking purposes
-    folders = glob("../trees_training/originals/*/")
+    folders = glob(os.path.join("..", "trees_training", "originals", "*"))
+    if len(folders) == 0:
+        return templates.TemplateResponse(
+            request=request,
+            name="error.html",
+            context={"code": 500,
+                     "message": "No folders could be found at \
+                     ../trees_training/originals"}
+        )
     random_class = os.path.basename(os.path.normpath(random.choice(folders)))
+
+    # after the model has done its work, remove the saved image
+    asyncio.create_task(remove_file_async(file_path))
 
     return templates.TemplateResponse(
         request=request,
         name="result.html",
         context={"type": random_class, "score": random.random()}
     )
+
+
+async def remove_file_async(file_path: str):
+    """Asynchronously remove the file."""
+    try:
+        os.remove(file_path)
+    except OSError as err:
+        print(f"Error while removing file from: {file_path}")
+        print(err)

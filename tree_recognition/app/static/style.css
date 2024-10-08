@@ -102,6 +102,7 @@ hr {
   border-width: calc(var(--border-width) / 4);
   border-color: var(--color-secondary);
   margin-block: 1.5em;
+  width: 100%;
 }
 
 #credits {

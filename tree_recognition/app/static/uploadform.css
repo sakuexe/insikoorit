@@ -24,6 +24,7 @@ form h2, form p {
   /*height: 100%;*/
   border-style: inset;
   border-width: var(--border-width);
+  min-height: 20em;
 }
 
 #image-preview > .placeholder {

@@ -19,3 +19,16 @@ output#result div > p.key {
   font-size: 1.125em;
 }
 
+/* errors */
+
+#error {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+#error h3 {
+  margin: 0;
+}
