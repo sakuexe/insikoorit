@@ -59,6 +59,7 @@ form label > div {
 
 form .buttons {
   display: flex;
+  flex-wrap: wrap;
 }
 
 form .buttons button:first-of-type {

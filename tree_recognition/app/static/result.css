@@ -1,7 +1,7 @@
 output#result {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 15em;
+  min-height: 12em;
 }
 
 output#result > div {
