@@ -1,4 +1,5 @@
 runs/
 weights/
+!self_taught_model/weights
 
 app/static/uploads

@@ -1,23 +1,20 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import models
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 from torchvision.transforms import Compose, Resize, ToTensor
 from torch.utils.tensorboard.writer import SummaryWriter
-from torchsummary import summary
 from PIL import Image
 import matplotlib.pyplot as plt
 import os
 import random
-from training_fn import train_model, validate_model
-from utils.save_model import save_model_to_disk
+from cnn_model import TreeCNN
+from training_fn import WEIGHTS_ROOT, train_model
 
 TRAINING_ROOT = "trees_training/edited"
 VALIDATION_ROOT = "trees_valuation"
 LEARNING_RATE = 0.01
-EPOCHS = 10
 IMAGE_RESIZE = 128
 
 # use gpu if available
@@ -46,6 +43,7 @@ titles = []
 for dirpath, _, filenames in os.walk(TRAINING_ROOT):
     if not filenames:
         continue
+    print(f"filenames in {dirpath} are: {filenames}")
     filepath = os.path.join(dirpath, random.choice(filenames))
     image_paths.append(filepath)
     titles.append(os.path.basename(os.path.normpath(dirpath)))
@@ -53,7 +51,7 @@ for dirpath, _, filenames in os.walk(TRAINING_ROOT):
 # Load the images
 images = [Image.open(image_path) for image_path in image_paths]
 
-# display a random sample of each class
+# display the images
 fig, axs = plt.subplots(1, len(images), figsize=(12, 5))
 for ax, image, title in zip(axs, images, titles):
     ax.imshow(image)
@@ -64,43 +62,18 @@ plt.tight_layout()
 plt.show()
 
 # initialize the model
-model = models.resnet34(weights=models.ResNet34_Weights.DEFAULT).to(device)
-# display a detailed summary of the model's architecture
-# the ResNet34 and ResNet18 use a input size of 224, 224
-summary(model, input_size=(3, 224, 224))
-print(model)
-
-# input size and output size
-model.fc = nn.Linear(512, len(train_data.classes)).to(device)
+model = TreeCNN(train_data.classes, IMAGE_RESIZE).to(device)
 loss_fn = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+optimizer = optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=0.9)
 
-best_validation_loss = float('inf')
+train_model(model,
+            train_loader,
+            validation_loader,
+            loss_fn,
+            optimizer,
+            writer,
+            num_epochs=10)
 
-for epoch in range(EPOCHS):
-    print(f"Epoch {epoch+1}/{EPOCHS}")
-    training_data = train_model(
-        model,
-        train_loader,
-        loss_fn,
-        optimizer,
-        device,
-    )
-    validation_data = validate_model(
-        model,
-        validation_loader,
-        loss_fn,
-        device,
-    )
-
-    # Log losses and accuracy to TensorBoard
-    writer.add_scalar('Loss/train', training_data["epoch_loss"], epoch)
-    writer.add_scalar('Loss/validation', validation_data["epoch_loss"], epoch)
-    writer.add_scalar('Accuracy/validation',
-                      validation_data["epoch_accuracy"],
-                      epoch)
-
-    # save the model whenever validation loss is lower than the previous best
-    if validation_data["epoch_loss"] < best_validation_loss:
-        best_val_loss = validation_data["epoch_loss"]
-        save_model_to_disk(model)
+# load the best model for inference
+model.load_state_dict(torch.load(f'{WEIGHTS_ROOT}/best_model_weights.pth'))
+model.eval()
