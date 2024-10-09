@@ -175,6 +175,7 @@ everyone has prior experience with it or many other web frameworks.
 
 **More in depth tutorial about using FastAPI (very optional, if interested)**
 
-I chose this one because I thought that it was Petri in the thumbnail at first.
+I chose this one because I thought that it was [Petri Kuittinen](https://github.com/petrikuittinen)
+(the legend) in the thumbnail at first.
 
 - [Travis Media - Why You NEED To Learn FastAPI | Hands On Project](https://www.youtube.com/watch?v=cbASjoZZGIw)
