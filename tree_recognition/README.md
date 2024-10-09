@@ -29,6 +29,16 @@ The english names, finnish names and the amount of pictures taken.
 
 **Overall**: 230 images
 
+## Table of contents
+
+1. [Running the project](#Running-the-project)
+
+2. [Training the model](#Training-the-model)
+
+3. [Helpful commands](#Helpful-commands)
+
+5. [Dependencies](#Dependencies)
+
 ## Running The Project
 
 1. Set up the virtual environment
