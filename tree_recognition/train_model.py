@@ -1,3 +1,4 @@
+# pytorch
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -7,12 +8,16 @@ from torchvision.datasets import ImageFolder
 from torchvision.transforms import Compose, Resize, ToTensor
 from torch.utils.tensorboard.writer import SummaryWriter
 from torchsummary import summary
+# visualization
 from PIL import Image
 import matplotlib.pyplot as plt
+# stdlib
 import os
 import random
+import argparse
+# local
 from training_fn import train_model, validate_model
-from utils.save_model import save_model_to_disk
+from utils.model_state import save_model_to_disk, load_model_from_disk
 
 TRAINING_ROOT = "trees_training/edited"
 VALIDATION_ROOT = "trees_valuation"
@@ -20,8 +25,32 @@ LEARNING_RATE = 0.01
 EPOCHS = 10
 IMAGE_RESIZE = 128
 
+parser = argparse.ArgumentParser(
+    description="Train the tree recognition model")
+parser.add_argument('--learning-rate', nargs="?", type=float,
+                    help='The learning rate')
+parser.add_argument('--epochs', nargs="?", type=int,
+                    help='Number of iterations')
+parser.add_argument('--image-size', nargs="?", type=int,
+                    help='Size of the images given to the model to train on')
+parser.add_argument('--verbose', action='store_true',
+                    help='Print more info about the model during training')
+parser.add_argument('--continue_training', action='store_true',
+                    help='Load the saved model instead of starting from \
+                    scratch')
+parser.add_argument('--weights', nargs="?", type=str,
+                    help='The path to the saved weight you want to load')
+args = parser.parse_args()
+
+LEARNING_RATE = args.learning_rate or LEARNING_RATE
+EPOCHS = args.epochs or EPOCHS
+IMAGE_RESIZE = args.image_size or IMAGE_RESIZE
+WEIGHTS = args.weights
+
 # use gpu if available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+if args.verbose:
+    print(f"The current device is: {device}")
 
 # tensorboard writer
 writer = SummaryWriter('runs/trees_experiment')
@@ -34,7 +63,8 @@ transform = Compose([Resize((IMAGE_RESIZE, IMAGE_RESIZE)), ToTensor()])
 train_data = ImageFolder(root=TRAINING_ROOT, transform=transform)
 validation_data = ImageFolder(root=VALIDATION_ROOT, transform=transform)
 
-print("Classes from training data are:", train_data.classes)
+if args.verbose:
+    print("Classes from training data are:", train_data.classes)
 
 # Create data loaders
 train_loader = DataLoader(train_data, batch_size=16, shuffle=True)
@@ -65,15 +95,23 @@ plt.show()
 
 # initialize the model
 model = models.resnet34(weights=models.ResNet34_Weights.DEFAULT).to(device)
-# display a detailed summary of the model's architecture
-# the ResNet34 and ResNet18 use a input size of 224, 224
-summary(model, input_size=(3, 224, 224))
-print(model)
-
 # input size and output size
 model.fc = nn.Linear(512, len(train_data.classes)).to(device)
 loss_fn = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+
+if args.verbose:
+    # display a detailed summary of the model's architecture
+    # the ResNet34 and ResNet18 use a input size of 224, 224
+    summary(model, input_size=(3, 224, 224))
+    print("current model: resnet34")
+    print(model)
+
+if args.continue_training:
+    if WEIGHTS:
+        load_model_from_disk(model, model_name=WEIGHTS)
+    else:
+        load_model_from_disk(model)
 
 best_validation_loss = float('inf')
 
