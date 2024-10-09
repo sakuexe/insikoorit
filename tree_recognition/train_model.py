@@ -38,17 +38,15 @@ parser.add_argument("--image-size", nargs="?", type=int,
                     help="Size of the images given to the model to train on")
 parser.add_argument("--verbose", action="store_true",
                     help="Print more info about the model during training")
-parser.add_argument("--continue-training", action="store_true",
+parser.add_argument("--continue-training", nargs="?",
+                    const=True, default=False, type=str,
                     help="Load the saved model instead of starting from \
                     scratch")
-parser.add_argument("--weights", nargs="?", type=str,
-                    help="The path to the saved weight you want to load")
 args = parser.parse_args()
 
 LEARNING_RATE = args.learning_rate or LEARNING_RATE
 EPOCHS = args.epochs or EPOCHS
 IMAGE_RESIZE = args.image_size or IMAGE_RESIZE
-WEIGHTS = args.weights
 
 # use gpu if available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -112,12 +110,12 @@ if args.verbose:
     print("current model: resnet34")
     print(model)
 
-if args.continue_training:
+if args.continue_training is True:
     print("continuing training on an existing model")
-    if WEIGHTS:
-        load_model_from_disk(model, model_name=WEIGHTS)
-    else:
-        load_model_from_disk(model)
+    load_model_from_disk(model)
+elif args.continue_training:
+    print("continuing training on an existing model")
+    load_model_from_disk(model, model_name=args.continue_training)
 
 best_validation_loss = float('inf')
 
