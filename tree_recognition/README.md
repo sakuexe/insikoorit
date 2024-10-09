@@ -62,6 +62,23 @@ pip install -r requirements.txt
 fastapi dev app/main.py
 ```
 
+## Training the model
+
+1. Train the model
+
+```bash
+python3 train_model.py
+# see all the possible arguments
+python3 train_model.py --help
+```
+
+2. Read the data of the runs
+
+```bash
+tensorboard --logdir=runs/
+# open the link that the command prints
+```
+
 ## Learning about FastAPI
 
 **Getting started with FastAPI basics:**

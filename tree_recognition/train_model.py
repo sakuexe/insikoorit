@@ -141,5 +141,5 @@ for epoch in range(EPOCHS):
 
     # save the model whenever validation loss is lower than the previous best
     if validation_data["epoch_loss"] < best_validation_loss:
-        best_val_loss = validation_data["epoch_loss"]
+        best_validation_loss = validation_data["epoch_loss"]
         save_model_to_disk(model)
