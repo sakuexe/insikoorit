@@ -17,11 +17,11 @@ AI Project - 10.2024
 
 **Thesizer** is a fine-tuned LLM that is trained to assist with authoring Thesis'.
 It is specifically trained and tuned to guide the user using HAMK's thesis 
-standards and guidelines. The goal of this is to make the process of writing
-a thesis easier, by helping the user using spoken language, so that it will be
-easier for the user to find help on the more technical aspects of writing a 
-thesis. This way the user can focus on what is the most important. The actual 
-content of the Thesis.
+standards and guidelines [Thesis - HAMK](https://www.hamk.fi/en/student-pages/planning-your-studies/thesis/).
+The goal of this is to make the process of writing a thesis easier, by helping
+the user using spoken language, so that it will be easier for the user to find
+help on the more technical aspects of writing a thesis. This way the user can
+focus on what is the most important. The actual content of the Thesis.
 
 This project is part of HAMK's `Development of AI Applications` -course. The
 idea for the project spawned from the overwhelming feeling that all of the
