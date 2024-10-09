@@ -141,18 +141,21 @@ the list of the required packages for this project. You install these manually
 with the command below.
 
 ```bash
-pip install "fastapi[standard]" matplotlib pillow pytorch tensorboard torchsummary
+pip install matplotlib pillow tensorboard torchsummary "fastapi[standard]"
 ```
+
+You also need to install pytorch. You can get the right command for your machine
+from the following link: [Start Locally | PyTorch](https://pytorch.org/get-started/locally/)
 
 - matplotlib - for visualizing data from the model training process
 
 - pillow - needed for manipulating the images in preprocessing as well as during
 the start of the training process
 
-- pytorch - the main workhorse of the project ([Start Locally | PyTorch](https://pytorch.org/get-started/locally/))
-
 - tensorboard - for logging and visualizing the training process
 
 - torchsummary - for summarizing the model
 
 - fastapi - the web framework powering the web application
+
+- pytorch - the main workhorse of the project
