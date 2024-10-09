@@ -133,3 +133,26 @@ git checkout 047d5f0977f23ee910fe20e903eb45c8c1d78b68 -- trees_training
 python3 organize_training.py
 # commit and push your reshuffle
 ```
+
+## Dependencies
+
+The requirements.txt will fail if you are on Windows, so just in case, here is
+the list of the required packages for this project. You install these manually
+with the command below.
+
+```bash
+pip install "fastapi[standard]" matplotlib pillow pytorch tensorboard torchsummary
+```
+
+- matplotlib - for visualizing data from the model training process
+
+- pillow - needed for manipulating the images in preprocessing as well as during
+the start of the training process
+
+- pytorch - the main workhorse of the project ([Start Locally | PyTorch](https://pytorch.org/get-started/locally/))
+
+- tensorboard - for logging and visualizing the training process
+
+- torchsummary - for summarizing the model
+
+- fastapi - the web framework powering the web application
