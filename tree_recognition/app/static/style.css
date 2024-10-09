@@ -36,10 +36,9 @@ body {
 main {
   display: flex;
   flex-direction: column;
-  /*gap: 1.25em;*/
   border: var(--border-width) solid var(--color-secondary);
   width: clamp(356px, 90%, 100%);
-  margin-inline: auto;
+  /*box-shadow: 0px 10px 10px black;*/
   overflow: auto;
   resize: both;
   @media (min-width: 576px) {
@@ -103,39 +102,4 @@ hr {
   border-color: var(--color-secondary);
   margin-block: 1.5em;
   width: 100%;
-}
-
-#credits {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#credits p {
-  opacity: 75%;
-}
-
-#credits a {
-  --tooltip-scale: 0;
-  position: relative;
-}
-
-#credits a::before {
-  --image-width: 32px;
-  content: attr(aria-label);
-  position: absolute;
-  top: -50%;
-  left: calc(var(--image-width) * -3.2);
-  transform: scale(var(--tooltip-scale)) translateY(50%);
-  color: var(--color-primary);
-  background-color: var(--color-secondary);
-  border: calc(var(--border-width) / 2);
-  border-style: outset;
-  border-color: white;
-  padding: 0.5em 0.75em;
-  opacity: 100%;
-}
-
-#credits a:hover {
-  --tooltip-scale: 1;
 }
