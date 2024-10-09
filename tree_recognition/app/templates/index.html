@@ -26,7 +26,7 @@
       </div>
       <div>
         <button>_</button>
-        <button>&#9633;</button>
+        <button>&#9723;</button>
         <button>&times;</button>
       </div>
     </header>
@@ -34,17 +34,38 @@
     <section>
 
       <div id="image-preview">
-        <img src="" alt="">
+        <img src="" alt="" class="user-image">
         <img src="/static/images/tree-icon.png" alt="placeholder icon for a tree" width="48" height="48"
           class="placeholder">
       </div>
 
       <form hx-post="/evaluate" enctype="multipart/form-data" hx-target="#result" hx-swap="innerHTML"
         hx-indicator="#loader">
-        <div>
-          <h2>Upload a tree</h2>
+        <div class="description">
+          <div>
+            <h2>Upload a tree</h2>
+            <p>
+              Upload a picture of a tree. Any tree!
+            </p>
+          </div>
           <p>
-            Upload a picture of a tree. Any tree!
+            The cutting edge Tree Recognition&trade; technology, powered by the immense processing power
+            of the 75 MHz processor and a whopping 4MB of RAM memory, will take any picture of your choosing
+            and recognize the tree type within!
+          </p>
+          <p>
+            <strong>The supported tree types are:</strong><br>
+            birch,
+            juniper,
+            linden,
+            maple,
+            oak,
+            pine,
+            rowan,
+            spruce
+          </p>
+          <p>
+              <a href="https://github.com/sakuexe/insikoorit/tree/main/tree_recognition" target="_blank">The finnish translations can be found here</a>
           </p>
         </div>
 
@@ -63,7 +84,8 @@
         </label>
 
         <div class="buttons">
-            <button type="submit" hx-on:click='document.querySelectorAll("#result > *")?.forEach((elem) => {elem.remove()});'>
+          <button type="submit"
+            hx-on:click='document.querySelectorAll("#result > *")?.forEach((elem) => {elem.remove()});'>
             <p>
               <img src="/static/images/eval-icon.png" alt="evaluate icon" width="32" height="32">
               Upload & Evaluate

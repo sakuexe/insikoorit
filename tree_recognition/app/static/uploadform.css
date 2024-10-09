@@ -42,6 +42,12 @@ form h2, form p {
   z-index: 1;
 }
 
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
 form label, form button {
   background-color: var(--color-secondary);
   border-width: calc(var(--border-width) / 1.5);
@@ -58,6 +64,7 @@ form label, form button {
 form label > div {
   display: flex;
   gap: 1em;
+  line-height: 1;
 }
 
 form .buttons {
@@ -145,15 +152,17 @@ form button > p {
 #credits a {
   --tooltip-scale: 0;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 #credits a::before {
   --image-width: 32px;
   content: attr(aria-label);
   position: absolute;
-  top: -50%;
-  left: calc(var(--image-width) * -3.2);
-  transform: scale(var(--tooltip-scale)) translateY(50%);
+  top: 50%;
+  left: calc(var(--image-width) * -3.5);
+  transform: scale(var(--tooltip-scale)) translateY(-50%);
   color: var(--color-primary);
   background-color: var(--color-secondary);
   border: calc(var(--border-width) / 2);
