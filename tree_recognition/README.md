@@ -29,6 +29,20 @@ The english names, finnish names and the amount of pictures taken.
 
 **Overall**: 230 images
 
+
+## Table of contents
+
+1. [Running the project](#Running-the-project)
+
+2. [Training the model](#Training-the-model)
+
+3. [Helpful commands](#Helpful-commands)
+
+5. [Dependencies](#Dependencies)
+
+6. [Learning FastAPI](#Learning-FastAPI)
+
+
 ## Running The Project
 
 1. Set up the virtual environment
@@ -62,6 +76,7 @@ pip install -r requirements.txt
 fastapi dev app/main.py
 ```
 
+
 ## Training the model
 
 1. Train the model
@@ -78,29 +93,6 @@ python3 train_model.py --help
 tensorboard --logdir=runs/
 # open the link that the command prints
 ```
-
-## Learning about FastAPI
-
-**Getting started with FastAPI basics:**
-
-- [Tutorial - User Guide](https://fastapi.tiangolo.com/tutorial/)
-
-**Using Templates with FastAPI (The frontend code):**
-
-- [Learn - Templates](https://fastapi.tiangolo.com/advanced/templates/)
-- [Eric Roby - FastAPI with Jinja2 in UNDER 6 minutes](https://www.youtube.com/watch?v=92iCfXAK0Gc)
-
-> [!NOTE]
-> All of the packages that are needed by these tutorials are already inside
-> `requirements.txt`. Install them using `pip install -r requirements`!
-> Therefore, you don't need to follow the installation steps in the tutorials.
-
-**More in depth tutorial about using FastAPI (very optional, if interested)**
-
-I chose this one because I thought that it was Petri in the thumbnail at first.
-
-- [Travis Media - Why You NEED To Learn FastAPI | Hands On Project](https://www.youtube.com/watch?v=cbASjoZZGIw)
-
 
 ## Helpful commands
 
@@ -133,3 +125,57 @@ git checkout 047d5f0977f23ee910fe20e903eb45c8c1d78b68 -- trees_training
 python3 organize_training.py
 # commit and push your reshuffle
 ```
+
+
+## Dependencies
+
+The requirements.txt will fail if you are on Windows, so just in case, here is
+the list of the required packages for this project. You install these manually
+with the command below.
+
+```bash
+pip install matplotlib pillow tensorboard torchsummary "fastapi[standard]"
+```
+
+You also need to install pytorch. You can get the right command for your machine
+from the following link: [Start Locally | PyTorch](https://pytorch.org/get-started/locally/)
+
+- matplotlib - for visualizing data from the model training process
+
+- pillow - needed for manipulating the images in preprocessing as well as during
+the start of the training process
+
+- tensorboard - for logging and visualizing the training process
+
+- torchsummary - for summarizing the model
+
+- fastapi - the web framework powering the web application
+
+- pytorch - the main workhorse of the project
+
+
+## Learning FastAPI
+
+This part is meant for the group to get started with using FastAPI, since not
+everyone has prior experience with it or many other web frameworks.
+
+**Getting started with FastAPI basics:**
+
+- [Tutorial - User Guide](https://fastapi.tiangolo.com/tutorial/)
+
+**Using Templates with FastAPI (The frontend code):**
+
+- [Learn - Templates](https://fastapi.tiangolo.com/advanced/templates/)
+- [Eric Roby - FastAPI with Jinja2 in UNDER 6 minutes](https://www.youtube.com/watch?v=92iCfXAK0Gc)
+
+> [!NOTE]
+> All of the packages that are needed by these tutorials are already inside
+> `requirements.txt`. Install them using `pip install -r requirements`!
+> Therefore, you don't need to follow the installation steps in the tutorials.
+
+**More in depth tutorial about using FastAPI (very optional, if interested)**
+
+I chose this one because I thought that it was [Petri Kuittinen](https://github.com/petrikuittinen)
+(the legend) in the thumbnail at first.
+
+- [Travis Media - Why You NEED To Learn FastAPI | Hands On Project](https://www.youtube.com/watch?v=cbASjoZZGIw)
