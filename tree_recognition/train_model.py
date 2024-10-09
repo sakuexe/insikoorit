@@ -27,19 +27,19 @@ IMAGE_RESIZE = 128
 
 parser = argparse.ArgumentParser(
     description="Train the tree recognition model")
-parser.add_argument('--learning-rate', nargs="?", type=float,
-                    help='The learning rate')
-parser.add_argument('--epochs', nargs="?", type=int,
-                    help='Number of iterations')
-parser.add_argument('--image-size', nargs="?", type=int,
-                    help='Size of the images given to the model to train on')
-parser.add_argument('--verbose', action='store_true',
-                    help='Print more info about the model during training')
-parser.add_argument('--continue_training', action='store_true',
-                    help='Load the saved model instead of starting from \
-                    scratch')
-parser.add_argument('--weights', nargs="?", type=str,
-                    help='The path to the saved weight you want to load')
+parser.add_argument("--learning-rate", nargs="?", type=float,
+                    help="The learning rate")
+parser.add_argument("--epochs", nargs="?", type=int,
+                    help="Number of iterations")
+parser.add_argument("--image-size", nargs="?", type=int,
+                    help="Size of the images given to the model to train on")
+parser.add_argument("--verbose", action="store_true",
+                    help="Print more info about the model during training")
+parser.add_argument("--continue-training", action="store_true",
+                    help="Load the saved model instead of starting from \
+                    scratch")
+parser.add_argument("--weights", nargs="?", type=str,
+                    help="The path to the saved weight you want to load")
 args = parser.parse_args()
 
 LEARNING_RATE = args.learning_rate or LEARNING_RATE
@@ -108,6 +108,7 @@ if args.verbose:
     print(model)
 
 if args.continue_training:
+    print("continuing training on an existing model")
     if WEIGHTS:
         load_model_from_disk(model, model_name=WEIGHTS)
     else:

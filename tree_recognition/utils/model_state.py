@@ -41,6 +41,7 @@ def load_model_from_disk(
     model_name=DEFAULT_MODEL,
 ):
     load_filepath = os.path.join(weights_root, model_name)
+    print(f"loading model state from '{load_filepath}'")
     if not os.path.exists(load_filepath):
         raise OSError(f"No weights file was found in path: {load_filepath}")
     model.load_state_dict(torch.load(load_filepath, weights_only=True))
