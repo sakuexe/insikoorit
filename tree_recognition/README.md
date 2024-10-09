@@ -29,6 +29,7 @@ The english names, finnish names and the amount of pictures taken.
 
 **Overall**: 230 images
 
+
 ## Table of contents
 
 1. [Running the project](#Running-the-project)
@@ -38,6 +39,9 @@ The english names, finnish names and the amount of pictures taken.
 3. [Helpful commands](#Helpful-commands)
 
 5. [Dependencies](#Dependencies)
+
+6. [Learning FastAPI](#Learning-FastAPI)
+
 
 ## Running The Project
 
@@ -72,6 +76,7 @@ pip install -r requirements.txt
 fastapi dev app/main.py
 ```
 
+
 ## Training the model
 
 1. Train the model
@@ -88,29 +93,6 @@ python3 train_model.py --help
 tensorboard --logdir=runs/
 # open the link that the command prints
 ```
-
-## Learning about FastAPI
-
-**Getting started with FastAPI basics:**
-
-- [Tutorial - User Guide](https://fastapi.tiangolo.com/tutorial/)
-
-**Using Templates with FastAPI (The frontend code):**
-
-- [Learn - Templates](https://fastapi.tiangolo.com/advanced/templates/)
-- [Eric Roby - FastAPI with Jinja2 in UNDER 6 minutes](https://www.youtube.com/watch?v=92iCfXAK0Gc)
-
-> [!NOTE]
-> All of the packages that are needed by these tutorials are already inside
-> `requirements.txt`. Install them using `pip install -r requirements`!
-> Therefore, you don't need to follow the installation steps in the tutorials.
-
-**More in depth tutorial about using FastAPI (very optional, if interested)**
-
-I chose this one because I thought that it was Petri in the thumbnail at first.
-
-- [Travis Media - Why You NEED To Learn FastAPI | Hands On Project](https://www.youtube.com/watch?v=cbASjoZZGIw)
-
 
 ## Helpful commands
 
@@ -144,6 +126,7 @@ python3 organize_training.py
 # commit and push your reshuffle
 ```
 
+
 ## Dependencies
 
 The requirements.txt will fail if you are on Windows, so just in case, here is
@@ -169,3 +152,29 @@ the start of the training process
 - fastapi - the web framework powering the web application
 
 - pytorch - the main workhorse of the project
+
+
+## Learning FastAPI
+
+This part is meant for the group to get started with using FastAPI, since not
+everyone has prior experience with it or many other web frameworks.
+
+**Getting started with FastAPI basics:**
+
+- [Tutorial - User Guide](https://fastapi.tiangolo.com/tutorial/)
+
+**Using Templates with FastAPI (The frontend code):**
+
+- [Learn - Templates](https://fastapi.tiangolo.com/advanced/templates/)
+- [Eric Roby - FastAPI with Jinja2 in UNDER 6 minutes](https://www.youtube.com/watch?v=92iCfXAK0Gc)
+
+> [!NOTE]
+> All of the packages that are needed by these tutorials are already inside
+> `requirements.txt`. Install them using `pip install -r requirements`!
+> Therefore, you don't need to follow the installation steps in the tutorials.
+
+**More in depth tutorial about using FastAPI (very optional, if interested)**
+
+I chose this one because I thought that it was Petri in the thumbnail at first.
+
+- [Travis Media - Why You NEED To Learn FastAPI | Hands On Project](https://www.youtube.com/watch?v=cbASjoZZGIw)
