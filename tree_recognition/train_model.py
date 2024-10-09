@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import os
 import random
 import argparse
+import glob
 # local
 from training_fn import train_model, validate_model
 from utils.model_state import save_model_to_disk, load_model_from_disk
@@ -27,6 +28,8 @@ IMAGE_RESIZE = 128
 
 parser = argparse.ArgumentParser(
     description="Train the tree recognition model")
+parser.add_argument("--run-name", nargs="?", type=str,
+                    help="The folder name of the logs in runs/")
 parser.add_argument("--learning-rate", nargs="?", type=float,
                     help="The learning rate")
 parser.add_argument("--epochs", nargs="?", type=int,
@@ -53,7 +56,9 @@ if args.verbose:
     print(f"The current device is: {device}")
 
 # tensorboard writer
-writer = SummaryWriter('runs/trees_experiment')
+number_of_runs = len(glob.glob("runs/*"))
+folder_name = args.run_name or f"trees_{number_of_runs}"
+writer = SummaryWriter(f"runs/{folder_name}")
 
 # load and preprocess the dataset
 
@@ -134,6 +139,7 @@ for epoch in range(EPOCHS):
 
     # Log losses and accuracy to TensorBoard
     writer.add_scalar('Loss/train', training_data["epoch_loss"], epoch)
+    writer.add_scalar('Accuracy/train', training_data["epoch_accuracy"], epoch)
     writer.add_scalar('Loss/validation', validation_data["epoch_loss"], epoch)
     writer.add_scalar('Accuracy/validation',
                       validation_data["epoch_accuracy"],
