@@ -11,7 +11,7 @@ WEIGHTS_ROOT = "weights"
 DEFAULT_MODEL = "best_model_weights.pth"
 IMAGE_RESIZE = 128
 NUM_CLASSES = 8
-TRAINING_ROOT = "trees_training/edited"  # Path to the training dataset
+TRAINING_ROOT = "trees_training/resized"  # Path to the training dataset
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

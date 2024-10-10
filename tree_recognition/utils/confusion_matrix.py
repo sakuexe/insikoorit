@@ -4,8 +4,8 @@ import numpy as np
 from numpy.typing import NDArray
 from torch.utils.data import DataLoader
 from torch._prims_common import DeviceLikeType
-
-# Function to get predictions for the entire validation set
+from sklearn.metrics import ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 
 
 def get_confusion_matrix(
@@ -34,3 +34,19 @@ def get_confusion_matrix(
     # Compute the confusion matrix
     conf_matrix = confusion_matrix(all_labels, all_preds)
     return conf_matrix
+
+
+def display_confusion_matrix(
+    model: torch.nn.Module,
+    validation_loader: DataLoader,
+    classes: list[str],
+    device: DeviceLikeType
+):
+    print("Generating confusion matrix")
+    # Display the confusion matrix
+    conf_matrix = get_confusion_matrix(model, validation_loader, device)
+
+    disp = ConfusionMatrixDisplay(
+        confusion_matrix=conf_matrix, display_labels=classes)
+    disp.plot(cmap=plt.cm.Blues)
+    plt.show()

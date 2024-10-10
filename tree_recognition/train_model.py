@@ -5,15 +5,14 @@ import torch.optim as optim
 from torchvision import models
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
-from torchvision.transforms import Compose, Resize, ToTensor
 from torch.utils.tensorboard.writer import SummaryWriter
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torchsummary import summary
+from torchvision.transforms.functional import sys
 # visualization
 from PIL import Image
 import matplotlib.pyplot as plt
 # optimizing the training
-from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 # stdlib
@@ -21,12 +20,23 @@ import os
 import random
 import argparse
 import glob
+import signal
 # local
 from training_fn import train_model, validate_model
 from utils.model_state import save_model_to_disk, load_model_from_disk
-from utils.confusion_matrix import get_confusion_matrix
+from utils.confusion_matrix import display_confusion_matrix
+from utils.transform_images import get_training_transforms
+from utils.transform_images import get_validation_transforms
 
-TRAINING_ROOT = "trees_training/edited"
+
+def handle_ctrl_c(sig, frame):
+    display_confusion_matrix(model, validation_loader,
+                             train_data.classes, device)
+    # exit the program
+    sys.exit(0)
+
+
+TRAINING_ROOT = "trees_training/resized"
 VALIDATION_ROOT = "trees_valuation"
 LEARNING_RATE = 0.01
 EPOCHS = 10
@@ -64,20 +74,22 @@ number_of_runs = len(glob.glob("runs/*"))
 folder_name = args.run_name or f"trees_{number_of_runs}"
 writer = SummaryWriter(f"runs/{folder_name}")
 
-# load and preprocess the dataset
-
-# transformations, like resizing
-transform = Compose([Resize((IMAGE_RESIZE, IMAGE_RESIZE)), ToTensor()])
 # load the dataset
-train_data = ImageFolder(root=TRAINING_ROOT, transform=transform)
-validation_data = ImageFolder(root=VALIDATION_ROOT, transform=transform)
+train_data = ImageFolder(
+    root=TRAINING_ROOT,
+    transform=get_training_transforms(IMAGE_RESIZE)
+)
+validation_data = ImageFolder(
+    root=VALIDATION_ROOT,
+    transform=get_validation_transforms(IMAGE_RESIZE)
+)
 
 if args.verbose:
     print("Classes from training data are:", train_data.classes)
 
 # Create data loaders
-train_loader = DataLoader(train_data, batch_size=28, shuffle=True)
-validation_loader = DataLoader(validation_data, batch_size=28, shuffle=True)
+train_loader = DataLoader(train_data, batch_size=48, shuffle=True)
+validation_loader = DataLoader(validation_data, batch_size=48, shuffle=True)
 
 # Display random images from each dataset
 image_paths = []
@@ -142,6 +154,9 @@ elif args.continue_training:
 
 best_validation_loss = float('inf')
 
+# when you press ctrl c, stop the training, but display confusion_matrix
+signal.signal(signal.SIGINT, handle_ctrl_c)
+
 for epoch in range(EPOCHS):
     print(f"Epoch {epoch+1}/{EPOCHS}")
     training_data = train_model(
@@ -173,12 +188,3 @@ for epoch in range(EPOCHS):
     if validation_data["epoch_loss"] < best_validation_loss:
         best_validation_loss = validation_data["epoch_loss"]
         save_model_to_disk(model)
-
-
-# Display the confusion matrix
-conf_matrix = get_confusion_matrix(model, validation_loader, device)
-
-disp = ConfusionMatrixDisplay(
-    confusion_matrix=conf_matrix, display_labels=train_data.classes)
-disp.plot(cmap=plt.cm.Blues)
-plt.show()
