@@ -1,5 +1,4 @@
 # pytorch
-from sklearn.metrics import ConfusionMatrixDisplay
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -8,10 +7,15 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 from torchvision.transforms import Compose, Resize, ToTensor
 from torch.utils.tensorboard.writer import SummaryWriter
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torchsummary import summary
 # visualization
 from PIL import Image
 import matplotlib.pyplot as plt
+# optimizing the training
+from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.utils.class_weight import compute_class_weight
+import numpy as np
 # stdlib
 import os
 import random
@@ -98,12 +102,29 @@ for ax, image, title in zip(axs, images, titles):
 plt.tight_layout()
 plt.show()
 
+
+# get the class weights
+image_counts = []
+for dirapth, _, filenames in os.walk("trees_training/edited/"):
+    if not filenames:
+        continue
+    image_counts.append(len(filenames))
+
+print(image_counts)
+class_weights = compute_class_weight(class_weight="balanced",
+                                     classes=np.unique(train_data.classes),
+                                     y=train_data.classes)
+class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
+
 # initialize the model
 model = models.resnet34(weights=models.ResNet34_Weights.DEFAULT).to(device)
 # input size and output size
 model.fc = nn.Linear(512, len(train_data.classes)).to(device)
-loss_fn = nn.CrossEntropyLoss()
+loss_fn = nn.CrossEntropyLoss(weight=class_weights)
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+# used for dynamically adjusting the learning rate
+scheduler = ReduceLROnPlateau(optimizer, mode="min", factor=0.1,
+                              patience=10, verbose=args.verbose)
 
 if args.verbose:
     # display a detailed summary of the model's architecture
@@ -136,6 +157,9 @@ for epoch in range(EPOCHS):
         loss_fn,
         device,
     )
+
+    # try reducing the learning rate if the model is not improving
+    scheduler.step(validation_data["epoch_loss"]/len(validation_loader))
 
     # Log losses and accuracy to TensorBoard
     writer.add_scalar('Loss/train', training_data["epoch_loss"], epoch)
