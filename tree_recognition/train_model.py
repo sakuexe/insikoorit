@@ -131,7 +131,7 @@ class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
 # initialize the model
 model = models.resnet34(weights=models.ResNet34_Weights.DEFAULT).to(device)
 # input size and output size
-model.fc = nn.Linear(512, len(train_data.classes)).to(device)
+model.fc = nn.Linear(model.fc.in_features, len(train_data.classes)).to(device)
 loss_fn = nn.CrossEntropyLoss(weight=class_weights)
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 # used for dynamically adjusting the learning rate
@@ -188,3 +188,6 @@ for epoch in range(EPOCHS):
     if validation_data["epoch_loss"] < best_validation_loss:
         best_validation_loss = validation_data["epoch_loss"]
         save_model_to_disk(model)
+
+# after training, show confusion matrix
+display_confusion_matrix(model, validation_loader, train_data.classes, device)
