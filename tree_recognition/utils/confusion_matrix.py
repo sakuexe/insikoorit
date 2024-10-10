@@ -12,9 +12,6 @@ import matplotlib.pyplot as plt
 from glob import glob
 import argparse
 from pathlib import PurePath
-# locals
-from transform_images import get_validation_transforms
-from model_state import load_model_from_disk
 
 
 def get_confusion_matrix(
@@ -62,6 +59,9 @@ def display_confusion_matrix(
 
 
 if __name__ == "__main__":
+    # locals
+    from transform_images import get_validation_transforms
+    from model_state import load_model_from_disk
     # this is for if you want to display a confusion matrix
     # for an existing model
     parser = argparse.ArgumentParser(
