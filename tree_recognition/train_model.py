@@ -1,4 +1,5 @@
 # pytorch
+from sklearn.metrics import ConfusionMatrixDisplay
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -19,6 +20,7 @@ import glob
 # local
 from training_fn import train_model, validate_model
 from utils.model_state import save_model_to_disk, load_model_from_disk
+from utils.confusion_matrix import get_confusion_matrix
 
 TRAINING_ROOT = "trees_training/edited"
 VALIDATION_ROOT = "trees_valuation"
@@ -70,8 +72,8 @@ if args.verbose:
     print("Classes from training data are:", train_data.classes)
 
 # Create data loaders
-train_loader = DataLoader(train_data, batch_size=16, shuffle=True)
-validation_loader = DataLoader(validation_data, batch_size=16, shuffle=True)
+train_loader = DataLoader(train_data, batch_size=28, shuffle=True)
+validation_loader = DataLoader(validation_data, batch_size=28, shuffle=True)
 
 # Display random images from each dataset
 image_paths = []
@@ -147,3 +149,12 @@ for epoch in range(EPOCHS):
     if validation_data["epoch_loss"] < best_validation_loss:
         best_validation_loss = validation_data["epoch_loss"]
         save_model_to_disk(model)
+
+
+# Display the confusion matrix
+conf_matrix = get_confusion_matrix(model, validation_loader, device)
+
+disp = ConfusionMatrixDisplay(
+    confusion_matrix=conf_matrix, display_labels=train_data.classes)
+disp.plot(cmap=plt.cm.Blues)
+plt.show()
