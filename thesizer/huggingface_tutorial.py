@@ -12,6 +12,7 @@ import torch
 import sys
 import re
 import textwrap
+from asyncio import get_event_loop
 # local
 from utils.documents import get_document_database
 
@@ -51,10 +52,10 @@ llm = HuggingFacePipeline(pipeline=text_generation_pipeline)
 prompt_template = """
 <system>
 You are 'thesizer', a HAMK thesis assistant.
-you speak both finnish and english. The user will ask
-you different things. If you do not know the answer based
-on the context given to you, you will have to say no and possibly
-guide the user to a related hamk website with more knowledge.
+you speak both finnish and english. You will help the user
+with technicalities on writing a thesis for hamk.
+If you do not know the answer based on the context given to you,
+you will not answer and try to find a related link in you context.
 
 Only include one reply from the assistant
 </system>
@@ -70,31 +71,42 @@ Only include one reply from the assistant
 <thesizer>
  """
 
-prompt = PromptTemplate(
-    input_variables=["context", "question"],
-    template=prompt_template,
-)
 
-# get the documents
-db = get_document_database("learning_material/*.md")
-retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 4})
+async def main():
+    prompt = PromptTemplate(
+        input_variables=["context", "question"],
+        template=prompt_template,
+    )
 
-llm_chain = prompt | llm | StrOutputParser()
+    # get the documents
+    db = await get_document_database("learning_material/*/*")
+    retriever = db.as_retriever(
+        search_type="similarity", search_kwargs={"k": 4})
 
-rag_chain = {"context": retriever,
-             "question": RunnablePassthrough()} | llm_chain
+    llm_chain = prompt | llm | StrOutputParser()
 
-question = "mitä tarkoittaa abstract sivu? Mitä siihen voi laittaa?"
-if sys.argv[1]:
-    question = sys.argv[1]
+    rag_chain = {"context": retriever,
+                 "question": RunnablePassthrough()} | llm_chain
 
-# raw_response = llm_chain.invoke({"context": "", "question": question})
-rag_response = rag_chain.invoke(question)
+    question = "mitä tarkoittaa abstract sivu? Mitä siihen voi laittaa?"
+    if sys.argv[1]:
+        question = sys.argv[1]
 
-match = re.search(r"<thesizer>(.*?)</thesizer>", rag_response, re.DOTALL)
-parsed_answer = match.group(1).strip()
+    # raw_response = llm_chain.invoke({"context": "", "question": question})
+    rag_response = rag_chain.invoke(question)
 
-print(f"User prompt: {question}")
-print(f"{'=' * 23}Thesizer answer{'=' * 23}")
-print(textwrap.fill(parsed_answer), 60)
-print('=' * 60)
+    print("raw response")
+    print(rag_response)
+
+    match = re.search(r"<thesizer>(.*?)</thesizer>", rag_response, re.DOTALL)
+    parsed_answer = match.group(1).strip()
+
+    print(f"User prompt: {question}")
+    print(f"{'=' * 23}Thesizer answer{'=' * 23}")
+    print(textwrap.fill(parsed_answer, 60))
+    print('=' * 60)
+
+
+if __name__ == "__main__":
+    loop = get_event_loop()
+    loop.run_until_complete(main())
