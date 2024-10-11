@@ -73,13 +73,13 @@ be suitable as a base for our Fine-Tuned model.
 
 Some of the models considered:
 
-**General LLMs**
+_General LLMs_
 
 - [google-bert/bert-base-multilingual-cased](https://huggingface.co/google-bert/bert-base-multilingual-cased)
 - [meta-llama/Llama-3.2-11B-Vision-Instruct](https://huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct)
 - [google/gemma-2-2b](https://huggingface.co/google/gemma-2-2b)
 
-**Translation models**
+_Translation models_
 
 - [facebook/mbart-large-50-one-to-many-mmt](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) 
 
