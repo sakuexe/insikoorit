@@ -2,19 +2,20 @@
 # https://huggingface.co/learn/cookbook/rag_zephyr_langchain
 # langchain
 from langchain_core.prompts import ChatPromptTemplate
-from transformers import pipeline
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_huggingface import HuggingFacePipeline
+# huggingface
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import pipeline
+# pytorch
 import torch
 # stdlib
 from asyncio import get_event_loop
 import sys
 import os
-
 # local
-from utils.documents import get_document_database
+from vector_store import get_document_database
 
 # MODEL_NAME = "meta-llama/Llama-3.2-3B"
 # MODEL_NAME = "google/gemma-7b"
@@ -49,6 +50,8 @@ text_generation_pipeline = pipeline(
 
 llm = HuggingFacePipeline(pipeline=text_generation_pipeline)
 
+# creating the prompt template in the shape of a chat prompt
+# this is done so that it could be easily expanded
 # https://www.mirascope.com/post/langchain-prompt-template
 prompt_template = ChatPromptTemplate([
     ("system", """You are 'thesizer', a HAMK thesis assistant.
@@ -56,23 +59,30 @@ prompt_template = ChatPromptTemplate([
     for hamk. If you can't find the answer from the context given to you,
     you will not answer. You answer with only a single message."""),
     ("system", "{context}"),
-    ("assistant", "Hei! Kuinka voin auttaa opinnäytetyösi kanssa?"),
+    ("assistant", "[FI] Hei! Kuinka voin auttaa opinnäytetyösi kanssa?"),
+    ("assistant",
+     "[ENG] Hello! How can I help you with authoring your thesis?"),
     ("user", "{user_input}"),
 ])
 
 
 async def main():
-    # get the documents
+    # generate a vector store
     db = await get_document_database("learning_material/*/*")
+
+    # initialize the similarity search
     n_of_best_results = 4
     retriever = db.as_retriever(
         search_type="similarity", search_kwargs={"k": n_of_best_results})
 
-    question = "mitä tarkoittaa abstract sivu? Mitä siihen voi laittaa?"
+    question = "Who are you? what can you do?"
+    # check if a command line question is passed
     cli_question = sys.argv.pop()
     if cli_question != os.path.basename(__file__):
         question = sys.argv[1]
 
+    # create the pipeline for generating a response
+    # RunnablePassthrough handles the invoke parameters
     retrieval_chain = (
         {"context": retriever, "user_input": RunnablePassthrough()}
         | prompt_template
@@ -86,6 +96,7 @@ async def main():
     # print("=====raw response=====")
     # print(response)
 
+    # get only the last response from the ai
     parsed_answer = response.split("AI:").pop().strip()
 
     print(f"User prompt: {question}")

@@ -6,8 +6,8 @@ AI Project - 10.2024
               .----.
   .---------. | == |
   |.-"""""-.| |----|
-  ||  A I  || | == |
-  ||       || |----|
+  ||  THE  || | == |
+  || SIZER || |----|
   |'-.....-'| |::::|
   `"")---(""` |___.|
  /:::::::::::\" _  "
@@ -29,6 +29,34 @@ different guidelines and learning documents there are for writing a thesis using
 the standards of HAMK. Thesizer takes those documents and fine-tunes itself so
 that it will be able to provide useful information and help the user. It is kind
 of like a spoken language search engine for thesis writing technicalities.
+
+
+## Table of contents
+
+1. [Running the model](#Running-the-model)
+2. [Documentation](#Documentation)
+
+    1. [The development process](#The-development-process)
+    2. [Tools used](#Tools-used)
+    3. [Challenges](#Challenges)
+
+3. [Dependencies](#Dependencies)
+
+
+### Running the model
+
+1. **Install all of the dependencies**
+
+The guide to this is in the [Dependencies](#Dependencies)-section.
+
+2. **Run the model**
+
+```bash
+python3 thesizer_rag.py
+# give a prompt
+python3 thesizer_rag.py "mikä on abstract sivu?"
+```
+
 
 ## Documentation
 
@@ -52,7 +80,38 @@ Some of the models considered:
 
 ### 2. Tools used
 
-We ended up going with \[INSERT MODEL HERE\], because \[INSERT EXPLANATION HERE\]...
+**LangChain**
+
+Thesizer uses [LangChain](https://www.langchain.com/langchain) as the base 
+framework for our RAG application. It provided easy and straight forward
+way for us to give a pre-trained llm model context awareness. 
+
+The documents that were used for the context awareness are all located in the 
+[learning_material](./learning_material/) -folder. They are mostly in finnish,
+with some being in english. You can clone this repository and use your own
+documents instead if you would like to see how it works and adapts to the
+contents of the folder.
+
+**Hugging Face**
+
+The models used by thesizer are fetched from [HuggingFace](https://huggingface.co/models). 
+They are then used with `HuggingFacePipeline` package, which provides very easy
+interaction with the models.
+
+**FAISS**
+
+FAISS is a highly efficient vector database, that also provides fast similiarity
+searching of the data inside of it. FAISS supports CUDA and is written in C++.
+Because of this, it also needs to be downloaded specifically to the user's
+hardware, in the same way that pytorch needs to be.
+[FAISS - ai.meta.com](https://ai.meta.com/tools/faiss/)
+
+Thesizer uses FAISS for managing all of the documentation. It also uses 
+similiarity searching to find content from these files that match the user's query.
+
+All of the FAISS processing is done asynchronously, so that theoretically it could
+be passed more documentation during runtime without affecting the other users
+processing time.
 
 ### 3. Challenges
 
