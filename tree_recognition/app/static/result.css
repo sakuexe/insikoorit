@@ -66,9 +66,11 @@ output#result .probability-bar > div {
   flex-grow: 1;
 }
 
+output#result .probability-bar > div:not(:first-child) {
+  height: 100%;
+}
+
 output#result .probability-bar > div:first-child {
-  background-color: var(--foreground-color);
-  width: 100%;
   flex-shrink: 1;
 }
 
