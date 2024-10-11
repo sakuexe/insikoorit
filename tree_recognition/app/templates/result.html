@@ -5,6 +5,7 @@
     <p>{{ type }}</p>
   </div>
 </div>
+
 <div>
   <img src="/static/images/score-icon.png" alt="Icon of a paper with a magnifier" width="32" height="32">
   <div>
@@ -12,14 +13,25 @@
     <p>{{ score }}</p>
   </div>
 </div>
+
 <div>
-  <img src="/static/images/probabilities.png" alt="notebook with a cog icon" width="32" height="32">
   <div>
-    <p class="key">Probabilities:</p>
-    <ul>
     {% for prob in probabilities %}
-      <li>{{ prob.class_name }}: {{ prob.confidence }}</li>
+    <div class="probability-bar" style="height: {{ (prob.confidence * 100)|round(0, 'ceil') }}%">
+      {% if prob.confidence > 0.01 %}
+      {% for bars in range((prob.confidence|round(1, 'ceil') * 10)|int) %}
+      <div></div>
+      {% endfor %}
+      {% endif %}
+    </div>
     {% endfor %}
-    </ul>
   </div>
+  <ul>
+    {% for prob in probabilities %}
+    <li class="probability-class">
+      <p>{{ prob.class_name }}</p>
+      <i>{{ prob.confidence }}</i>
+    </li>
+    {% endfor %}
+  </ul>
 </div>

@@ -41,7 +41,6 @@ async def evaluate_tree(request: Request, file: UploadFile | None = None):
         image_path=file_path,
         model_name="the_best_one.pth"
     )
-    print(infer_result.probabilities)
 
     # after the model has done its work, remove the saved image
     asyncio.create_task(remove_file_async(file_path))
