@@ -1,4 +1,5 @@
-from langchain_community.document_loaders import TextLoader, PyPDFLoader, BSHTMLLoader
+from langchain_community.document_loaders import TextLoader, PyPDFLoader
+from langchain_community.document_loaders import BSHTMLLoader, UnstructuredMarkdownLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS, VectorStore
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -10,9 +11,9 @@ import pathlib
 
 
 async def load_text(file_path: str) -> list[Document] | None:
-    """Loads text documents asynchronously from a passed file_path.
-    Supported filetypes: markdown (.md) and plaintext (.txt)"""
+    """Loads text documents (.txt) asynchronously from a passed file_path."""
     assert file_path != ""
+    assert pathlib.Path(file_path).suffix == ".txt"
 
     try:
         loader = TextLoader(file_path)
@@ -22,10 +23,27 @@ async def load_text(file_path: str) -> list[Document] | None:
         print(f"error: {err}")
 
 
-async def load_pdf(file_path: str) -> list[Document] | None:
-    """Loads html documents asynchronously from a passed file_path.
-    Supported filetypes: PDF (.pdf)."""
+# https://python.langchain.com/docs/how_to/document_loader_markdown/
+async def load_markdown(file_path: str) -> list[Document] | None:
+    """Loads markdown files asynchronously from a passed file_path."""
     assert file_path != ""
+    assert pathlib.Path(file_path).suffix == ".md"
+
+    try:
+        # use the mode elements to keep metadata about if the information is
+        # a paragraph, link or a heading for example
+        loader = UnstructuredMarkdownLoader(file_path, mode="elements")
+        return await loader.aload()
+    except UnicodeError or RuntimeError as err:
+        print(f"could not load file: {file_path}")
+        print(f"error: {err}")
+
+
+# https://python.langchain.com/docs/how_to/document_loader_pdf/
+async def load_pdf(file_path: str) -> list[Document] | None:
+    """Loads pdf documents (.pdf) asynchronously from a passed file_path."""
+    assert file_path != ""
+    assert pathlib.Path(file_path).suffix == ".pdf"
 
     loader = PyPDFLoader(file_path)
     try:
@@ -36,9 +54,9 @@ async def load_pdf(file_path: str) -> list[Document] | None:
 
 
 async def load_html(file_path: str) -> list[Document]:
-    """Loads html documents asynchronously from a passed file_path.
-    Supported filetypes: HTML (.html)."""
+    """Loads html documents (.html) asynchronously from a passed file_path."""
     assert file_path != ""
+    assert pathlib.Path(file_path).suffix == ".html" or ".htm"
 
     loader = BSHTMLLoader(file_path)
     return await loader.aload()
@@ -48,8 +66,9 @@ async def load_html(file_path: str) -> list[Document]:
 LOADER_MAP = {
     ".pdf": load_pdf,
     ".html": load_html,
+    ".htm": load_html,
     ".txt": load_text,
-    ".md": load_text,
+    ".md": load_markdown,
 }
 
 

@@ -43,6 +43,7 @@ of like a spoken language search engine for thesis writing technicalities.
     3. [Challenges](#Challenges)
 
 3. [Dependencies](#Dependencies)
+3. [Helpful links](#Helpful-links)
 
 
 ### Running the model
@@ -172,3 +173,20 @@ You can figure it out.
 > [!NOTE]
 > If there are problems or the process feels complicated, add your own
 > guide right here and replace this note.
+
+
+## Helpful links
+
+Are you interested in finding out more and digging deeper? Here are some of the
+sources that we used when creating this project.
+
+Some links can also be found within the code comments, so that you can find them
+near where they are used. Locality of behaviour babyyy.
+
+**RAG & LangChain**
+
+- Loading PDF files with LangChain and PyPDF | [How to load PDFs - LangChain](https://python.langchain.com/docs/how_to/document_loader_pdf/)
+- Loading HTML files with LangChain and BeautifulSoup4 | [How to load HTML - LangChain](https://python.langchain.com/docs/how_to/document_loader_html/)
+- Loading Markdown files with LangChain and unstructured | [How to load Markdown](https://python.langchain.com/docs/how_to/document_loader_markdown/)
+- Asynchronous FAISS | [Faiss \(async\) - LangChain](https://python.langchain.com/docs/integrations/vectorstores/faiss_async/)
+- Retriving data from a vectorstore | [How to use a vectorstore as a retriever - LangChain](https://python.langchain.com/docs/how_to/vectorstore_retriever/)

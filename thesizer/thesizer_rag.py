@@ -57,11 +57,11 @@ prompt_template = ChatPromptTemplate([
     ("system", """You are 'thesizer', a HAMK thesis assistant.
     You will help the user with technicalities on writing a thesis
     for hamk. If you can't find the answer from the context given to you,
-    you will not answer. You answer with only a single message."""),
+    you will tell the user that you cannot assist with the specific topic.
+    You answer with only a single message."""),
     ("system", "{context}"),
-    ("assistant", "[FI] Hei! Kuinka voin auttaa opinnäytetyösi kanssa?"),
-    ("assistant",
-     "[ENG] Hello! How can I help you with authoring your thesis?"),
+    ("assistant", "Hei! Kuinka voin auttaa opinnäytetyösi kanssa?"),
+    ("assistant", "Hello! How can I help you with authoring your thesis?"),
     ("user", "{user_input}"),
 ])
 
@@ -79,7 +79,7 @@ async def main():
     # check if a command line question is passed
     cli_question = sys.argv.pop()
     if cli_question != os.path.basename(__file__):
-        question = sys.argv[1]
+        question = cli_question
 
     # create the pipeline for generating a response
     # RunnablePassthrough handles the invoke parameters
