@@ -61,7 +61,7 @@ We ended up going with \[INSERT MODEL HERE\], because \[INSERT EXPLANATION HERE\
 If the requirements.txt does not work, you can try installing the dependcies 
 using the following commands.
 
-0. Create a virtual environment
+0. **Create a virtual environment**
 
 ```bash
 # linux
@@ -72,11 +72,11 @@ python -m venv venv
 .\venv\Scripts\Activate.ps1
 ```
 
-1. Install Pytorch that matches your machine
+1. **Install Pytorch that matches your machine**
 
 Get the installation command from this website: [Start Locally | PyTorch](https://pytorch.org/get-started/locally/)
 
-2. Install FAISS
+2. **Install FAISS**
 
 ```bash
 # if you have a gpu
@@ -86,14 +86,14 @@ pip install faiss-gpu-cu11 # CUDA 11.x
 pip install faiss-cpu
 ```
 
-3. Install universal pip packages
+3. **Install universal pip packages**
 
 ```bash
 pip install transformers accelerate bitsandbytes sentence-transformers langchain \
 langchain-community pypdf bs4 lxml
 ```
 
-4. Log into your Hugging Face account
+4. **Log into your Hugging Face account**
 
 If you are prompted to log in, follow the instructions of the prompt.
 You can figure it out.
