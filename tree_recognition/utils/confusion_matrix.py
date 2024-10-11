@@ -91,7 +91,10 @@ if __name__ == "__main__":
     # initialize the model
     model = models.resnet34(weights=None)
     model.fc = torch.nn.Linear(model.fc.in_features, len(class_names))
-    load_model_from_disk(model)
+    if args.model:
+        load_model_from_disk(model, model_name=args.model)
+    else:
+        load_model_from_disk(model)
     model = model.to(device)  # Move model to device
 
     display_confusion_matrix(model, validation_loader, class_names, device)

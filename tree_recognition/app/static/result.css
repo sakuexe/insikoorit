@@ -1,22 +1,44 @@
 output#result {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 1em;
 }
 
 #response {
   min-height: 8em;
   flex-grow: 1;
+  padding-bottom: 2em;
 }
 
 output#result > div {
   display: flex;
   gap: 0.5em;
   text-align: start;
+  align-items: center;
 }
 
 output#result div > p.key {
   font-weight: bold;
   font-size: 1.125em;
+}
+
+output#result > div:last-child {
+  grid-column: 1/-1;
+  /*padding-left: calc(32px + 0.5em);*/
+}
+
+output#result > div:last-child > div > ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0em 0.5em;
+  margin: 0;
+  padding: 0;
+}
+
+output#result > div:last-child > div > ul > li {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* errors */

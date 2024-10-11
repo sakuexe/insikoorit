@@ -1,11 +1,10 @@
 from fastapi import UploadFile, Request
 from fastapi import APIRouter
 from fastapi.templating import Jinja2Templates
-from glob import glob
-from time import sleep
 import asyncio
-import random
 import os
+# local
+from single_image_inteference import InferenceResult, generate_infer
 
 templates = Jinja2Templates(directory="templates")
 
@@ -32,25 +31,17 @@ async def evaluate_tree(request: Request, file: UploadFile | None = None):
         return templates.TemplateResponse(
             request=request,
             name="error.html",
-            context={"code": 500,
-                     "message": "The file could not be saved to the disk"}
+            context={
+                "code": 500,
+                "message": "The file could not be saved to the disk"
+            }
         )
 
-    # fake delay
-    await asyncio.sleep(0.5)
-
-    # choose a random training class name
-    # this is just for mocking purposes
-    folders = glob(os.path.join("..", "trees_training", "originals", "*"))
-    if len(folders) == 0:
-        return templates.TemplateResponse(
-            request=request,
-            name="error.html",
-            context={"code": 500,
-                     "message": "No folders could be found at \
-                     ../trees_training/originals"}
-        )
-    random_class = os.path.basename(os.path.normpath(random.choice(folders)))
+    infer_result: InferenceResult = generate_infer(
+        image_path=file_path,
+        model_name="the_best_one.pth"
+    )
+    print(infer_result.probabilities)
 
     # after the model has done its work, remove the saved image
     asyncio.create_task(remove_file_async(file_path))
@@ -58,7 +49,11 @@ async def evaluate_tree(request: Request, file: UploadFile | None = None):
     return templates.TemplateResponse(
         request=request,
         name="result.html",
-        context={"type": random_class, "score": random.random()}
+        context={
+            "type": infer_result.prediction,
+            "score": infer_result.confidence,
+            "probabilities": infer_result.probabilities
+        }
     )
 
 
