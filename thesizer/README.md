@@ -58,12 +58,46 @@ We ended up going with \[INSERT MODEL HERE\], because \[INSERT EXPLANATION HERE\
 
 ## Dependencies
 
-If the requirements.txt does not work, you can try installing the depended on
-packages using the following command.
+If the requirements.txt does not work, you can try installing the dependcies 
+using the following commands.
+
+0. Create a virtual environment
 
 ```bash
-pip install gradio
+# linux
+python3 -m venv venv
+source venv/bin/activate
+# windows
+python -m venv venv
+.\venv\Scripts\Activate.ps1
 ```
 
-You also need to install pytorch. You can get the right command for your machine
-from the following link: [Start Locally | PyTorch](https://pytorch.org/get-started/locally/)
+1. Install Pytorch that matches your machine
+
+Get the installation command from this website: [Start Locally | PyTorch](https://pytorch.org/get-started/locally/)
+
+2. Install FAISS
+
+```bash
+# if you have a gpu
+pip install faiss-gpu-cu12 # CUDA 12.x
+pip install faiss-gpu-cu11 # CUDA 11.x
+# if you only have a cpu
+pip install faiss-cpu
+```
+
+3. Install universal pip packages
+
+```bash
+pip install transformers accelerate bitsandbytes sentence-transformers langchain \
+langchain-community pypdf bs4 lxml
+```
+
+4. Log into your Hugging Face account
+
+If you are prompted to log in, follow the instructions of the prompt.
+You can figure it out.
+
+> [!NOTE]
+> If there are problems or the process feels complicated, add your own
+> guide right here and replace this note.
