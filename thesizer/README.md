@@ -37,6 +37,8 @@ of like a spoken language search engine for thesis writing technicalities.
 2. [Documentation](#Documentation)
 
     1. [The development process](#The-development-process)
+        - [Planning](#Planning)
+        - [Creating the model](#Creating-the-model)
     2. [Tools used](#Tools-used)
     3. [Challenges](#Challenges)
 
@@ -60,7 +62,10 @@ python3 thesizer_rag.py "mikä on abstract sivu?"
 
 ## Documentation
 
+
 ### 1. The development process
+
+#### Planning
 
 The development process started after we had come to an agreement on the project.
 We then tasked everyone to go and research what Hugging Face transformers would
@@ -77,6 +82,12 @@ Some of the models considered:
 **Translation models**
 
 - [facebook/mbart-large-50-one-to-many-mmt](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) 
+
+#### Creating the model
+
+As a base for the RAG model, we used this learning material from the Hugging 
+Face documentation: [Simple RAG for GitHub issues using Hugging Face Zephyr and LangChain](https://huggingface.co/learn/cookbook/rag_zephyr_langchain)
+
 
 ### 2. Tools used
 
@@ -114,6 +125,7 @@ be passed more documentation during runtime without affecting the other users
 processing time.
 
 ### 3. Challenges
+
 
 ## Dependencies
 
