@@ -90,7 +90,7 @@ pip install faiss-cpu
 
 ```bash
 pip install transformers accelerate bitsandbytes sentence-transformers langchain \
-langchain-community pypdf bs4 lxml
+langchain-community langchain-huggingface pypdf bs4 lxml
 ```
 
 4. **Log into your Hugging Face account**

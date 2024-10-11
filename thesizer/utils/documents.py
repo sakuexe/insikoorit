@@ -1,7 +1,7 @@
 from langchain_community.document_loaders import TextLoader, PyPDFLoader, BSHTMLLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS, VectorStore
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.documents import Document
 from pypdf.errors import PyPdfError
 # stdlib

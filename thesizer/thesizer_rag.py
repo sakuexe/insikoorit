@@ -1,18 +1,18 @@
 # the following code is collected from this hugging face tutorial
 # https://huggingface.co/learn/cookbook/rag_zephyr_langchain
 # langchain
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 from transformers import pipeline
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-from langchain_community.llms import HuggingFacePipeline
+from langchain_huggingface import HuggingFacePipeline
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import torch
 # stdlib
-import sys
-import re
-import textwrap
 from asyncio import get_event_loop
+import sys
+import os
+
 # local
 from utils.documents import get_document_database
 
@@ -49,62 +49,48 @@ text_generation_pipeline = pipeline(
 
 llm = HuggingFacePipeline(pipeline=text_generation_pipeline)
 
-prompt_template = """
-<system>
-You are 'thesizer', a HAMK thesis assistant.
-you speak both finnish and english. You will help the user
-with technicalities on writing a thesis for hamk.
-If you do not know the answer based on the context given to you,
-you will not answer and try to find a related link in you context.
-
-Only include one reply from the assistant
-</system>
-
-<context>
-{context}
-</context>
-
-<user>
-{question}
-</user>
-
-<thesizer>
- """
+# https://www.mirascope.com/post/langchain-prompt-template
+prompt_template = ChatPromptTemplate([
+    ("system", """You are 'thesizer', a HAMK thesis assistant.
+    You will help the user with technicalities on writing a thesis
+    for hamk. If you can't find the answer from the context given to you,
+    you will not answer. You answer with only a single message."""),
+    ("system", "{context}"),
+    ("assistant", "Hei! Kuinka voin auttaa opinnäytetyösi kanssa?"),
+    ("user", "{user_input}"),
+])
 
 
 async def main():
-    prompt = PromptTemplate(
-        input_variables=["context", "question"],
-        template=prompt_template,
-    )
-
     # get the documents
     db = await get_document_database("learning_material/*/*")
+    n_of_best_results = 4
     retriever = db.as_retriever(
-        search_type="similarity", search_kwargs={"k": 4})
-
-    llm_chain = prompt | llm | StrOutputParser()
-
-    rag_chain = {"context": retriever,
-                 "question": RunnablePassthrough()} | llm_chain
+        search_type="similarity", search_kwargs={"k": n_of_best_results})
 
     question = "mitä tarkoittaa abstract sivu? Mitä siihen voi laittaa?"
-    if sys.argv[1]:
+    cli_question = sys.argv.pop()
+    if cli_question != os.path.basename(__file__):
         question = sys.argv[1]
 
-    # raw_response = llm_chain.invoke({"context": "", "question": question})
-    rag_response = rag_chain.invoke(question)
+    retrieval_chain = (
+        {"context": retriever, "user_input": RunnablePassthrough()}
+        | prompt_template
+        | llm
+        | StrOutputParser()
+    )
 
-    print("raw response")
-    print(rag_response)
+    response = retrieval_chain.invoke(question)
 
-    match = re.search(r"<thesizer>(.*?)</thesizer>", rag_response, re.DOTALL)
-    parsed_answer = match.group(1).strip()
+    # debugging
+    # print("=====raw response=====")
+    # print(response)
+
+    parsed_answer = response.split("AI:").pop().strip()
 
     print(f"User prompt: {question}")
     print(f"{'=' * 23}Thesizer answer{'=' * 23}")
-    print(textwrap.fill(parsed_answer, 60))
-    print('=' * 60)
+    print(parsed_answer)
 
 
 if __name__ == "__main__":
