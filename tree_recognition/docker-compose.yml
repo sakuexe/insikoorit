@@ -1,0 +1,67 @@
+services:
+  tree_app:
+    build: .
+    labels:
+      - "traefik.enable=true"
+      # local development - comment these out if you are hosting publically
+      - "traefik.http.routers.tree_app.rule=Host(`localhost`)"
+      - "traefik.http.routers.tree_app.entrypoints=web"
+      # https and domain resolver - uncomment these if you want to host this project
+      # - "traefik.http.routers.tree_app.rule=Host(`yourepicdomain.sexy`)" # <- change to your domain
+      # - "traefik.http.routers.tree_app.entrypoints=websecure"
+      # - "traefik.http.routers.tree_app.tls.certresolver=myresolver"
+    # restart: always
+    # user: lorax
+    command: fastapi run /home/lorax/trees/main.py --proxy-headers --port 80
+    volumes:
+      # weights
+      - type: bind
+        source: ./weights/
+        target: /home/lorax/trees/weights/
+        read_only: true
+    ports:
+      - "80"
+      # - "443"
+    networks:
+      - tree_net
+    deploy: 
+      replicas: 3
+
+  traefik:
+    container_name: traefik
+    image: traefik:v3.1
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # TLS (https) - uncomment all of these if you want to host this project
+      # - "--entrypoints.websecure.address=:443"
+      # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      # - "--certificatesresolvers.myresolver.acme.email=your.email@gmail.com" # <- change to your email
+      # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      # http redirection
+      # - "--entrypoints.web.address=:80"
+      # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+    ports:
+      # host:container
+      - "80:80"
+      # - "443:443"
+      # Web UI
+      - "8080:8080"
+    volumes:
+      # allow Traefik to listen for docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      # persist the ssl certificate
+      - letsencrypt:/letsencrypt
+    networks:
+      - tree_net
+    depends_on: 
+      - tree_app
+
+networks:
+  tree_net:
+volumes:
+  letsencrypt:

@@ -40,8 +40,17 @@ def load_model_from_disk(
     weights_root=WEIGHTS_ROOT,
     model_name=DEFAULT_MODEL,
 ):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     load_filepath = os.path.join(weights_root, model_name)
+
     print(f"loading model state from '{load_filepath}'")
     if not os.path.exists(load_filepath):
         raise OSError(f"No weights file was found in path: {load_filepath}")
-    model.load_state_dict(torch.load(load_filepath, weights_only=True))
+
+    # use the map_location with device, so that weights trained on cuda can
+    # be run on cpu
+    model.load_state_dict(torch.load(
+        load_filepath,
+        weights_only=True,
+        map_location=device
+    ))

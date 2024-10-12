@@ -3,7 +3,7 @@ import torch.nn.functional as F
 from torchvision.transforms import Compose, Resize, ToTensor
 from torchvision import models
 from PIL import Image
-from utils.model_state import load_model_from_disk
+from model_state import load_model_from_disk
 from dataclasses import dataclass
 
 WEIGHTS_ROOT = "weights"
