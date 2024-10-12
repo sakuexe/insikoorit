@@ -33,6 +33,8 @@ The english names, finnish names and the amount of pictures taken.
 ## Table of contents
 
 1. [Running the project](#Running-the-project)
+    - [Docker](#Docker)
+    - [Bare-metal](#Bare-metal)
 
 2. [Training the model](#Training-the-model)
 
@@ -44,6 +46,22 @@ The english names, finnish names and the amount of pictures taken.
 
 
 ## Running The Project
+
+### Docker
+
+1. Add your own weights
+
+This is done by making a folder inside this folder named `weights`.
+After that you put your weights in there.
+
+2. Run the containers
+
+```bash
+docker compose up
+```
+
+
+### Bare-metal
 
 1. Set up the virtual environment
 
