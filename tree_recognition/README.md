@@ -49,6 +49,9 @@ The english names, finnish names and the amount of pictures taken.
 
 ### Docker
 
+The project can also be fetched from docker hub, so you don't have to build
+everything yourself (building takes a long time). [sakuexe/insikoorit](https://hub.docker.com/repository/docker/sakuexe/insikoorit)
+
 1. Add your own weights
 
 This is done by making a folder inside this folder named `weights`.
