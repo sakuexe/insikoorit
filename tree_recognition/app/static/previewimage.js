@@ -5,11 +5,18 @@ if (!fileInput) throw new Error("no fileinput field was found");
 const imageForm = document.querySelector('form');
 if (!imageForm) throw new Error("no form was found");
 
-fileInput?.addEventListener("change", () => {
-/** @type {HTMLImageElement | null} */
+fileInput?.addEventListener("change", previewImage);
+document.addEventListener("DOMContentLoaded", previewImage);
+
+function previewImage() {
+  if (!fileInput) throw new Error("file input element was not found (form input[name='file'])")
+  /** @type {HTMLImageElement | null} */
   const imagePreview = document.querySelector("#image-preview > img");
   if (!imagePreview) throw new Error("No image preview was found")
-  if (!fileInput.files) return
+  if (!fileInput.files) {
+    console.log("no files in file input")
+    return
+  }
 
   const file = fileInput.files[0];
   const reader = new FileReader();
@@ -22,7 +29,7 @@ fileInput?.addEventListener("change", () => {
 
   // hide the scores when the image changes
   hideResults();
-});
+}
 
 function hideResults() {
   /** @type {HTMLOutputElement | null }*/

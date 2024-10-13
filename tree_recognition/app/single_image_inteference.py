@@ -1,9 +1,8 @@
 import torch
 import torch.nn.functional as F
 from torchvision.transforms import Compose, Resize, ToTensor
-from torchvision import models
 from PIL import Image
-from model_state import load_model_from_disk
+import io
 from dataclasses import dataclass
 
 WEIGHTS_ROOT = "weights"
@@ -27,12 +26,12 @@ class InferenceResult:
 
 def infer_single_image(
     model: torch.nn.Module,
-    image_path: str,
+    image_bytes: io.BytesIO,
     transform: Compose,
     classes: list[str]
 ) -> InferenceResult:
     # Load and preprocess the image
-    image = Image.open(image_path).convert('RGB')
+    image = Image.open(image_bytes).convert('RGB')
     image = transform(image)
     image = image.unsqueeze(0)  # Add batch dimension
 
@@ -64,8 +63,7 @@ def infer_single_image(
 
 def generate_infer(
     model: torch.nn.Module,
-    image_path: str,
-    model_name=DEFAULT_MODEL
+    image_bytes: io.BytesIO,
 ) -> InferenceResult:
     # get the classes dynamically based on the amount of folders
     # inside the training root
@@ -81,7 +79,7 @@ def generate_infer(
 
     return infer_single_image(
         model,
-        image_path,
+        image_bytes,
         transform,
         class_names
     )

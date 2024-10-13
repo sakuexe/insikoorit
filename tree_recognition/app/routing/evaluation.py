@@ -1,3 +1,4 @@
+import io
 from fastapi import UploadFile, Request
 from fastapi import APIRouter
 from fastapi.applications import FastAPI
@@ -36,28 +37,11 @@ router = APIRouter(lifespan=lifespan)
 
 @router.post("/evaluate")
 async def evaluate_tree(request: Request, file: UploadFile | None = None):
-    from main import UPLOAD_FOLDER
-
     if not file:
         return templates.TemplateResponse(
             request=request,
             name="error.html",
             context={"code": 400, "message": "The given file has no filename"}
-        )
-
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename or "noname.jpeg")
-
-    try:
-        with open(file_path, "wb") as buffer:
-            buffer.write(await file.read())
-    except OSError:
-        return templates.TemplateResponse(
-            request=request,
-            name="error.html",
-            context={
-                "code": 500,
-                "message": "The file could not be saved to the disk"
-            }
         )
 
     if not model:
@@ -70,13 +54,13 @@ async def evaluate_tree(request: Request, file: UploadFile | None = None):
             }
         )
 
+    # pass the image as bytes instead of saving the image to disk,
+    # to optimize the processing time.
+    # this way the image is kept in memory (way faster)
     infer_result: InferenceResult = generate_infer(
         model,
-        image_path=file_path,
+        io.BytesIO(await file.read())
     )
-
-    # after the model has done its work, remove the saved image
-    asyncio.create_task(remove_file_async(file_path))
 
     return templates.TemplateResponse(
         request=request,
@@ -87,12 +71,3 @@ async def evaluate_tree(request: Request, file: UploadFile | None = None):
             "probabilities": infer_result.probabilities
         }
     )
-
-
-async def remove_file_async(file_path: str):
-    """Asynchronously remove the file."""
-    try:
-        os.remove(file_path)
-    except OSError as err:
-        print(f"Error while removing file from: {file_path}")
-        print(err)
