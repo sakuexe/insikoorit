@@ -63,6 +63,7 @@ def infer_single_image(
 
 
 def generate_infer(
+    model: torch.nn.Module,
     image_path: str,
     model_name=DEFAULT_MODEL
 ) -> InferenceResult:
@@ -70,13 +71,6 @@ def generate_infer(
     # inside the training root
     class_names = ['birch', 'juniper', 'linden',
                    'maple', 'oak', 'pine', 'rowan', 'spruce']
-
-    # load the model
-    model = models.resnet34(weights=None)
-    model.fc = torch.nn.Linear(model.fc.in_features, len(class_names))
-    load_model_from_disk(model, weights_root=WEIGHTS_ROOT,
-                         model_name=model_name)
-    model = model.to(DEVICE)  # Move model to device
     model.eval()
 
     # define transform

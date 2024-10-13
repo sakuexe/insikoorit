@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<div>
+<div class="scores">
   <div>
     {% for prob in probabilities %}
     <div class="probability-bar" style="height: {{ (prob.confidence * 100)|round(0, 'ceil') }}%">

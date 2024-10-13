@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from torchvision import models
 import os
 
 
@@ -54,3 +55,22 @@ def load_model_from_disk(
         weights_only=True,
         map_location=device
     ))
+
+
+async def load_entire_model(
+    model_name=DEFAULT_MODEL,
+    weights_root=WEIGHTS_ROOT
+) -> nn.Module:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    class_names = ['birch', 'juniper', 'linden',
+                   'maple', 'oak', 'pine', 'rowan', 'spruce']
+
+    # load the model
+    model = models.resnet34(weights=None)
+    model.fc = torch.nn.Linear(model.fc.in_features, len(class_names))
+    load_model_from_disk(model, weights_root=weights_root,
+                         model_name=model_name)
+
+    model = model.to(device)
+    print(f"model {os.path.join(weights_root, model_name)} is loaded")
+    return model

@@ -24,11 +24,11 @@ output#result div > p.key {
   font-size: 1.125em;
 }
 
-output#result > div:last-child {
+output#result > .scores {
   grid-column: 1/-1;
 }
 
-output#result > div:last-child > div {
+output#result > .scores > div {
   --background-color: #020;
   --foreground-color: #04dd04;
   display: grid;
@@ -74,7 +74,7 @@ output#result .probability-bar > div:first-child {
   flex-shrink: 1;
 }
 
-output#result > div:last-child > ul {
+output#result > .scores > ul {
   display: grid;
   grid-auto-columns: minmax(0, 1fr);
   grid-auto-flow: column;
@@ -85,7 +85,7 @@ output#result > div:last-child > ul {
   padding-inline: 0.5em;
 }
 
-output#result > div:last-child > ul > li {
+output#result > .scores > ul > li {
   list-style-type: none;
   padding: 0;
   margin: 0;
