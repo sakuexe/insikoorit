@@ -29,7 +29,7 @@
 <details>
   <summary><b>🖥️&nbsp;HAMK Thesis Assistant (Thesizer) - AI Project</b></summary>
     <p>
-        something cool about the project...
+        Thesizer is really cool yo!
     </p>
     <a href="./thesizer/">See the files here</a>
 </details>
