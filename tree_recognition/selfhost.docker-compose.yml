@@ -1,0 +1,80 @@
+# this example is using cloudflare tunnels, so that you can self host this
+# without needing to configure your router at all
+# https://www.cloudflare.com/products/tunnel/
+services:
+  tree_app:
+    build: sakuexe/insikoorit:latest
+    labels:
+      - "traefik.enable=true"
+      # domain to use with this container
+      - "traefik.http.routers.tree_app.rule=Host(`yourdomain.sexy`) | Host(`www.yourdomain.sexy`)" 
+      # use https
+      - "traefik.http.routers.tree_app.entrypoints=websecure"
+    restart: unless-stopped
+    user: lorax
+    command: fastapi run /home/lorax/trees/main.py --proxy-headers --port 80
+    volumes:
+      # weights
+      - type: bind
+        source: ./weights/
+        target: /home/lorax/trees/weights/
+        read_only: true
+    ports:
+      - "80"
+      - "443"
+    networks:
+      - selfhost_net
+    deploy: 
+      replicas: 3
+
+  traefik:
+    container_name: traefik
+    image: traefik:v3.1
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # # TLS (https)
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.cloudflare.acme.email=youremail@gmail.com" # change to your email
+      - "--certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json"
+      # http redirection
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+    environment:
+      - CF_DNS_API_TOKEN=<Cloudflare-dns-api-token>
+    ports:
+      # host:container
+      - "80:80"
+      - "443:443"
+      # Web UI
+      - "8080:8080"
+    volumes:
+      # allow Traefik to listen for docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      # persist the ssl certificate
+      - letsencrypt:/letsencrypt
+    networks:
+      - selfhost_net
+      - tunnel_net
+    depends_on:
+      - cloudflare_tunnel
+
+  cloudflare_tunnel:
+    container_name: cloudflared-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=<cloudflare-tunnel-token>
+    networks:
+      - tunnel_net
+
+networks:
+  selfhost_net:
+  tunnel_net:
+volumes:
+  letsencrypt:
