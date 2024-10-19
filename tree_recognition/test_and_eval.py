@@ -14,27 +14,26 @@ from sklearn.metrics import average_precision_score
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score, confusion_matrix, ConfusionMatrixDisplay
 
-
 from sklearn.metrics import recall_score
+from sklearn.linear_model import LinearRegression
 
 #from app.routing.evaluation import
 TRAINING_ROOT = "trees_training/resized"
 VALIDATION_ROOT = "trees_valuation"
-LEARNING_RATE = 0.01
+#LEARNING_RATE = 0.01
 # = 128?
 IMAGE_RESIZE = 64
 
 # transformations, like resizing
 transform = Compose([Resize((IMAGE_RESIZE, IMAGE_RESIZE)), ToTensor()])
-# load the dataset
+# load the datasets
 train_data = ImageFolder(root=TRAINING_ROOT, transform=transform)
 validation_data = ImageFolder(root=VALIDATION_ROOT, transform=transform)
-global accu
-accu = []
+
 global pred
 pred = []
-global losses
-losses  = []
+global lossess
+lossess = []
 global EPOCHS
 EPOCHS = 40
 global scoreall
@@ -52,35 +51,59 @@ global cmpr
 cmpr =np.zeros((8,8), dtype=int)
 global cofusmatsum
 cofusmatsum = np.zeros((8,8),dtype =int)
+#calculates the values
 def mini_batch(device, data_loader, test_loader, model):
-    
+    #array of accrurate by epochs, values
+    accurateall = []
     score = 0
-    for x_batch, y_batch in zip(data_loader,test_loader):
-       
-        Y = y_batch[1]
-        y_pred = y_batch[0].to(device)
-    
+    global cmx
+    cmx = np.zeros((8,8), dtype=int)
+    for data_batch, test_batch in zip(data_loader,test_loader):
+        #data_batch= traing materral, test_batch= test material
+        #Y = test y
+        Y = test_batch[1]
+        #y_pred: predicted value(predicated y) by test x
+        y_pred = test_batch[0].to(device)
+        #maximum value of predicted values
         y_pred_idx=np.argmax(y_pred, axis=1)
+        #maximum value of data y values
         y_test_idx=np.argmax(Y)
-        
+        #number of correct, when predicted = data
         N_correct=(y_pred_idx==y_test_idx).sum()
-        
-        
+        # of all predicted
         N_all=y_pred_idx.sum()
-        
-        acc=N_correct/N_all
-      
-        pr = y_batch[1]
-        x =  x_batch[1]
-        
-        
-        score = accuracy_score(x, pr, normalize= True)
+        # accuracy = correct from all
+        accurate=N_correct/N_all
+
+        #predicted and given values
+        given2 = y_pred_idx[1][0]
+        predicted2 =  test_batch[0][0][0][0]
+        given1 = given2.numpy()
+        givenn = np.array(given1)
+        predicted1 = predicted2.numpy()
+        predictedn = np.array(predicted1)
+        #pere predicted values for confusion matrix
+        pere = []
+        for prr in predictedn:
+            #round between 0 and 1 to 0 or 1
+            pere.append(round(prr))
+        pere = np.array(pere).reshape(8,8)
+
+        given = givenn.reshape(16,4)
+        predicted = predictedn.reshape(16,4)
+        predictedbin = np.zeros((16,4), int)
+        score = 0
+        for a in range(4):
+            for b in range(4):
+                #print(predicted[a][b])
+                score = score +predicted[a][b]
+        score = score /(4*4)
+    
         scoreall.append(score)
 
-
-        accu.append(acc)
+        accurateall.append(accurate)
         la = Y
-        op = x_batch[0][0][0][0]
+        op = data_batch[0][0][0][0]
         op = np.array(op)
       
         opp = []
@@ -94,61 +117,70 @@ def mini_batch(device, data_loader, test_loader, model):
             pred.append(pre)
         except:
             pass
-
-        f1 = f1_score(x, pr, average='weighted')
+        #print("DATA", Y, data_batch[1])
+        f1 = f1_score(Y, data_batch[1], average='weighted')
+        
+        #print("f1", f1)
         f1all.append(f1)
 
 
        
-        recal1 = recall_score(x_batch[1], y_batch[1], labels=None, pos_label=1, average="macro", sample_weight=None, zero_division=0.0)
-        #recal2 = np.array(recal1)
-        #scoreRec = recal1.sum()/len(recal2)
+        #recal1 = recall_score(data_batch[1], test_batch[1], labels=None, pos_label=1, average="macro", sample_weight=None, zero_division=0.0)
+        recal1 = recall_score(Y, data_batch[1], labels=None, pos_label=1, average="macro", sample_weight=None, zero_division=0.0)
+       
        
         scoreRec = recal1
         recal.append(scoreRec)    
-        x1 = resize(x, (8,8))
-        global cmx
+        x1 = resize(given, (8,8))
+        
         cmx = cmx + x1
-        pr1 = resize(pr, (8,8))
+    
+        pr1 = pere
         global cmpr
         cmpr = cmpr + pr1
+        
 
-    return accu, pred,scoreall, f1all, recal, cmx, cmpr
+    return accurateall, pred,scoreall, f1all, recal, cmx, cmpr
 
 
 def main(model_path):
+    #load model from model_path, train_data =ImageFolder(root=TRAINING_ROOT, transform=transform)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = cnn_model.TreeCNN(train_data.classes, IMAGE_RESIZE).to(device)
     model.load_state_dict(torch.load(model_path, map_location=torch.device(device), weights_only=True))
-   
- 
-    scoreT = []
-    lr = 0.1
+    #confusion_final sum of condusion_matrixes
+    confusion_final =[]
+    #AccuracyScores: array of accuracy scores
+    AccuracyScores = []
     train_loader = None
-    train_step = 1
+    #Seed for random
     torch.manual_seed(42)
-
-    #checkpoint = torch.load(model_path, map_location=torch.device(device), weights_only=True)
+    #prints model_path and model parameters
     print(model_path)
     print(model)
-   
-    #optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
-   
+    #print device cpu or gpu
     print(device)
-   
-   
-    #train_step = model.forward(td)
-    losall = []
-    accall =[]
+    #all accuracys
+    accuracy_all =[]
+    #all predictions
     presall = []
+    #epochs=number of shuffles
+    #confusion_final_sum = confusion matrix in the end
+    confusion_final_sum = np.zeros((8,8),int)
     global EPOCHS
     model.eval()
     for epoch in range(EPOCHS):
+        
         print("EPOCH: ", epoch + 1, "\nPlease wait")
-        #train_step = model.forward
+        confusionmatrx1 = np.zeros((8,8),int)
+        #train_data = ImageFolder(root=TRAINING_ROOT, transform=transform)
+        #validation_data = ImageFolder(root=VALIDATION_ROOT, transform=transform)
+        #train_data traing
+        #validation_data test data
         train_loader = torch.utils.data.DataLoader(train_data, batch_size=4, shuffle=True)
         test_loader = torch.utils.data.DataLoader(validation_data, batch_size = 4, shuffle = True)
-        train_accuracy, pres, scoreA, f1all, recA, cmx, cmpr = mini_batch(device, train_loader, test_loader, model) #train_step)
+        #train accuracy, presitioon, accuracy score, f1 score, recal score
+        train_accuracy, presition, scoreAccuracy, f1all, recAll, confusionmatrix, confusionmatr1predicted = mini_batch(device, train_loader, test_loader, model) #train_step)
         summa =0.0
         k=0
         
@@ -157,52 +189,53 @@ def main(model_path):
             k = k +1
         if k>0:
             summa = summa /k
+            trainAccuracy = summa
         h = 0
         presi = 0
        
-        for r in pres:
+        for r in presition:
             presi = presi + r
             h=h+1
-          
         if h>0:
             presi = presi / h
-    
+            #presition avarage
+            presitionAvarage = presi
+        #accuracy score avarage
+        ASavarage = np.array(scoreAccuracy).sum()/len(np.array(scoreAccuracy))
+        #f1 score avarage
+        f1scoreavarage = np.array(f1all).sum()/len(np.array(f1all))
+        #recaal score avarage
+        recalscoreavarage = np.array(recAll).sum()/len(np.array(recAll))
        
-        AS = np.array(scoreA).sum()/len(np.array(scoreA))
-        f1x = np.array(f1all).sum()/len(np.array(f1all))
-        R = np.array(recA).sum()/len(np.array(recA))
-        lsum = 0.0
-        k2 = 0
-     
-        accall.append(summa)
-        presall.append(presi)
-        scoreT.append(AS)
+        #accuracy array
+        accuracy_all.append(trainAccuracy)
+        #presition array
+        presall.append(presitionAvarage)
+        #accuracy score array
+        AccuracyScores.append(ASavarage)
         
         
         print(
         f'Epoch: {epoch+1}\n',
         '*100%\n',
-        f'Mean Accuracy:{summa*100:0.2f}\n',
-        f'Avarage precision:{presi*100:0.2f}\n',
-        f'Accuracy score:{AS*100:0.2f}\n',
-        f'f1 score: {f1x*100:0.2f}\n',
-        f'Recall score: {R*100:0.2f}\n'
+        f'Mean Accuracy:{trainAccuracy*100:0.2f}\n',
+        f'Avarage precision:{presitionAvarage*100:0.2f}\n',
+        f'Accuracy score:{ASavarage*100:0.2f}\n',
+        f'f1 score: {f1scoreavarage*100:0.2f}\n',
+        f'Recall score: {recalscoreavarage*100:0.2f}\n'
         )
-
-        cmx1 = cmx[0]
-        cmpr1 = cmpr[0]
-        for r in range(7):
-            cmx1 = cmx1 + cmx[r+1]
-            cmpr1 = cmpr1 +cmpr[r+1]
-        #print("Confussion matrix:", cmx1, cmpr1)
-        confuss_mat = confusion_matrix(cmx1, cmpr1)
-        confuss_mat.resize(8,8)
-        global cofusmatsum
-        cofusmatsum = cofusmatsum + confuss_mat
-  
+        
+    
+        confuss_mat = confusionmatrix
+        binary_times_confus_value = confuss_mat * confusionmatr1predicted
+        
+        confusion_final.append(binary_times_confus_value)
+      
+   
+   
     x=0
     plt.title("accuracy")
-    for acca in accall:
+    for acca in accuracy_all:
         plt.scatter(x, acca)
         x= x +1
     plt.show()
@@ -215,7 +248,7 @@ def main(model_path):
    
     s = 0
     plt.title("Accurate score")
-    for score1 in scoreT:
+    for score1 in AccuracyScores:
         plt.scatter(s,score1)
         s=s+1
     plt.show()
@@ -233,10 +266,12 @@ def main(model_path):
         plt.scatter(r,scorer)
         r=r+1
     plt.show()
-    print(cofusmatsum)
-    disp = ConfusionMatrixDisplay(cofusmatsum)   
+
+    print(binary_times_confus_value)
+    disp = ConfusionMatrixDisplay(binary_times_confus_value)   
     disp.plot()
     plt.show()
+
 
 if __name__=="__main__":
     if len(sys.argv) > 1:
