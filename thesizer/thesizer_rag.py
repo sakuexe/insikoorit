@@ -1,7 +1,9 @@
 # the following code is collected from this hugging face tutorial
 # https://huggingface.co/learn/cookbook/rag_zephyr_langchain
 # langchain
-from langchain_core.prompts import ChatPromptTemplate
+from typing import TypedDict
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_huggingface import HuggingFacePipeline
@@ -14,6 +16,7 @@ import torch
 import gradio as gr
 # stdlib
 from asyncio import sleep
+import copy
 # local
 from vector_store import get_document_database
 
@@ -66,7 +69,8 @@ prompt_template = ChatPromptTemplate([
 ])
 
 
-async def generate_answer(user_input: str):
+async def generate_answer(message_history: list[HumanMessage | AIMessage]):
+    print(f"message history: {message_history}")
     # generate a vector store
     db = await get_document_database("learning_material/*/*")
 
@@ -75,23 +79,41 @@ async def generate_answer(user_input: str):
     retriever = db.as_retriever(
         search_type="similarity", search_kwargs={"k": n_of_best_results})
 
+    retrieved_docs = retriever.get_relevant_documents(message_history[-1].content)
+    context_string = "\n".join([
+        doc.page_content
+        for doc in retrieved_docs
+    ])
+
+    chat_template = [
+        SystemMessage(
+            content="""You are 'thesizer', a HAMK thesis assistant.
+                You will help the user with technicalities on writing a thesis
+                for hamk. If you can't find the answer from the context given
+                to you, you will tell the user that you cannot assist with the
+                specific topic. You answer with only a single message."""
+        ),
+        SystemMessage(content=context_string),
+        MessagesPlaceholder(variable_name="messages"),
+    ]
+
+    prompt = ChatPromptTemplate.from_messages(chat_template)
+
     # create the pipeline for generating a response
     # RunnablePassthrough handles the invoke parameters
     retrieval_chain = (
-        {"context": retriever, "user_input": RunnablePassthrough()}
-        | prompt_template
+        prompt
         | llm
-        | StrOutputParser()
     )
 
-    response = retrieval_chain.invoke(user_input)
+    response = retrieval_chain.invoke({"messages": message_history[-2:]})
 
     # debugging
     print("=====raw response=====")
     print(response)
 
     # get only the last response from the ai
-    parsed_answer = response.split("AI:").pop().strip()
+    parsed_answer = response.split("## Thesizer Response").pop().strip()
     return parsed_answer
 
 
@@ -99,11 +121,35 @@ def update_chat(user_message: str, history: list):
     return "", history + [{"role": "user", "content": user_message}]
 
 
-async def handle_conversation(history: list, characters_per_second=80):
+class ChatMessage(TypedDict):
+    role: str
+    metadata: dict
+    content: str
+
+
+def parse_history(
+    message_history: list[ChatMessage]
+) -> list[AIMessage | HumanMessage]:
+    parsed = []
+    for message in message_history:
+        if message["role"] == "assistant":
+            parsed.append(AIMessage(message["content"]))
+        else:
+            parsed.append(HumanMessage(message["content"]))
+    return parsed
+
+
+async def handle_conversation(
+    history: list[ChatMessage],
+    characters_per_second=80
+):
     print("history:")
     print(history)
-    bot_message = await generate_answer(history[-1].get("content"))
-    history.append({"role": "assistant", "content": ""})
+    bot_message = await generate_answer(parse_history(history))
+    new_message: ChatMessage = {"role": "assistant",
+                                "metadata": {"title": None},
+                                "content": ""}
+    history.append(new_message)
     for character in bot_message:
         history[-1]['content'] += character
         yield history
