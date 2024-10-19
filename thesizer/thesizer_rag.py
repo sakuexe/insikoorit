@@ -10,10 +10,10 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from transformers import pipeline
 # pytorch
 import torch
+# gradio
+import gradio as gr
 # stdlib
-from asyncio import get_event_loop
-import sys
-import os
+from asyncio import sleep
 # local
 from vector_store import get_document_database
 
@@ -66,7 +66,7 @@ prompt_template = ChatPromptTemplate([
 ])
 
 
-async def main():
+async def generate_answer(user_input: str):
     # generate a vector store
     db = await get_document_database("learning_material/*/*")
 
@@ -74,12 +74,6 @@ async def main():
     n_of_best_results = 4
     retriever = db.as_retriever(
         search_type="similarity", search_kwargs={"k": n_of_best_results})
-
-    question = "Who are you? what can you do?"
-    # check if a command line question is passed
-    cli_question = sys.argv.pop()
-    if cli_question != os.path.basename(__file__):
-        question = cli_question
 
     # create the pipeline for generating a response
     # RunnablePassthrough handles the invoke parameters
@@ -90,20 +84,76 @@ async def main():
         | StrOutputParser()
     )
 
-    response = retrieval_chain.invoke(question)
+    response = retrieval_chain.invoke(user_input)
 
     # debugging
-    # print("=====raw response=====")
-    # print(response)
+    print("=====raw response=====")
+    print(response)
 
     # get only the last response from the ai
     parsed_answer = response.split("AI:").pop().strip()
+    return parsed_answer
 
-    print(f"User prompt: {question}")
-    print(f"{'=' * 23}Thesizer answer{'=' * 23}")
-    print(parsed_answer)
+
+def update_chat(user_message: str, history: list):
+    return "", history + [{"role": "user", "content": user_message}]
+
+
+async def handle_conversation(history: list, characters_per_second=80):
+    print("history:")
+    print(history)
+    bot_message = await generate_answer(history[-1].get("content"))
+    history.append({"role": "assistant", "content": ""})
+    for character in bot_message:
+        history[-1]['content'] += character
+        yield history
+        await sleep(1 / characters_per_second)
+
+
+def create_interface():
+    with gr.Blocks() as interface:
+        gr.Markdown("# 📄 Thesizer: HAMK Thesis Assistant")
+        gr.Markdown("Ask for help with authoring the HAMK thesis!")
+
+        gr.Markdown("## Chat interface")
+
+        with gr.Column():
+            chatbot = gr.Chatbot(type="messages")
+
+            with gr.Row():
+                user_input = gr.Textbox(
+                    label="You:",
+                    placeholder="Type your message here...",
+                    show_label=False
+                )
+                send_button = gr.Button("Send")
+
+        # handle the messages being sent
+        send_button.click(
+            fn=update_chat,
+            inputs=[user_input, chatbot],
+            outputs=[user_input, chatbot],
+            queue=False
+        ).then(
+            fn=handle_conversation,
+            inputs=chatbot,
+            outputs=chatbot
+        )
+
+        # pressing enter instead of the button
+        user_input.submit(
+            fn=update_chat,
+            inputs=[user_input, chatbot],
+            outputs=[user_input, chatbot],
+            queue=False
+        ).then(
+            fn=handle_conversation,
+            inputs=chatbot,
+            outputs=chatbot
+        )
+
+    return interface
 
 
 if __name__ == "__main__":
-    loop = get_event_loop()
-    loop.run_until_complete(main())
+    create_interface().launch()
