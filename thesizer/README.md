@@ -162,7 +162,7 @@ pip install faiss-cpu
 
 ```bash
 pip install transformers accelerate bitsandbytes sentence-transformers langchain \
-langchain-community langchain-huggingface pypdf bs4 lxml nltk "unstructured[md]"
+langchain-community langchain-huggingface pypdf bs4 lxml nltk gradio "unstructured[md]"
 ```
 
 4. **Log into your Hugging Face account**
