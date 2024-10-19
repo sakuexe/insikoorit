@@ -76,7 +76,7 @@ LOADER_MAP = {
 async def get_document_database(
     data_folder="learning_material/*/*",
     embedding_model="BAAI/bge-base-en-v1.5",
-    chunk_size=1000, chunk_overlap=0,
+    chunk_size=1028, chunk_overlap=0,
 ) -> VectorStore:
 
     # get all the filepaths of the learning materials

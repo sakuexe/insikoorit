@@ -16,9 +16,15 @@ import torch
 import gradio as gr
 # stdlib
 from asyncio import sleep
-import copy
 # local
 from vector_store import get_document_database
+
+
+class ChatMessage(TypedDict):
+    role: str
+    metadata: dict
+    content: str
+
 
 # MODEL_NAME = "meta-llama/Llama-3.2-3B"
 # MODEL_NAME = "google/gemma-7b"
@@ -53,24 +59,46 @@ text_generation_pipeline = pipeline(
 
 llm = HuggingFacePipeline(pipeline=text_generation_pipeline)
 
-# creating the prompt template in the shape of a chat prompt
-# this is done so that it could be easily expanded
-# https://www.mirascope.com/post/langchain-prompt-template
-prompt_template = ChatPromptTemplate([
-    ("system", """You are 'thesizer', a HAMK thesis assistant.
-    You will help the user with technicalities on writing a thesis
-    for hamk. If you can't find the answer from the context given to you,
-    you will tell the user that you cannot assist with the specific topic.
-    You answer with only a single message."""),
-    ("system", "{context}"),
-    ("assistant", "Hei! Kuinka voin auttaa opinnäytetyösi kanssa?"),
-    ("assistant", "Hello! How can I help you with authoring your thesis?"),
-    ("user", "{user_input}"),
-])
+
+def generate_prompt(message_history: list[ChatMessage], max_history=5):
+    # creating the prompt template in the shape of a chat prompt
+    # this is done so that it could be easily expanded
+    # https://www.mirascope.com/post/langchain-prompt-template
+    prompt_template = ChatPromptTemplate([
+        ("system", """You are 'thesizer', a HAMK thesis assistant.
+        You will help the user with technicalities on writing a thesis
+        for hamk. If you can't find the answer from the context given to you,
+        you will tell the user that you cannot assist with the specific topic.
+        You speak both Finnish and English by following the user's language.
+        Continue the conversation with a single response from the AI."""),
+        ("system", "{context}"),
+    ])
+
+    # include the examples in the prompt if the conversation is starting
+    if len(message_history) < 4:
+        prompt_template.append(
+            ("assistant", "Hei! Kuinka voin auttaa opinnäytetyösi kanssa?"),
+        )
+        prompt_template.append(
+            ("assistant", "Hello! How can I help you with authoring your thesis?"),
+        )
+
+    # add chat messages here (only include up to the max amount)
+    for message in message_history[-max_history:]:
+        prompt_template.append(
+            (message["role"], message["content"])
+        )
+
+    # this is here so that the stupid thing wont start roleplaying as the user
+    # and therefore making up the conversation
+    prompt_template.append(
+        ("assistant", "<RESPONSE>:")
+    )
+
+    return prompt_template
 
 
-async def generate_answer(message_history: list[HumanMessage | AIMessage]):
-    print(f"message history: {message_history}")
+async def generate_answer(message_history: list[ChatMessage]):
     # generate a vector store
     db = await get_document_database("learning_material/*/*")
 
@@ -79,73 +107,47 @@ async def generate_answer(message_history: list[HumanMessage | AIMessage]):
     retriever = db.as_retriever(
         search_type="similarity", search_kwargs={"k": n_of_best_results})
 
-    retrieved_docs = retriever.get_relevant_documents(message_history[-1].content)
-    context_string = "\n".join([
-        doc.page_content
-        for doc in retrieved_docs
-    ])
-
-    chat_template = [
-        SystemMessage(
-            content="""You are 'thesizer', a HAMK thesis assistant.
-                You will help the user with technicalities on writing a thesis
-                for hamk. If you can't find the answer from the context given
-                to you, you will tell the user that you cannot assist with the
-                specific topic. You answer with only a single message."""
-        ),
-        SystemMessage(content=context_string),
-        MessagesPlaceholder(variable_name="messages"),
-    ]
-
-    prompt = ChatPromptTemplate.from_messages(chat_template)
+    prompt = generate_prompt(message_history, max_history=5)
 
     # create the pipeline for generating a response
     # RunnablePassthrough handles the invoke parameters
     retrieval_chain = (
-        prompt
+        {"context": retriever, "user_input": RunnablePassthrough()}
+        | prompt
         | llm
+        | StrOutputParser()
     )
 
-    response = retrieval_chain.invoke({"messages": message_history[-2:]})
+    # fetch the context using the latest message as the fetch string
+    user_input = message_history[-1]["content"]
+    response = retrieval_chain.invoke(user_input)
 
-    # debugging
-    print("=====raw response=====")
-    print(response)
+    # # debugging
+    # print("=====raw response=====")
+    # print(response)
 
-    # get only the last response from the ai
-    parsed_answer = response.split("## Thesizer Response").pop().strip()
-    return parsed_answer
+    # get the next response from the AI
+    # first parse until the last user input and then get the first response
+    parsed_answer = response.split(
+        str(user_input)
+    ).pop().split("<RESPONSE>:", 1).pop().strip()
+
+    print(repr(parsed_answer))
+
+    # replace newlines with br tags, since the gr.chatbot does not work
+    # well with newlines
+    return parsed_answer.replace("\n\n", "<br>")
 
 
 def update_chat(user_message: str, history: list):
     return "", history + [{"role": "user", "content": user_message}]
 
 
-class ChatMessage(TypedDict):
-    role: str
-    metadata: dict
-    content: str
-
-
-def parse_history(
-    message_history: list[ChatMessage]
-) -> list[AIMessage | HumanMessage]:
-    parsed = []
-    for message in message_history:
-        if message["role"] == "assistant":
-            parsed.append(AIMessage(message["content"]))
-        else:
-            parsed.append(HumanMessage(message["content"]))
-    return parsed
-
-
 async def handle_conversation(
     history: list[ChatMessage],
     characters_per_second=80
 ):
-    print("history:")
-    print(history)
-    bot_message = await generate_answer(parse_history(history))
+    bot_message = await generate_answer(history)
     new_message: ChatMessage = {"role": "assistant",
                                 "metadata": {"title": None},
                                 "content": ""}
