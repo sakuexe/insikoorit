@@ -100,7 +100,7 @@ def generate_prompt(message_history: list[ChatMessage], max_history=5):
 
 async def generate_answer(message_history: list[ChatMessage]):
     # generate a vector store
-    db = await get_document_database("learning_material/*/*")
+    db = await get_document_database("learning_material/*/*/*")
 
     # initialize the similarity search
     n_of_best_results = 4

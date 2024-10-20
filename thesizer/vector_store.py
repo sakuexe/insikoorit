@@ -74,7 +74,7 @@ LOADER_MAP = {
 
 # https://python.langchain.com/v0.1/docs/modules/data_connection/retrievers/vectorstore/
 async def get_document_database(
-    data_folder="learning_material/*/*",
+    data_folder="learning_material/*/*/*",
     embedding_model="BAAI/bge-base-en-v1.5",
     chunk_size=1028, chunk_overlap=0,
 ) -> VectorStore:
