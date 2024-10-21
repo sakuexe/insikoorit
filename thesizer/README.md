@@ -60,7 +60,7 @@ python3 thesizer_rag.py
 python3 thesizer_rag.py "mikä on abstract sivu?"
 ```
 
-![thesizer web interface](./readme_images/helpWithThesis.png)
+# ![thesizer web interface](./readme_images/helpWithThesis.png)
 
 ## Documentation
 
