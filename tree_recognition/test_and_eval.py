@@ -38,8 +38,7 @@ global EPOCHS
 EPOCHS = 40
 global scoreall
 scoreall = []
-global f1all
-f1all = []
+
 global lsall
 lasll = []
 global recal
@@ -53,11 +52,12 @@ global cofusmatsum
 cofusmatsum = np.zeros((8,8),dtype =int)
 #calculates the values
 def mini_batch(device, data_loader, test_loader, model):
-    #array of accrurate by epochs, values
+    #array of accurate by epochs, values
     accurateall = []
     score = 0
     global cmx
     cmx = np.zeros((8,8), dtype=int)
+    f1all = []
     for data_batch, test_batch in zip(data_loader,test_loader):
         #data_batch= traing materral, test_batch= test material
         #Y = test y
@@ -85,62 +85,68 @@ def mini_batch(device, data_loader, test_loader, model):
         #pere predicted values for confusion matrix
         pere = []
         for prr in predictedn:
-            #round between 0 and 1 to 0 or 1
+            #round between 0 and 1 to 0 or 1 i.e. propabilities to binary values
             pere.append(round(prr))
         pere = np.array(pere).reshape(8,8)
-
+        #given values and predicted values to array
         given = givenn.reshape(16,4)
         predicted = predictedn.reshape(16,4)
-        predictedbin = np.zeros((16,4), int)
+        #score: accuracy score
         score = 0
         for a in range(4):
             for b in range(4):
                 #print(predicted[a][b])
                 score = score +predicted[a][b]
         score = score /(4*4)
-    
+        #array of accuracy score arrays
         scoreall.append(score)
-
+        #array of mean accuracy
         accurateall.append(accurate)
+        #test Y
         la = Y
+        #opp average precision predicred
         op = data_batch[0][0][0][0]
         op = np.array(op)
-      
         opp = []
         for n in range(4):
             opp.append(op[n*4:n*4+4])
         opp = np.array(opp)
+        #la avarage precision score array 
         la = np.array(la)
        
+       #avarage prscision score calculat and append to array
         try:
             pre = average_precision_score(la,opp)
             pred.append(pre)
         except:
             pass
-        #print("DATA", Y, data_batch[1])
-        f1 = f1_score(Y, data_batch[1], average='weighted')
-        
+        #test batch x ->predicted sum times test batch Y (given)
+        P =np.array([np.zeros(4, int)]*16)
+        for g in range(16):
+            s = np.array((test_batch[0].to(device)[g*4:g*4+4]).sum()*test_batch[1])
+            P[g]=s
+        P.reshape([4,16])
+        #P calculated output sum vector
+        P = P[0]
+        f1 = []
+        #f1 score = test results given Y and sum of test[0] -> result, macro!
+        f1 = (f1_score(Y, P,  average='macro'))
+        #f1score= f1score + f1
         #print("f1", f1)
         f1all.append(f1)
-
-
-       
-        #recal1 = recall_score(data_batch[1], test_batch[1], labels=None, pos_label=1, average="macro", sample_weight=None, zero_division=0.0)
-        recal1 = recall_score(Y, data_batch[1], labels=None, pos_label=1, average="macro", sample_weight=None, zero_division=0.0)
-       
-       
+        #recal score test data results Y, test data y predicter (P)
+        recal1 = recall_score(Y, P, labels=None, pos_label=1, average="macro", sample_weight=None, zero_division=0.0)
         scoreRec = recal1
         recal.append(scoreRec)    
+        #given matrix to 8X8
         x1 = resize(given, (8,8))
-        
+        #given matrix added to all given matrixes (for confusion matrix)
         cmx = cmx + x1
-    
-        pr1 = pere
+        #pedicted matrix pre added to all predicted matrixes 
         global cmpr
-        cmpr = cmpr + pr1
-        
-
-    return accurateall, pred,scoreall, f1all, recal, cmx, cmpr
+        cmpr = cmpr + pere
+    
+    return accurateall, pred, scoreall, f1all, recal, cmx, cmpr
 
 
 def main(model_path):
@@ -152,6 +158,7 @@ def main(model_path):
     confusion_final =[]
     #AccuracyScores: array of accuracy scores
     AccuracyScores = []
+    f1scoreavarage =[]
     train_loader = None
     #Seed for random
     torch.manual_seed(42)
@@ -164,9 +171,11 @@ def main(model_path):
     accuracy_all =[]
     #all predictions
     presall = []
+    #array pf f1 scores
+    f1all = []
     #epochs=number of shuffles
     #confusion_final_sum = confusion matrix in the end
-    confusion_final_sum = np.zeros((8,8),int)
+    #confusion_final_sum = np.zeros((8,8),int)
     global EPOCHS
     model.eval()
     for epoch in range(EPOCHS):
@@ -183,7 +192,6 @@ def main(model_path):
         train_accuracy, presition, scoreAccuracy, f1all, recAll, confusionmatrix, confusionmatr1predicted = mini_batch(device, train_loader, test_loader, model) #train_step)
         summa =0.0
         k=0
-        
         for p in train_accuracy:
             summa = summa+p
             k = k +1
@@ -192,7 +200,6 @@ def main(model_path):
             trainAccuracy = summa
         h = 0
         presi = 0
-       
         for r in presition:
             presi = presi + r
             h=h+1
@@ -203,7 +210,8 @@ def main(model_path):
         #accuracy score avarage
         ASavarage = np.array(scoreAccuracy).sum()/len(np.array(scoreAccuracy))
         #f1 score avarage
-        f1scoreavarage = np.array(f1all).sum()/len(np.array(f1all))
+        f1scoreavarage.append(sum(f1all)/len(f1all))
+        f1score = (sum(f1all)/len(f1all))
         #recaal score avarage
         recalscoreavarage = np.array(recAll).sum()/len(np.array(recAll))
        
@@ -214,25 +222,26 @@ def main(model_path):
         #accuracy score array
         AccuracyScores.append(ASavarage)
         
-        
+        #print the values * 100
         print(
         f'Epoch: {epoch+1}\n',
         '*100%\n',
         f'Mean Accuracy:{trainAccuracy*100:0.2f}\n',
         f'Avarage precision:{presitionAvarage*100:0.2f}\n',
         f'Accuracy score:{ASavarage*100:0.2f}\n',
-        f'f1 score: {f1scoreavarage*100:0.2f}\n',
+        f'f1 score: {f1score*100:0.2f}\n',
         f'Recall score: {recalscoreavarage*100:0.2f}\n'
         )
         
     
         confuss_mat = confusionmatrix
+        #confusion matrix = matrix of times * matrix of probapilities
         binary_times_confus_value = confuss_mat * confusionmatr1predicted
-        
+        #confusion final matrix
         confusion_final.append(binary_times_confus_value)
       
    
-   
+    #mean accuracy plotted grphics
     x=0
     plt.title("accuracy")
     for acca in accuracy_all:
@@ -240,12 +249,13 @@ def main(model_path):
         x= x +1
     plt.show()
     x=0
+    #presision graphs
     plt.title("Presision")
     for p in presall:
         plt.scatter(x, p)
         x= x +1
     plt.show()
-   
+    #accurate score graphics
     s = 0
     plt.title("Accurate score")
     for score1 in AccuracyScores:
@@ -253,6 +263,7 @@ def main(model_path):
         s=s+1
     plt.show()
     p = 0
+    #f1 score Graphics
     plt.title("f1 score")
     for scoref in f1all:
         plt.scatter(p,scoref)
@@ -260,13 +271,13 @@ def main(model_path):
     plt.show()
     
     r = 0
-
+    #recal grahics
     plt.title("recall")
     for scorer in recal:
         plt.scatter(r,scorer)
         r=r+1
     plt.show()
-
+    #confusion matrix
     print(binary_times_confus_value)
     disp = ConfusionMatrixDisplay(binary_times_confus_value)   
     disp.plot()
@@ -274,9 +285,11 @@ def main(model_path):
 
 
 if __name__=="__main__":
+    #if arguments can get te path of the model (from the main path)
     if len(sys.argv) > 1:
         main(sys.argv[1])
     else:
+        #if no arguments given assumed path and model
         print("No model path provided.")
         print("Path: self_taught_model/weights/best_model_weights.pth")
         main("self_taught_model/weights/best_model_weights.pth")
