@@ -132,7 +132,87 @@ All of the FAISS processing is done asynchronously, so that theoretically it cou
 be passed more documentation during runtime without affecting the other users
 processing time.
 
+**Gradio**
+
+Gradio is a easy to use library for creating frontends for your python applications.
+We used Gradio, because we hadn't used it in the [Tree Recognition -project](../tree_recognition/).
+
+[Gradio Quickstart](https://www.gradio.app/guides/quickstart)
+
+Gradio provided very easy to use bindings for python that enabled us to create
+the web application for the project in no time! The most important component
+that the project uses is the `ChatBot`. It created a nice to use chatbox for
+interacting with the model. It also handles the history of the conversation, so
+we could just pass that instead of using another variable for storing message 
+histories.
+
+**Hugging Face Spaces**
+
+Hugging face spaces was used to host this project. It allows for "easy" configuration
+and can be fast to host. It also provides nicely 4 cpu cores in it's free tier.
+
+[Spaces Overview - Hugging Face](https://huggingface.co/docs/hub/en/spaces-overview)
+
+This way of hosting was fast and easy, since we do not have to think about the
+system management at all. The negative is that the model is quite resource
+intensive. This means that the version running on hugging face spaces is very very
+VERY slow.
+
+To fix this we could optimize the model further, but with the limited time that
+we have had, that was not possible.
+
 ### 3. Challenges
+
+**Hugging Face Spaces**
+
+The hosting platform worked at the end but it was not nice to use. Since we had
+developed the model with gpu support and guantization, we ran into a lot of
+problems when trying to host it.
+
+It also does not have an option from what we searched to use `Docker Compose`
+files. This way would've made the deployment very easy, but it was not present.
+
+Instead the docker version of the deployment would've also needed us to upload
+the source files to the service, negating almost all of the positives that
+deploying with docker would've provided.
+
+**Limited time**
+
+Because we had two projects going on at the same time, we couldn't quite optimize
+the end result to the best of our capabilities. Even with the fall break in the 
+middle.
+
+Because of this the end result ended up with some quirks and the deployment
+process couldn't be automated or made easier.
+
+**Difficulty of managing**
+
+Because the group was quite large with 5 people, the managing of what to do was
+a bit difficult. It took us a while to work it out in a way that worked for us.
+And even with that, it could sometimes feel like not everyone got the same
+opportunities to work on both projects.
+
+We do not know if this would've been avoided with smaller groups, since the
+two projects created quite a bit to do on their own.
+
+As an end result, some people did not get to work as much on the Thesizer project
+and learn about the RAG, or fine-tuning of the models for this use-case. Maybe
+4 people groups would've sufficed for the course, but we do not know for sure.
+
+### 4. Final Reflections
+
+We are proud of the work that we were able to do. The end product that we created
+turned out good, even though a little unpolished. The documentation turned out
+okay too. There is a bit more work to be done if anyone wants to continue this
+torch, but we are very content with where we got it.
+
+Working with the team was enjoyable and we are very thankful to have had such a
+nice and fun group environment for the course. Our collaboration was succesful
+and everyone seemed to learn a lot. This is a huge field of studies, so there
+is a lot to learn from here on out too.
+
+Thank you everyone for working on the project! Go check out everyone's github
+pages from the [main README](../README.md) or from the [contributions tab](https://github.com/sakuexe/insikoorit/graphs/contributors).
 
 
 ## Dependencies
