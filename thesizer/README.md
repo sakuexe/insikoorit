@@ -1,6 +1,6 @@
 # HAMK Thesis Assistant (Thesizer)
 
-AI Project - 10.2024
+Development of AI Applications / 10.2024 / HAMK
 
 ```
               .----.
@@ -44,14 +44,15 @@ to clone the repository and run it locally instead.
 1. [Running the model](#Running-the-model)
 2. [Documentation](#Documentation)
 
-    1. [The development process](#The-development-process)
+    1. [The development process](#1-the-development-process)
         - [Planning](#Planning)
         - [Creating the model](#Creating-the-model)
-    2. [Tools used](#Tools-used)
-    3. [Challenges](#Challenges)
+    2. [Tools used](#2-tools-used)
+    3. [Challenges](#3-challenges)
+    4. [Final Reflections](#4-final-reflections)
 
 3. [Dependencies](#Dependencies)
-3. [Helpful links](#Helpful-links)
+4. [Helpful links](#Helpful-links)
 
 
 ### Running the model
