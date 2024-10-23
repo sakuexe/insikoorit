@@ -64,8 +64,6 @@ The guide to this is in the [Dependencies](#Dependencies)-section.
 
 ```bash
 python3 thesizer_rag.py
-# give a prompt
-python3 thesizer_rag.py "mikä on abstract sivu?"
 ```
 
 ![thesizer web interface](./readme_images/helpWithThesis2.png)
