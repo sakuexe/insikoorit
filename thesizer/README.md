@@ -69,6 +69,8 @@ python3 thesizer_rag.py
 
 ![thesizer web interface](./readme_images/helpWithThesis2.png)
 
+<br>
+
 ## Documentation
 
 
@@ -97,6 +99,21 @@ _Translation models_
 As a base for the RAG model, we used this learning material from the Hugging 
 Face documentation: [Simple RAG for GitHub issues using Hugging Face Zephyr and LangChain](https://huggingface.co/learn/cookbook/rag_zephyr_langchain)
 
+We ended up going with [google/gemma-2-2b-it](https://huggingface.co/google/gemma-2-2b-it) 
+as the base model. We chose Gemma 2, because it felt very good quality for it's
+size. Thanks to that, it was able to provide pretty good general conversational
+capabilities. Thanks to that, the model felt more natural and easy to use.
+Gemma 2 is able to use both english and finnish too, which was a very important
+thing for us, since HAMK has both english and finnish teaching material.
+
+We chose specifically the IT-version, since it performed a lot better with 
+instructional prompts. This was especially evident when using more complicated
+prompts that included the context and chat history.
+
+We also worked on a fine-tuned version that would use our own dataset. This
+didn't end up turning up with great results, so we continued with the RAG model.
+
+<br>
 
 ### 2. Tools used
 
@@ -162,6 +179,8 @@ VERY slow.
 To fix this we could optimize the model further, but with the limited time that
 we have had, that was not possible.
 
+<br>
+
 ### 3. Challenges
 
 **Hugging Face Spaces**
@@ -200,6 +219,8 @@ As an end result, some people did not get to work as much on the Thesizer projec
 and learn about the RAG, or fine-tuning of the models for this use-case. Maybe
 4 people groups would've sufficed for the course, but we do not know for sure.
 
+<br>
+
 ### 4. Final Reflections
 
 We are proud of the work that we were able to do. The end product that we created
@@ -207,14 +228,19 @@ turned out good, even though a little unpolished. The documentation turned out
 okay too. There is a bit more work to be done if anyone wants to continue this
 torch, but we are very content with where we got it.
 
+We believe that this project could have potential for a full on thesis topic.
+Some teachers also showed interest in the idea, so there is a lot more potential
+with it. So feel free to use it if it caught your eye! (Remember to give credit!)
+
 Working with the team was enjoyable and we are very thankful to have had such a
 nice and fun group environment for the course. Our collaboration was succesful
 and everyone seemed to learn a lot. This is a huge field of studies, so there
 is a lot to learn from here on out too.
 
 Thank you everyone for working on the project! Go check out everyone's github
-pages from the [main README](../README.md) or from the [contributions tab](https://github.com/sakuexe/insikoorit/graphs/contributors).
+pages from [the main README](../README.md) or from the [contributions tab](https://github.com/sakuexe/insikoorit/graphs/contributors).
 
+<br>
 
 ## Dependencies
 
@@ -262,6 +288,7 @@ You can figure it out.
 > If there are problems or the process feels complicated, add your own
 > guide right here and replace this note.
 
+<br>
 
 ## Helpful links
 
