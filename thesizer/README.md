@@ -48,8 +48,9 @@ to clone the repository and run it locally instead.
         - [Planning](#Planning)
         - [Creating the model](#Creating-the-model)
     2. [Tools used](#2-tools-used)
-    3. [Challenges](#3-challenges)
-    4. [Final Reflections](#4-final-reflections)
+    3. [Explaining files](#3-explaining-files)
+    4. [Challenges](#3-challenges)
+    5. [Final Reflections](#4-final-reflections)
 
 3. [Dependencies](#Dependencies)
 4. [Helpful links](#Helpful-links)
@@ -181,7 +182,15 @@ we have had, that was not possible.
 
 <br>
 
-### 3. Challenges
+### 3. Explaining files
+
+**custom_model.py**: This file handles loading the fine-tuned model and tokenizer. It sets up a text classification pipeline for sentiment analysis or similar tasks, mapping the model’s output to meaningful labels (such as 'positive' or 'negative'). It also includes code to test the model on a sample input.
+
+**finetune.py**: This file is responsible for fine-tuning a pre-trained BERT model using the IMDb dataset. It includes code for loading and tokenizing the dataset, training the model, evaluating its performance, and saving the fine-tuned model and tokenizer for future use.
+
+**thesizer_rag.py**: This is the main file for the Thesizer project. It runs the RAG (Retrieval-Augmented Generation) model to assist with thesis-related queries by retrieving information from documents stored in a FAISS vector database. It also integrates with Gradio to provide a user interface for interacting with the model.
+
+### 4. Challenges
 
 **Hugging Face Spaces**
 
@@ -221,7 +230,7 @@ and learn about the RAG, or fine-tuning of the models for this use-case. Maybe
 
 <br>
 
-### 4. Final Reflections
+### 5. Final Reflections
 
 We are proud of the work that we were able to do. The end product that we created
 turned out good, even though a little unpolished. The documentation turned out
