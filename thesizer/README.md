@@ -30,6 +30,14 @@ the standards of HAMK. Thesizer takes those documents and fine-tunes itself so
 that it will be able to provide useful information and help the user. It is kind
 of like a spoken language search engine for thesis writing technicalities.
 
+Want to try it out? You can use it from HuggingFace spaces!
+
+[🖥️ Thesizer - HuggingFace Spaces](https://huggingface.co/spaces/sakuexe/thesizer)
+
+Warning: It is unbelievably slow, since it is running on the free version.
+The answers might take more than 90s to generate. Therefore, it is recommended
+to clone the repository and run it locally instead.
+
 
 ## Table of contents
 
