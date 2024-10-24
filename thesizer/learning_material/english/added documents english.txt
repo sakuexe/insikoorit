@@ -1,6 +1,5 @@
 HAMK Thesis template 2024.docx
 HAMK referencing guide.pdf
-HAMK-thesis-appendix-template-2024-1.docx (2021)
 ETHICAL RECOMMENDATIONS FOR THESIS WRITING AT UNIVERSITIES OF APPLIED SCIENCES_2020.pdf
 HAMK-research-permit-application.docx
 Thesis-data-management-plan.pdf
@@ -14,3 +13,10 @@ student-Wihi-instructions.pdf
 Thesis-agreement.pdf
 
 Laki digitaalisten palvelujen tarjoamisesta 306_2019 - Säädökset alkuperäisinä - FINLEX ®.pdf
+Opiskelija_wihiohje_fi_6.0-1-1.pdf
+HAMK-Lahdeviiteopas.pdf
+HAMKin opinnäytetyön asiakirjamalli 2024.pdf
+Opinnaytetyon-aineistonhallintasuunnitelma.pdf
+Opinnaytetyon-tutkimusaineiston-oikeuksien-siirtosopimus.pdf
+Opiskelijan-vastuulla-oleva-asiakirjojen-sailytys.pdf
+CELEX_32016R0679_FI_TXT.pdf (eu direktiivi)
