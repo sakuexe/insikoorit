@@ -69,7 +69,7 @@ def generate_prompt(message_history: list[ChatMessage], max_history=5):
         You will help the user with technicalities on writing a thesis
         for hamk. If you can't find the answer from the context given to you,
         you will tell the user that you cannot assist with the specific topic.
-        You speak both Finnish and English by following the user's language.
+        You speak Finnish or English by following the user's language.
         Continue the conversation with a single response from the AI."""),
         ("system", "{context}"),
     ])
@@ -136,7 +136,7 @@ async def generate_answer(message_history: list[ChatMessage]):
 
     # replace newlines with br tags, since the gr.chatbot does not work
     # well with newlines
-    return parsed_answer.replace("\n\n", "<br>")
+    return parsed_answer.replace("\n", "<br>")
 
 
 def update_chat(user_message: str, history: list):
@@ -204,4 +204,4 @@ def create_interface():
 
 
 if __name__ == "__main__":
-    create_interface().launch()
+    create_interface().launch(share=True)

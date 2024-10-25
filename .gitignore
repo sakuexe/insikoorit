@@ -12,3 +12,6 @@ __pycache__/
 # virtual envs
 venv/
 # add yours here, if you use another name for it
+
+# gradio
+.gradio/
