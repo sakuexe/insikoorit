@@ -10,21 +10,21 @@ from glob import glob
 import pathlib
 
 
-async def load_text(file_path: str) -> list[Document] | None:
+def load_text(file_path: str) -> list[Document] | None:
     """Loads text documents (.txt) asynchronously from a passed file_path."""
     assert file_path != ""
     assert pathlib.Path(file_path).suffix == ".txt"
 
     try:
         loader = TextLoader(file_path)
-        return await loader.aload()
+        return loader.load()
     except UnicodeError or RuntimeError as err:
         print(f"could not load file: {file_path}")
         print(f"error: {err}")
 
 
 # https://python.langchain.com/docs/how_to/document_loader_markdown/
-async def load_markdown(file_path: str) -> list[Document] | None:
+def load_markdown(file_path: str) -> list[Document] | None:
     """Loads markdown files asynchronously from a passed file_path."""
     assert file_path != ""
     assert pathlib.Path(file_path).suffix == ".md"
@@ -33,33 +33,33 @@ async def load_markdown(file_path: str) -> list[Document] | None:
         # use the mode elements to keep metadata about if the information is
         # a paragraph, link or a heading for example
         loader = UnstructuredMarkdownLoader(file_path, mode="elements")
-        return await loader.aload()
+        return loader.load()
     except UnicodeError or RuntimeError as err:
         print(f"could not load file: {file_path}")
         print(f"error: {err}")
 
 
 # https://python.langchain.com/docs/how_to/document_loader_pdf/
-async def load_pdf(file_path: str) -> list[Document] | None:
+def load_pdf(file_path: str) -> list[Document] | None:
     """Loads pdf documents (.pdf) asynchronously from a passed file_path."""
     assert file_path != ""
     assert pathlib.Path(file_path).suffix == ".pdf"
 
     loader = PyPDFLoader(file_path)
     try:
-        return await loader.aload()
+        return loader.load()
     except PyPdfError as err:
         print(f"could not read file: {file_path}")
         print(f"error: {err}")
 
 
-async def load_html(file_path: str) -> list[Document]:
+def load_html(file_path: str) -> list[Document]:
     """Loads html documents (.html) asynchronously from a passed file_path."""
     assert file_path != ""
     assert pathlib.Path(file_path).suffix == ".html" or ".htm"
 
     loader = BSHTMLLoader(file_path)
-    return await loader.aload()
+    return loader.load()
 
 
 # hold all of the loader functions for easy 0(1) fetching
@@ -73,7 +73,7 @@ LOADER_MAP = {
 
 
 # https://python.langchain.com/v0.1/docs/modules/data_connection/retrievers/vectorstore/
-async def get_document_database(
+def get_document_database(
     data_folder="learning_material/*/*/*",
     embedding_model="BAAI/bge-base-en-v1.5",
     chunk_size=1028, chunk_overlap=25,
@@ -96,7 +96,7 @@ async def get_document_database(
             continue
 
         # load the document with a filetype specific loader
-        result_documents = await load_fn(file_path)
+        result_documents = load_fn(file_path)
 
         if not result_documents:
             print(f"file {file_path} does not include any content, skipping")
@@ -111,7 +111,7 @@ async def get_document_database(
 
     chunked_docs = splitter.split_documents(all_docs)
 
-    return await FAISS.afrom_documents(
+    return FAISS.from_documents(
         chunked_docs,
         HuggingFaceEmbeddings(model_name=embedding_model)
     )

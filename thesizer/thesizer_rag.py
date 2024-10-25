@@ -57,7 +57,12 @@ text_generation_pipeline = pipeline(
     max_new_tokens=400,
 )
 
-llm = HuggingFacePipeline(pipeline=text_generation_pipeline)
+LLM = HuggingFacePipeline(pipeline=text_generation_pipeline)
+
+# generate a vector store
+print("building the database")
+DATABASE = get_document_database("learning_material/*/*/*")
+print("the database is ready")
 
 
 def generate_prompt(message_history: list[ChatMessage], max_history=5):
@@ -99,12 +104,9 @@ def generate_prompt(message_history: list[ChatMessage], max_history=5):
 
 
 async def generate_answer(message_history: list[ChatMessage]):
-    # generate a vector store
-    db = await get_document_database("learning_material/*/*/*")
-
     # initialize the similarity search
     n_of_best_results = 4
-    retriever = db.as_retriever(
+    retriever = DATABASE.as_retriever(
         search_type="similarity", search_kwargs={"k": n_of_best_results})
 
     prompt = generate_prompt(message_history, max_history=5)
@@ -114,7 +116,7 @@ async def generate_answer(message_history: list[ChatMessage]):
     retrieval_chain = (
         {"context": retriever, "user_input": RunnablePassthrough()}
         | prompt
-        | llm
+        | LLM
         | StrOutputParser()
     )
 
