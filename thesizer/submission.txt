@@ -1,0 +1,4 @@
+link to code: https://github.com/sakuexe/insikoorit/tree/main/thesizer
+deployed: 
+  - hugging face spaces: https://huggingface.co/spaces/Insikoorit/thesizer
+  - running on my local (if you are reading this on 25/10/2024): https://tinyurl.com/insikoorit
