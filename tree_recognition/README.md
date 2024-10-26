@@ -65,6 +65,10 @@ tensordboard --logdir=example_runs/
 You can then head to the localhost port that the command gives you. In our testing
 it seemed to be [localhost:6006](http://localhost:6006).
 
+It will look like this, so feel free to look around for yourself.
+
+![Screenshot of the tensorboard dashboard](./extras/tensorboard_preview.png)
+
 ### Confusion matrixes
 
 1. **512x512px** images, with learning rate **0.0001**, running for about 40 epochs
