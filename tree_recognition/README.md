@@ -77,7 +77,7 @@ it seemed to be [localhost:6006](http://localhost:6006).
 
 3. **720x720px** images, with learning rate **0.00001**, running for about 80 epochs
 
-![Third confusion matrix](./extras/confusion_matrix/2_512p_lr_0.00001.png)
+![Third confusion matrix](./extras/confusion_matrix/3_720p_lr_0.00001.png)
 
 
 ## Running The Project
