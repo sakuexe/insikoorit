@@ -16,18 +16,18 @@
 The english names, finnish names and the amount of pictures taken.
 
 - **Alder**: leppä (0)
-- **Birch**: koivu (34)
-- **Juniper**: kataja (29)
+- **Birch**: koivu (35)
+- **Juniper**: kataja (31)
 - **Linden**: lehmus (34)
-- **Maple**: vaahtera (25)
-- **Oak**: tammi (22)
-- **Pine**: mänty (26)
-- **Rowan**: pihlaja (35)
-- **Spruce**: kuusi (25)
+- **Maple**: vaahtera (28)
+- **Oak**: tammi (35)
+- **Pine**: mänty (29)
+- **Rowan**: pihlaja (36)
+- **Spruce**: kuusi (26)
 
 <hr>
 
-**Overall**: 230 images
+**Overall**: 262 images
 
 Video presentation of the project can be seen here: 
 [Team Insiköörit - Tree Recognition Presentation ](https://www.youtube.com/watch?v=-E7X9wwAq2w)
@@ -172,9 +172,16 @@ Find the number of images in total:
 
 ```bash
 # linux
-find tree_recognition/images/ -mindepth 2 -maxdepth 2 | wc -l
+for type in $(ls trees_training/resized); do echo $type && (ls "trees_training/resized/$type" && ls "trees_valuation/$type"); done | wc -l
 # windows (powershell)
 Get-ChildItem -Path tree_recognition/images/ -Directory | ForEach-Object {$sum += (Get-ChildItem -Path $_.FullName | Measure-Object).Count} | Write-Host $sum
+```
+
+Find the number of images in each tree type
+
+```bash
+# linux
+for type in $(ls trees_training/resized); do echo $type && (ls "trees_training/resized/$type" && ls "trees_valuation/$type") | wc -l; done
 ```
 
 Reshuffle the tree images
