@@ -32,7 +32,10 @@ The english names, finnish names and the amount of pictures taken.
 
 ## Table of contents
 
-1. [Running the project](#Running-the-project)
+1. [Scores and results](#Scores-and-results)
+    - [Confusion matrixes](#Confusion-matrixes)
+
+2. [Running the project](#Running-the-project)
     - [Docker](#Docker)
     - [Bare-metal](#Bare-metal)
 
@@ -43,6 +46,38 @@ The english names, finnish names and the amount of pictures taken.
 5. [Dependencies](#Dependencies)
 
 6. [Learning FastAPI](#Learning-FastAPI)
+
+
+## Scores and results
+
+The model turned out okay, with such a small window of time to develop it.
+
+You can see the training and validation losses and accuracy, in graph form from
+the `example_runs` directory. They also include the F1 and Recall scores.
+
+To see these graphs, make sure that you have tensorboard installed and run the
+following code in your terminal.
+
+```bash
+tensordboard --logdir=example_runs/
+```
+
+You can then head to the localhost port that the command gives you. In our testing
+it seemed to be [localhost:6006](http://localhost:6006).
+
+### Confusion matrixes
+
+1. **512x512px** images, with learning rate **0.0001**, running for about 40 epochs
+
+![First confusion matrix](./extras/confusion_matrix/1_512p_lr_0.0001.png)
+
+2. **512x512px** images, with learning rate **0.00001**, running for about 100 epochs
+
+![Second confusion matrix](./extras/confusion_matrix/2_512p_lr_0.00001.png)
+
+3. **720x720px** images, with learning rate **0.00001**, running for about 80 epochs
+
+![Third confusion matrix](./extras/confusion_matrix/2_512p_lr_0.00001.png)
 
 
 ## Running The Project
