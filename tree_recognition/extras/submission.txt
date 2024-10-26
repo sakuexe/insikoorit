@@ -1,0 +1,4 @@
+The codebase: 
+https://github.com/sakuexe/insikoorit/tree/main/tree_recognition
+Project video presentation: 
+https://www.youtube.com/watch?v=-E7X9wwAq2w

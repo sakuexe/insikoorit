@@ -11,7 +11,7 @@
        |
 ```
 
-## Tree name translations
+## Tree training data
 
 The english names, finnish names and the amount of pictures taken.
 
@@ -28,6 +28,9 @@ The english names, finnish names and the amount of pictures taken.
 <hr>
 
 **Overall**: 230 images
+
+Video presentation of the project can be seen here: 
+[Team Insiköörit - Tree Recognition Presentation ](https://www.youtube.com/watch?v=-E7X9wwAq2w)
 
 
 ## Table of contents

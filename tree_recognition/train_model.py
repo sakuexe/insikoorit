@@ -14,7 +14,6 @@ from PIL import Image
 import matplotlib.pyplot as plt
 # optimizing the training
 from sklearn.utils.class_weight import compute_class_weight
-from sklearn.metrics import f1_score
 import numpy as np
 # stdlib
 import os
