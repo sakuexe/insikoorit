@@ -11,6 +11,7 @@ class TrainingData(TypedDict):
     epoch_loss: float
     epoch_accuracy: float
     epoch_f1: float | None
+    epoch_recall: float | None
 
 
 def train_model(
@@ -48,7 +49,8 @@ def train_model(
     epoch_data: TrainingData = {
         "epoch_loss": float(epoch_loss),
         "epoch_accuracy": epoch_accuracy,
-        "epoch_f1": None
+        "epoch_f1": None,
+        "epoch_recall": None
     }
     return epoch_data
 
@@ -89,6 +91,7 @@ def validate_model(
     epoch_data: TrainingData = {
         "epoch_loss": float(epoch_loss),
         "epoch_accuracy": epoch_accuracy,
-        "epoch_f1": f1
+        "epoch_f1": f1,
+        "epoch_recall": recall
     }
     return epoch_data

@@ -184,7 +184,8 @@ for epoch in range(EPOCHS):
     writer.add_scalar('Accuracy/validation',
                       validation_data["epoch_accuracy"],
                       epoch)
-    writer.add_scalar('F1/validation', validation_data["epoch_f1"], epoch)
+    writer.add_scalar('F1/scores', validation_data["epoch_f1"], epoch)
+    writer.add_scalar('Recall/scores', validation_data["recall"], epoch)
 
     # save the model whenever validation loss is lower than the previous best
     if validation_data["epoch_loss"] < best_validation_loss:
