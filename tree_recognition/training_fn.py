@@ -2,14 +2,15 @@ import torch
 from torch._prims_common import DeviceLikeType
 import torch.nn as nn
 from torch.utils.data import DataLoader
+from sklearn.metrics import f1_score, recall_score
 from typing import Callable, TypedDict
-
 
 
 class TrainingData(TypedDict):
     """Typed dictionary for passing the epoch data for"""
     epoch_loss: float
     epoch_accuracy: float
+    epoch_f1: float | None
 
 
 def train_model(
@@ -46,7 +47,8 @@ def train_model(
 
     epoch_data: TrainingData = {
         "epoch_loss": float(epoch_loss),
-        "epoch_accuracy": epoch_accuracy
+        "epoch_accuracy": epoch_accuracy,
+        "epoch_f1": None
     }
     return epoch_data
 
@@ -79,8 +81,14 @@ def validate_model(
     print(f"Validation Loss: {epoch_loss}, \
     Validation Accuracy: {epoch_accuracy}%")
 
+    f1 = f1_score(labels.cpu().data, predicted.cpu(), average="macro")
+    recall = recall_score(labels.cpu().data, predicted.cpu(), average="macro")
+
+    print(f"f1 score: {f1} Recall score: {recall}")
+
     epoch_data: TrainingData = {
         "epoch_loss": float(epoch_loss),
-        "epoch_accuracy": epoch_accuracy
+        "epoch_accuracy": epoch_accuracy,
+        "epoch_f1": f1
     }
     return epoch_data

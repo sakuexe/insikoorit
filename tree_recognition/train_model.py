@@ -14,6 +14,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 # optimizing the training
 from sklearn.utils.class_weight import compute_class_weight
+from sklearn.metrics import f1_score
 import numpy as np
 # stdlib
 import os
@@ -183,6 +184,7 @@ for epoch in range(EPOCHS):
     writer.add_scalar('Accuracy/validation',
                       validation_data["epoch_accuracy"],
                       epoch)
+    writer.add_scalar('F1/validation', validation_data["epoch_f1"], epoch)
 
     # save the model whenever validation loss is lower than the previous best
     if validation_data["epoch_loss"] < best_validation_loss:
